@@ -107,6 +107,27 @@ export default function SelfAssessment(props: SelfAssessmentProps) {
         </div>
       )}
 
+      {history.length > 1 && (
+        <div className="mt-3 pt-3 border-t border-amber-100 dark:border-amber-800/30">
+          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
+            Your previous responses:
+          </p>
+          <div className="space-y-1">
+            {history.map((h, i) => (
+              <div key={i} className="flex items-center gap-2 text-xs">
+                <span className="text-zinc-400 dark:text-zinc-500 w-16 shrink-0">{h.date}</span>
+                <span className="font-mono text-amber-600 dark:text-amber-400">
+                  {typeof h.value === "number" ? `${h.value}/5` : h.value}
+                </span>
+                {i === history.length - 1 && (
+                  <span className="text-zinc-400 dark:text-zinc-500">&larr; most recent</span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center justify-between mt-3">
         <p className="text-xs text-zinc-400 dark:text-zinc-500">
           {history.length > 1

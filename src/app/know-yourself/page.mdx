@@ -3,6 +3,8 @@ import NextModule from "@/components/NextModule";
 import ReflectionPrompt from "@/components/ReflectionPrompt";
 import SelfAssessment from "@/components/SelfAssessment";
 import ProjectShowcase from "@/components/ProjectShowcase";
+import CritiqueExercise from "@/components/CritiqueExercise";
+import DisconnectExercise from "@/components/DisconnectExercise";
 
 export const metadata = {
   title: "Know Yourself, Know Your Tools — Learn Vibe Coding",
@@ -151,6 +153,24 @@ Take a moment:
 
 Write this down. It becomes part of your CLAUDE.md. It becomes part of every prompt you give, implicitly or explicitly.
 
+<CritiqueExercise
+  id="know-yourself-bakery"
+  prompt="A local bakery asked AI to create their website. Here are two versions. Which one better serves a neighborhood bakery? Consider: warmth, trust, and whether you'd actually order from this site."
+  type="pick-best"
+  criteria={["Warmth", "Trust", "Would you order from it?"]}
+  items={[
+    {
+      label: "Version A",
+      content: "Sleek dark theme, geometric sans-serif font, full-width hero video, hamburger menu, animated scroll effects. Tagline: 'Artisan Baked Goods — Crafted for Excellence.' Product grid with hover effects and a minimalist checkout flow."
+    },
+    {
+      label: "Version B",
+      content: "Warm cream background, friendly serif headings, photo of the actual bakery counter with flour-dusted hands. Tagline: 'Fresh bread, every morning since 2019.' Simple list of what's available today, phone number prominent, Google Maps embed showing the location."
+    }
+  ]}
+  expertAnalysis="Version B works better for a neighborhood bakery. The warm colors, real photos, and 'what's available today' list build the trust and approachability that drives local foot traffic. Version A is technically polished — it would work great for a luxury brand or tech company — but it creates distance where a bakery needs warmth. This is the core taste skill: 'good' depends entirely on context. A design that's perfect for one audience actively hurts another."
+/>
+
 <ReflectionPrompt
   id="know-yourself-aesthetic"
   prompt="What does 'good' look like to you? Name 2-3 websites or apps you admire and describe what draws you to them."
@@ -217,6 +237,14 @@ Claude Code reads your project files. If you put secrets in `.env`, they end up 
 - **`.secrets.json`** — a file that tells Claude what secrets *exist* without exposing values
 
 This is a habit worth building now, before it matters.
+
+<DisconnectExercise
+  id="know-yourself-sketch"
+  title="Sketch Before You Prompt"
+  instructions="Before your next prompting session, sketch your project on paper. Draw boxes for sections, arrows for flow, labels for what goes where. No AI, no screen — just paper and pen."
+  duration={5}
+  reflectionPrompt="What did you notice about your own thinking when you had to sketch without AI? Did the sketch change what you ended up prompting for?"
+/>
 
 <Callout type="exercise" title="Write your CLAUDE.md">
 Create (or update) your `~/.claude/CLAUDE.md` file using the template above. Spend 10 minutes making it genuinely yours. This is the single most impactful thing you can do to improve your vibe coding sessions.

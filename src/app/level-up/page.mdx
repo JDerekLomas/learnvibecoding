@@ -2,6 +2,7 @@ import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
 import SelfAssessment from "@/components/SelfAssessment";
 import ProjectShowcase from "@/components/ProjectShowcase";
+import CritiqueExercise from "@/components/CritiqueExercise";
 
 export const metadata = {
   title: "Level Up — Learn Vibe Coding",
@@ -156,6 +157,24 @@ Add constraints one at a time, not all at once. "Same layout, but mobile-first."
 **Premature architecture:** "First, let's plan the folder structure and database schema..." Start with the thing you actually want. Structure emerges from need.
 
 **Research/build separation:** "First research everything, then we'll build." Blend them. Context accumulated during research makes building better.
+
+<CritiqueExercise
+  id="level-up-prompt-comparison"
+  prompt="Both prompts ask for the same thing: a dashboard for tracking daily habits. Which prompt will produce a better result? Make your prediction."
+  type="pick-best"
+  criteria={["Clarity of intent", "Room for AI judgment", "Likely output quality"]}
+  items={[
+    {
+      label: "Prompt A",
+      content: "Create a React component with TypeScript using Tailwind CSS. It should be a habit tracker dashboard with a grid layout, 3 columns on desktop, 1 on mobile. Each habit card should have a checkbox, the habit name in 16px semi-bold, a streak counter in green (#22c55e), and a circular progress indicator using SVG. Include a header with the date in format 'Monday, March 2' and a motivational quote from an array of 10 quotes."
+    },
+    {
+      label: "Prompt B",
+      content: "I want a clean, minimal habit tracker. Something I'd actually open every morning — not cluttered, not gamified, just a calm overview of whether I'm doing the things I said matter to me. Think of the feeling of a clean notebook page."
+    }
+  ]}
+  expertAnalysis="Prompt B typically produces better results. Prompt A specifies implementation details (pixel sizes, hex colors, SVG techniques) but never communicates the feeling or purpose. Claude follows those instructions precisely and produces something technically correct but generic. Prompt B communicates vision and feeling — 'calm overview,' 'clean notebook page,' 'things I said matter to me' — giving Claude room to make good design choices. This is Strategic Ambiguity in action: describe the destination, not the route. The specificity in Prompt A actually constrains Claude from applying its own judgment about what makes a good habit tracker."
+/>
 
 ---
 

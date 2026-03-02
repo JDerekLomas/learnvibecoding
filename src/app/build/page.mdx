@@ -1,8 +1,8 @@
 import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
 import ReflectionPrompt from "@/components/ReflectionPrompt";
-import ProjectCapture from "@/components/ProjectCapture";
 import ProjectShowcase from "@/components/ProjectShowcase";
+import BuildSession from "@/components/BuildSession";
 
 export const metadata = {
   title: "Build Something Real — Learn Vibe Coding",
@@ -135,16 +135,17 @@ Publishing does three things:
 
 You don't need to be an expert. You just need to have built something.
 
-<Callout type="exercise" title="Build your thing">
-By the end of this module, you should have deployed a real project — something you chose because you wanted it, not because someone told you to build it. If you haven't yet, stop reading and go build. Seriously. This curriculum is useless without practice.
-</Callout>
+<BuildSession
+  id="build-real-project"
+  module="build"
+  prompt="Build something real — something you chose because you want it, not because someone told you to. Stop reading and go build. This curriculum is useless without practice."
+  suggestedDuration={45}
+/>
 
 <ReflectionPrompt
   id="build-why"
   prompt="Why did you choose this project? What desire or need drove it?"
 />
-
-<ProjectCapture module="build" />
 
 <NextModule
   href="/debugging"

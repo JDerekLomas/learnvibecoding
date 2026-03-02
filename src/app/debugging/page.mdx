@@ -2,7 +2,8 @@ import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
 import ReflectionPrompt from "@/components/ReflectionPrompt";
 import SelfAssessment from "@/components/SelfAssessment";
-import ProjectCapture from "@/components/ProjectCapture";
+import CritiqueExercise from "@/components/CritiqueExercise";
+import DisconnectExercise from "@/components/DisconnectExercise";
 
 export const metadata = {
   title: "When Things Break — Learn Vibe Coding",
@@ -171,9 +172,27 @@ If the answer is no, iterate. If you can't articulate why it's wrong, that's oka
 
 Your taste is the filter that separates "AI slop" from "work that resonates."
 
-<Callout type="exercise" title="Practice getting unstuck">
-Next time you hit a wall (and you will), consciously choose a repair pattern instead of just trying the same thing again. Notice which patterns work best for you. Over time, you'll develop your own repair toolkit.
-</Callout>
+<CritiqueExercise
+  id="debugging-find-bug"
+  prompt="Claude generated this contact form component. It looks right and runs without errors. But there's a problem that would frustrate real users. What is it?"
+  type="find-problems"
+  criteria={["User experience", "Data handling", "Edge cases"]}
+  items={[
+    {
+      label: "Contact Form",
+      content: "function ContactForm() {\n  const [name, setName] = useState('');\n  const [email, setEmail] = useState('');\n  const [message, setMessage] = useState('');\n  const [status, setStatus] = useState('');\n\n  async function handleSubmit(e) {\n    e.preventDefault();\n    setStatus('Message sent!');\n    setName(''); setEmail(''); setMessage('');\n    await fetch('/api/contact', {\n      method: 'POST',\n      body: JSON.stringify({ name, email, message })\n    });\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>...</form>\n  );\n}"
+    }
+  ]}
+  expertAnalysis="The bug: the success message appears and the form clears BEFORE the API request is made. If the request fails, the user thinks their message was sent when it wasn't. Also, the form values are cleared before being sent to the API (the empty strings get sent instead of the user's input). The fix: await the fetch first, check the response, then show the success message and clear the form. This is a common pattern in AI-generated code — the happy path looks right but error handling is missing. When reviewing AI code, always ask: 'What happens if this fails?'"
+/>
+
+<DisconnectExercise
+  id="debugging-read-error"
+  title="Read the Error Yourself"
+  instructions="Next time you hit an error message, BEFORE pasting it to Claude, spend 2 minutes reading it yourself. Write down: (1) What file and line is the error on? (2) What type of error is it? (3) What do YOU think might be wrong? You don't need to be right. The practice of reading errors builds a skill that AI can't replace."
+  duration={2}
+  reflectionPrompt="What did you notice when you tried to read the error yourself? Was any part of it more understandable than you expected?"
+/>
 
 <ReflectionPrompt
   id="debugging-stuck"
@@ -189,8 +208,6 @@ Your relationship with frustration changes over time. Track where you are now �
   lowLabel="Frustrated and stuck"
   highLabel="Curious and ready to debug"
 />
-
-<ProjectCapture module="debugging" />
 
 <NextModule
   href="/sessions"

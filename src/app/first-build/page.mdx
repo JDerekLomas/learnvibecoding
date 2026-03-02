@@ -1,7 +1,8 @@
 import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
-import ProjectCapture from "@/components/ProjectCapture";
 import ProjectShowcase from "@/components/ProjectShowcase";
+import BuildSession from "@/components/BuildSession";
+import DisconnectExercise from "@/components/DisconnectExercise";
 
 export const metadata = {
   title: "Your First Build — Learn Vibe Coding",
@@ -133,9 +134,12 @@ Add dark mode
 
 Each prompt makes changes. Each change deploys. This is the vibe coding loop.
 
-<Callout type="exercise" title="Build it now">
-Pick either Path 1 or Path 2 and build something. Anything. A personal site, a landing page for a fake business, a birthday card. The point is to experience the loop: describe → see → refine → share.
-</Callout>
+<BuildSession
+  id="first-build-session"
+  module="first-build"
+  prompt="Pick either Path 1 or Path 2 and build something. Anything. A personal site, a landing page for a fake business, a birthday card. Experience the loop: describe, see, refine, share."
+  suggestedDuration={20}
+/>
 
 ---
 
@@ -169,7 +173,13 @@ That's normal. The first version is a starting point. Use vibe words to refine: 
 **"It made something completely different from what I wanted"**
 Be more specific about what you *do* want, not what you don't want. Show examples: *"Something like [this website]"* works great.
 
-<ProjectCapture module="first-build" />
+<DisconnectExercise
+  id="first-build-view-source"
+  title="Read the Source"
+  instructions="Open your deployed site in a browser. Right-click and choose 'View Page Source' (or press Ctrl+U / Cmd+Option+U). Find the <h1> tag with your name or site title. Without AI, try changing just that text by editing the source file directly. One HTML element, one small change."
+  duration={5}
+  reflectionPrompt="What was it like looking at the raw code your AI generated? Did anything surprise you about what's underneath?"
+/>
 
 <NextModule
   href="/know-yourself"

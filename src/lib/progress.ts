@@ -14,10 +14,40 @@ export interface LearnerData {
     date: string;
   }>;
   visited: string[];
+  critiques: Array<{
+    id: string;
+    choice: string;
+    reasoning: string;
+    date: string;
+  }>;
+  buildSessions: Array<{
+    id: string;
+    module: string;
+    intention: string;
+    successCriteria: string;
+    startedAt: string;
+    completedAt?: string;
+    outcome?: "achieved" | "partially" | "no" | "stuck";
+    debrief?: string;
+    date: string;
+  }>;
+  disconnects: Array<{
+    id: string;
+    reflection: string;
+    date: string;
+  }>;
 }
 
 function empty(): LearnerData {
-  return { reflections: {}, projects: [], assessments: [], visited: [] };
+  return {
+    reflections: {},
+    projects: [],
+    assessments: [],
+    visited: [],
+    critiques: [],
+    buildSessions: [],
+    disconnects: [],
+  };
 }
 
 export function getData(): LearnerData {
@@ -76,6 +106,32 @@ export function markVisited(path: string) {
   }
 }
 
+export function saveCritique(critique: { id: string; choice: string; reasoning: string }) {
+  const d = getData();
+  d.critiques.push({ ...critique, date: new Date().toISOString().slice(0, 10) });
+  save(d);
+  notifyChange();
+}
+
+export function saveBuildSession(session: LearnerData["buildSessions"][number]) {
+  const d = getData();
+  const idx = d.buildSessions.findIndex((s) => s.id === session.id && !s.completedAt);
+  if (idx >= 0) {
+    d.buildSessions[idx] = session;
+  } else {
+    d.buildSessions.push(session);
+  }
+  save(d);
+  notifyChange();
+}
+
+export function saveDisconnect(id: string, reflection: string) {
+  const d = getData();
+  d.disconnects.push({ id, reflection, date: new Date().toISOString().slice(0, 10) });
+  save(d);
+  notifyChange();
+}
+
 export function hasExerciseData(path: string): boolean {
   const d = getData();
   const moduleKey = path.replace(/^\//, "");
@@ -83,5 +139,8 @@ export function hasExerciseData(path: string): boolean {
   const hasReflection = Object.keys(d.reflections).some((k) => k.startsWith(prefix));
   const hasProject = d.projects.some((p) => p.module === moduleKey);
   const hasAssessment = d.assessments.some((a) => a.id.startsWith(prefix));
-  return hasReflection || hasProject || hasAssessment;
+  const hasCritique = d.critiques.some((c) => c.id.startsWith(prefix));
+  const hasBuildSession = d.buildSessions.some((b) => b.module === moduleKey);
+  const hasDisconnect = d.disconnects.some((dc) => dc.id.startsWith(prefix));
+  return hasReflection || hasProject || hasAssessment || hasCritique || hasBuildSession || hasDisconnect;
 }

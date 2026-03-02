@@ -1,8 +1,8 @@
 import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
 import ReflectionPrompt from "@/components/ReflectionPrompt";
-import ProjectCapture from "@/components/ProjectCapture";
 import ProjectShowcase from "@/components/ProjectShowcase";
+import BuildSession from "@/components/BuildSession";
 
 export const metadata = {
   title: "The Vibe Coding Workflow — Learn Vibe Coding",
@@ -216,16 +216,17 @@ Open the deployed URL on your phone. On your laptop. Show someone. Then iterate:
 
 Keep going until you're proud of it — or until you've learned what you came to learn.
 
-<Callout type="exercise" title="Build project #2">
-Follow the walkthrough above. Build something you genuinely want. Deploy it. Share the URL with someone. This isn't homework — it's practice building the habit.
-</Callout>
+<BuildSession
+  id="workflow-project2"
+  module="workflow"
+  prompt="Build project #2. Follow the walkthrough above — choose from desire, vision prompt, build, deploy, refine. Set your intention here, then go build."
+  suggestedDuration={30}
+/>
 
 <ReflectionPrompt
   id="workflow-click"
   prompt="After building project #2, describe the moment in the session where it clicked — or the moment where it almost fell apart. What happened?"
 />
-
-<ProjectCapture module="workflow" />
 
 <NextModule
   href="/build"
