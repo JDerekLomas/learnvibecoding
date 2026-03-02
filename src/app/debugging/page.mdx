@@ -1,0 +1,179 @@
+import Callout from "@/components/Callout";
+import NextModule from "@/components/NextModule";
+
+export const metadata = {
+  title: "When Things Break — Learn Vibe Coding",
+  description: "Frustration is normal. Resilience is a skill. Here's how to get unstuck.",
+};
+
+# When Things Break
+
+Things will break. Claude will misunderstand you. Code will fail. Deploys will error. Layouts will look terrible on mobile. You will feel frustrated.
+
+This is not a sign that something is wrong. This is the normal experience of building things.
+
+---
+
+## Frustration is normal
+
+Here's a secret that experienced builders rarely share: **everyone gets stuck.** The difference between beginners and experienced vibe coders isn't that experienced people don't get frustrated — it's that they've built patterns for getting *unstuck*.
+
+Frustration is actually useful information. It means you care about the outcome enough to be bothered when it's not right. The goal isn't to eliminate frustration. It's to process it productively.
+
+**When you're frustrated:**
+1. Notice it. ("I'm frustrated because this isn't working.")
+2. Step back. Take a breath. Maybe stand up.
+3. Identify the specific problem. ("The sidebar overlaps the content on mobile" is actionable. "This sucks" is not.)
+4. Choose a repair pattern (see below).
+
+---
+
+## Common failures and fixes
+
+### Context is full
+
+**Symptoms:** Claude gives increasingly vague responses, repeats itself, or seems to forget what you were working on.
+
+**Fix:** Use `/compact` to summarize the conversation and free space. If it's too far gone, use `/clear` and start a new session with the key context: "I'm working on X. Here's where I am. The problem is Y."
+
+### Claude is going in circles
+
+**Symptoms:** Claude fixes one thing, breaks another, fixes that, breaks the first thing again.
+
+**Fix:** This usually means the problem is structural, not surface-level. Stop iterating and restate the goal:
+
+```
+Let's step back. The core goal is [X].
+The current approach of [Y] isn't working.
+What's a different way to achieve this?
+```
+
+### Wrong direction entirely
+
+**Symptoms:** Claude built something competent but it's not what you wanted at all.
+
+**Fix:** This is a vision problem, not a code problem. Don't try to fix it — describe what you actually want:
+
+```
+This isn't what I had in mind. I want something more like [X].
+Specifically: [concrete detail about what "right" looks like].
+```
+
+Showing an example (a screenshot, a URL, a sketch) is 10x more effective than describing in words.
+
+### Deploy fails
+
+**Symptoms:** `vercel --prod` gives an error.
+
+**Fix:** Common causes:
+- **Type errors** — run `npx tsc --noEmit` locally first to catch these
+- **Build errors** — ask Claude: "The deploy failed with this error: [paste error]. Fix it."
+- **Missing environment variables** — check if the project needs API keys configured in Vercel
+- **Package version conflicts** — ask Claude to resolve dependency issues
+
+Most deploy failures have clear error messages. Copy the error, paste it to Claude, and let Claude fix it.
+
+### Mobile is broken
+
+**Symptoms:** Looks great on desktop, disaster on phone.
+
+**Fix:** Open the deployed URL on your actual phone (not just browser devtools). Then tell Claude exactly what you see:
+
+```
+On mobile: the nav menu overlaps the content,
+the text is too small to read, and the images
+overflow the screen.
+```
+
+---
+
+## Repair patterns from the Grimoire
+
+These are named patterns for getting unstuck. Think of them as tools in a toolkit.
+
+### The Soft Reset
+> "Let's step back. The core goal is [X]."
+
+When you've gone down a wrong path. You're not starting over — you're recalibrating. Restate the destination, not the failed route.
+
+### Show-Don't-Tell
+> "Here's an example of what I mean: [link/screenshot/paste]"
+
+When descriptions aren't landing. Visual references bypass the ambiguity of language.
+
+### The Constraint Addition
+> "Same thing, but [single constraint]."
+
+When the output is close but not right. Add one constraint at a time. "Same layout, but darker." "Same functionality, but simpler UI." Don't stack multiple changes.
+
+### The Role Shift
+> "Look at this as a [user / designer / critic / someone who's never seen this before]."
+
+When you need a fresh perspective. Ask Claude to evaluate from a different viewpoint.
+
+### The Nuclear Option
+Close the session. Open a new one. Start fresh with the lessons learned.
+
+```
+I'm starting over on [project]. Previously I tried [approach]
+and it didn't work because [reason]. This time I want to [new approach].
+```
+
+Starting over with knowledge is not the same as starting over with nothing.
+
+<Callout type="warning" title="When to stop">
+If you've been stuck on the same issue for more than 30 minutes, stop. Either the problem is harder than you think (break it into smaller pieces) or you're approaching it wrong (try a completely different approach). Persistence is a virtue, but so is knowing when to change tactics.
+</Callout>
+
+---
+
+## Reading error messages (for non-coders)
+
+Error messages look scary. They're not. Here's how to read them:
+
+**Structure of an error message:**
+```
+Error: Cannot find module 'react-icons'
+  at Object.<anonymous> (/src/components/Header.tsx:2:1)
+```
+
+The important parts:
+1. **The error type**: "Cannot find module" — something is missing
+2. **The specific thing**: `'react-icons'` — this package needs to be installed
+3. **The location**: `/src/components/Header.tsx:2:1` — line 2 of this file
+
+**What to do:** Copy the error message and paste it to Claude. Claude will read the error, explain it in plain language, and fix it.
+
+You don't need to understand error messages. You need to show them to Claude.
+
+**Common error types (plain language):**
+- "Cannot find module X" → a package needs to be installed
+- "Type error" → the code expects one type of data but got another
+- "Syntax error" → there's a typo or formatting issue in the code
+- "Build failed" → something went wrong during compilation, usually one of the above
+
+---
+
+## Quality control stays human
+
+Here's the most important thing in this module:
+
+**You are the taste-maker.** Claude writes code. You decide if it's good.
+
+AI doesn't have aesthetic judgment. It doesn't know what your users need. It doesn't understand the context of your project. That's your job, and it always will be.
+
+The best vibe coders don't blindly accept AI output. They look at every result and ask: "Is this what I wanted? Does this serve the purpose? Would I be proud to show this to someone?"
+
+If the answer is no, iterate. If you can't articulate why it's wrong, that's okay — "something feels off about this, make it feel more [X]" is a perfectly valid prompt.
+
+Your taste is the filter that separates "AI slop" from "work that resonates."
+
+<Callout type="exercise" title="Practice getting unstuck">
+Next time you hit a wall (and you will), consciously choose a repair pattern instead of just trying the same thing again. Notice which patterns work best for you. Over time, you'll develop your own repair toolkit.
+</Callout>
+
+<NextModule
+  href="/sessions"
+  label="M5: Mastering Sessions"
+  description="Session management, prompt archaeology on your own work."
+/>

@@ -1,0 +1,169 @@
+import Callout from "@/components/Callout";
+import NextModule from "@/components/NextModule";
+
+export const metadata = {
+  title: "Claude Code for Developers — Learn Vibe Coding",
+  description: "The mental shift from specification to conversation, for working programmers.",
+};
+
+# Claude Code for Developers
+
+You write code. You have opinions about architecture, testing, and deployment. You've been watching people hype "vibe coding" and wondering whether it's real or just people who can't program pretending they can.
+
+It's real. But the shift isn't technical — it's psychological.
+
+---
+
+## The mental shift
+
+You're used to this loop:
+
+```
+Think → Plan → Write code → Debug → Test → Ship
+```
+
+Vibe coding replaces the middle:
+
+```
+Think → Describe → Review → Refine → Ship
+```
+
+You stop being the typist and start being the architect. The hard part isn't learning new syntax — it's letting go of the keyboard.
+
+**The specification trap**: Your instinct will be to write detailed specs. "Create a React component with TypeScript, use Tailwind, implement the following interface..." Stop. That's over-specification, and it produces *worse* results than simply describing what you want.
+
+Instead of:
+```
+Create a function that takes an array of objects with
+name (string) and age (number) properties and returns
+only those where age > 18, sorted by name ascending
+```
+
+Try:
+```
+Filter and sort a user list — adults only, alphabetical
+```
+
+Claude knows what filtering and sorting look like. Your job is intent, not implementation.
+
+---
+
+## Setup
+
+You probably have most of this already:
+
+```bash
+# Claude Code
+npm install -g @anthropic-ai/claude-code
+
+# GitHub CLI (if you don't have it)
+brew install gh
+gh auth login
+
+# Vercel for deployment
+npm install -g vercel
+vercel login
+```
+
+### Your first CLAUDE.md
+
+This is the game-changer. Create `~/.claude/CLAUDE.md` with your preferences:
+
+```markdown
+# Preferences
+
+## Style
+- TypeScript, strict mode
+- Prefer functional components with hooks
+- Tailwind for styling
+- Use async/await, never raw promises
+- Tests with vitest
+
+## Workflow
+- Deploy to Vercel with `vercel --prod`
+- Commit after completing work
+- Run `npx tsc --noEmit` before deploying
+
+## Conventions
+- My GitHub: YOUR_USERNAME
+- Preferred stack: Next.js + Tailwind + Vercel
+```
+
+Claude reads this automatically. It's like pair programming with someone who actually read your style guide.
+
+Every project can also have its own `CLAUDE.md` at the root — project-specific conventions, build commands, deployment targets.
+
+---
+
+## Your existing workflow stays
+
+This isn't a replacement for your development environment. It's an addition:
+
+- **Git** still works the same. Claude creates commits, branches, PRs through `gh`.
+- **Tests** still run. Tell Claude your test command and it'll run them.
+- **CI/CD** doesn't change. Vercel, GitHub Actions, whatever you use.
+- **Code review** is still your job. Claude writes, you review.
+
+The difference is speed. What used to take a morning takes 20 minutes.
+
+---
+
+## The trust gradient
+
+Don't go from 0 to 100. Build trust incrementally:
+
+### Level 1: Scaffolding
+Let Claude generate boilerplate while you write the logic.
+```
+Scaffold a Next.js API route for user authentication
+with email/password — I'll fill in the auth logic
+```
+
+### Level 2: Implementation
+Give Claude a task and review the result.
+```
+Add pagination to the /api/users endpoint.
+Use cursor-based pagination. Include tests.
+```
+
+### Level 3: Delegation
+Hand over entire features. Review the PR, not each line.
+```
+Build the full settings page — user profile, email
+preferences, password change, account deletion.
+Match the existing design patterns in src/components.
+```
+
+### Level 4: Autonomous
+Claude works on issues, creates PRs, runs tests. You review and merge.
+```
+Work through the open issues labeled 'good-first-issue'
+```
+
+Most developers get comfortable at Level 2-3 within a week. Level 4 takes longer — not because Claude can't do it, but because you need to trust the output.
+
+<Callout type="warning" title="Secrets management">
+Never put API keys in `.env` files that Claude can read. Use environment variables in your shell profile, or use a tool like `secret-lover` that stores secrets in the macOS Keychain. Claude can use `$ENV_VARS` without seeing the values.
+</Callout>
+
+---
+
+## Things that will surprise you
+
+**It reads your codebase.** Claude Code scans your project files to understand patterns, naming conventions, and architecture. It doesn't just generate generic code — it matches your style.
+
+**Terse prompts work.** Once Claude has context, you can say "push it", "darker", "add tests", "mobile". Single words carry intent when the context is shared.
+
+**It makes mistakes.** Good ones, usually — reasonable choices that aren't quite what you wanted. The fix is to be specific about *what's wrong*, not to write more detailed prompts upfront.
+
+**You'll write less code and think more.** The ratio shifts. You spend more time on architecture, user experience, and "does this actually solve the problem?" and less time on implementation.
+
+<Callout type="exercise" title="Try it now">
+Open a project you're working on. Start Claude Code in that directory. Give it a task you'd normally spend 30 minutes on. See what happens. You'll know within one session whether this is real.
+</Callout>
+
+<NextModule
+  href="/know-yourself"
+  label="M1: Know Yourself, Know Your Tools"
+  description="Why self-knowledge matters more than prompt templates."
+/>

@@ -1,0 +1,143 @@
+import Callout from "@/components/Callout";
+import NextModule from "@/components/NextModule";
+
+export const metadata = {
+  title: "Level Up — Learn Vibe Coding",
+  description: "Patterns, archetypes, and power-user techniques for active vibe coders.",
+};
+
+# Level Up
+
+You're already vibe coding. You've built things, deployed things, had those magic sessions where everything flows. You've also had sessions where nothing works and you want to throw your laptop.
+
+This module is about naming the patterns so you can use them deliberately.
+
+---
+
+## Know your archetype
+
+From analyzing 10,497 prompts across 68 days of intensive vibe coding, three distinct styles emerged. Most people lean toward one:
+
+### The Scholar
+*Deep domain work, research, archives*
+
+You start by immersing Claude in the problem domain. You don't say "build me an app" — you say "help me understand this space." The building follows naturally from shared understanding.
+
+**Signature moves:**
+- "What do you notice about this?"
+- "How would an expert approach this?"
+- "What's missing from the current experience?"
+
+**Strength:** Produces deeply thoughtful, domain-appropriate work.
+**Risk:** Can get lost in research and never ship.
+
+### The Aesthete
+*Design, visual work, brand*
+
+You show, don't tell. Reference sites beat descriptions. Then you iterate fast with vibe words: "warmer", "more breathing room", "too corporate."
+
+**Signature moves:**
+- Share reference URLs before describing anything
+- Use evocative language: "ethereal", "grounded", "luminous"
+- Cycle fast: prompt → see result → "now try X" → see result
+
+**Strength:** Produces beautiful, emotionally resonant work.
+**Risk:** Can over-iterate and lose the thread.
+
+### The Sprinter
+*Deadline-driven, intensive builds*
+
+You blend research and building in the same session. You don't separate phases. A single session might go: find a paper → summarize it → draft how it fits → build the component → test it → move to the next section.
+
+**Signature moves:**
+- External deadlines create focus
+- Never separate "research phase" from "build phase"
+- Let accumulated context do the heavy lifting
+
+**Strength:** Ships fast, dense output.
+**Risk:** Can burn through context window and lose quality at the end.
+
+<Callout type="exercise" title="Self-assessment">
+Which archetype resonates most? Think about your last three building sessions. Were you researching deeply (Scholar), iterating on aesthetics (Aesthete), or blasting through tasks (Sprinter)? There's no wrong answer — this is about self-awareness, not optimization.
+</Callout>
+
+---
+
+## What 10,497 prompts reveal
+
+Here's what the data shows about real vibe coding at scale:
+
+**The arc is always the same:** Experimentation → Foundation → Application. First you explore what's possible. Then you build the core thing. Then you ship it to people. Every project follows this at some scale.
+
+**Parallel streams are natural.** Never one project at a time — always 3-5. Context-switching isn't a bug. It's the native mode.
+
+**Projects spawn projects.** A translation tool spins off a children's book engine. A website becomes a platform. The work is generative, not linear.
+
+**Intensity is tidal.** 300-500 prompts/day during shipping. 40-100 during exploration. Don't fight the rhythm.
+
+**The most common prompt openers:** "this", "i", "yes". Not elaborate instructions. Just presence and direction.
+
+---
+
+## Named patterns you might be missing
+
+### Strategic Ambiguity
+The most common mistake is over-specification. Precise prompts produce brittle results. The art is knowing what to leave open.
+
+- Describe the destination, not the route
+- Name the vibe, not the pixels
+- Specify constraints, not implementations
+
+Claude fills ambiguity with competence. Your job is to create the right-shaped space for that competence to flow into.
+
+### The Delegation
+> "Work on the todos for X"
+
+Hand over the steering wheel entirely. This only works after you've built enough shared context. Early in a session: dangerous. After 30 minutes of collaboration: powerful.
+
+### The Vibe Shift
+> "This is too [X]. Make it more [Y]."
+
+Fast iteration with feeling-words. "Too busy, simplify." "Too cold, warm it up." "Too corporate, make it human." Four words that carry more intent than a paragraph of specifications.
+
+### The Soft Reset
+> "Let's step back. The core goal is X."
+
+When you've gone down a wrong path and need to recover without starting over. Restate the destination, not the failed route.
+
+### The Constraint Addition
+> "Same thing, but [constraint]."
+
+Add constraints one at a time, not all at once. "Same layout, but mobile-first." "Same logic, but handle the error case." Incremental narrowing beats upfront specification.
+
+---
+
+## Anti-patterns
+
+**Over-specification:** "Create a React component with TypeScript using Tailwind CSS that has a blue background (#3B82F6) and padding of 16px..." The more you specify, the less room for Claude to apply judgment. Save precision for actual constraints.
+
+**Premature architecture:** "First, let's plan the folder structure and database schema..." Start with the thing you actually want. Structure emerges from need.
+
+**Research/build separation:** "First research everything, then we'll build." Blend them. Context accumulated during research makes building better.
+
+---
+
+## Power user: beyond prompts
+
+### CLAUDE.md mastery
+Your CLAUDE.md isn't just preferences — it's a self-portrait. Write it as "here's how I think and work," not "here are your rules." The better Claude understands you, the less you need to prompt.
+
+### MCP servers
+Connect Claude to external tools — databases, APIs, browser devtools. This turns Claude from "AI that writes code" to "AI that operates your infrastructure."
+
+### Skills
+Reusable prompt patterns saved as files. When you find yourself giving the same instructions across projects, extract them into a skill.
+
+### Hooks
+Auto-run commands on events. Run tests before commits. Notify yourself after deploys. Lint on save. The automation layer on top of the conversation.
+
+<NextModule
+  href="/know-yourself"
+  label="M1: Know Yourself, Know Your Tools"
+  description="Even experienced vibe coders benefit from the philosophical foundation."
+/>

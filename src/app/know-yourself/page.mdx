@@ -1,0 +1,176 @@
+import Callout from "@/components/Callout";
+import NextModule from "@/components/NextModule";
+
+export const metadata = {
+  title: "Know Yourself, Know Your Tools — Learn Vibe Coding",
+  description: "Why self-knowledge matters more than prompt templates.",
+};
+
+# Know Yourself, Know Your Tools
+
+This is the module everyone converges on, regardless of where you started. And it begins with a claim that might seem strange for a technology course:
+
+**The most important skill in vibe coding is self-knowledge.**
+
+Not prompt engineering. Not technical setup. Knowing what you want.
+
+---
+
+## Why self-knowledge matters more than prompt templates
+
+The internet is full of "100 best ChatGPT prompts" and "the ultimate prompt template." These are training wheels at best, crutches at worst.
+
+Here's the problem: a template gives you someone else's intent wrapped in someone else's words. It works for generic tasks ("summarize this article") but fails the moment you want something that's actually *yours*.
+
+Vibe coding is personal. The best prompts come from clarity about what you're trying to do, not from copying someone else's formula.
+
+**Instead of searching for the right prompt, ask yourself:**
+- What am I actually trying to build?
+- What does "good" look like to me?
+- What feeling do I want the end result to evoke?
+- What do I know that the AI doesn't?
+
+When you can answer these clearly, the prompts write themselves.
+
+---
+
+## Know what you want before you prompt
+
+This sounds obvious. It isn't.
+
+Most people sit down with a vague idea and immediately start typing a prompt. The result is vague. So they write a more detailed prompt. The result is detailed but wrong. So they add more constraints. The result is constrained but lifeless.
+
+The fix isn't better prompting. It's *thinking before prompting*.
+
+Try this: before your next prompt, spend 60 seconds with these questions:
+
+1. **What's the simplest version of what I want?** (Not the full vision — the kernel)
+2. **Who is this for?** (You? A client? The public?)
+3. **What should it feel like?** (Clean? Playful? Serious? Warm?)
+4. **What's one example of something that gets the vibe right?** (A website, an app, a brand)
+
+Now prompt. The difference will be immediate.
+
+---
+
+## Confidence through play, not study
+
+In 2023, researcher Derek Lomas made an argument that prompt *engineering* — the logical, methodical, measurement-oriented approach — was insufficient for working with AI. Not wrong, just incomplete.
+
+The core insight: Large language models are inscrutable. We don't fully understand how they produce their outputs. That means the engineering mindset, which depends on understanding how things work, has a ceiling.
+
+What works beyond that ceiling? *Intuition developed through play.*
+
+### The 12 principles of Prompt Vibing
+
+These aren't rules. They're orientations:
+
+1. **Authenticity** — Communicate openly about your real objectives. Use the prompting itself to clarify what you want.
+2. **Intuitive thinking** — Develop feel for how the AI responds. This only comes from experience, not from reading about it.
+3. **Playfulness** — Try things for fun. Expect to experiment. The pressure to "get it right" kills creativity.
+4. **Voice and style** — Know how you want things to sound and feel. AI is extremely sensitive to direction.
+5. **Open-mindedness** — Start with open-ended prompts. See what comes back before narrowing.
+6. **Willingness to follow tangents** — Some of the best discoveries come from unexpected directions.
+7. **Fearlessness** — Push boundaries. You can always undo.
+8. **Letting go of expectations** — Focus on the conversation, not on a predetermined outcome.
+9. **Careful criticism** — Ask for the type of feedback you want: "constructive", "harsh", "from the perspective of a user."
+10. **Curate the vibe** — If the conversation drifts, steer it back. You're the director.
+11. **Resilience** — Bad results are normal. They're data, not failure.
+12. **Find the groove** — Aim for flow — that state where prompts and responses align and the work moves fast.
+
+<Callout type="info" title="The paradox">
+The best prompts don't look like prompts at all. They look like someone thinking out loud, pointing at things, expressing preferences. Analysis of 10,497 real prompts showed the most common openers were "this", "i", and "yes." Not elaborate instructions. Just presence.
+</Callout>
+
+---
+
+## Developing a relationship through conversation
+
+AI isn't just a tool you optimize. It's a conversation partner you develop rapport with.
+
+This isn't anthropomorphism — it's pragmatics. The more context you share, the more history you build, the better the collaboration gets. Just like with a human colleague.
+
+**What builds good AI rapport:**
+- Expressing genuine reactions: "That's not what I meant" is better than re-prompting from scratch
+- Sharing context about why you want something, not just what you want
+- Acknowledging when it gets something right: "Yes, that direction"
+- Being honest about confusion: "I'm not sure what I want here, help me think through it"
+
+**What breaks it:**
+- Treating every prompt as an isolated request
+- Being adversarial ("prove you can do this")
+- Over-specifying when you don't actually have firm requirements
+- Ignoring good work and only responding to mistakes
+
+---
+
+## Your aesthetic: what does "good" look like to you?
+
+This is the question most people skip, and it matters enormously.
+
+"Good" is not universal. A landing page for a law firm and a landing page for a children's toy look completely different — not because of different code, but because of different aesthetics.
+
+Take a moment:
+- What websites do you admire?
+- What apps feel good to use?
+- What visual style makes you think "yes, that"?
+- What words describe your aesthetic? (Clean? Bold? Warm? Minimal? Playful?)
+
+Write this down. It becomes part of your CLAUDE.md. It becomes part of every prompt you give, implicitly or explicitly.
+
+---
+
+## Writing your CLAUDE.md as a self-portrait
+
+Your CLAUDE.md file isn't a configuration file. It's a portrait of how you think and work.
+
+Start with this template and make it yours:
+
+```markdown
+# Who I Am
+
+## How I Work
+- [Your general approach: fast and iterative? Careful and methodical?]
+- [What matters most: shipping fast? Getting details right? Beautiful design?]
+
+## My Aesthetic
+- [What "good" looks like to you]
+- [Sites/apps you admire]
+- [Words that describe your style]
+
+## Preferences
+- Be concise / Be detailed (pick one)
+- Explain before doing / Just do it (pick one)
+- Suggest alternatives / Follow instructions exactly (pick one)
+
+## Technical
+- Deploy to Vercel with `vercel --prod`
+- [Your preferred tech stack, if any]
+- [Your GitHub username]
+```
+
+This isn't set-and-forget. Update it as you learn more about how you work. Every few weeks, revisit it. Your CLAUDE.md grows as you grow.
+
+---
+
+## Secrets management
+
+One practical note before we move on: **never put API keys or passwords in files that AI can read.**
+
+Claude Code reads your project files. If you put secrets in `.env`, they end up in conversation history. Instead:
+
+- **Environment variables in your shell profile** — add to `~/.zshrc` so they're available as `$VAR_NAME` without Claude seeing the value
+- **Secrets manager** — tools like `secret-lover` store secrets in the macOS Keychain with Touch ID protection
+- **`.secrets.json`** — a file that tells Claude what secrets *exist* without exposing values
+
+This is a habit worth building now, before it matters.
+
+<Callout type="exercise" title="Write your CLAUDE.md">
+Create (or update) your `~/.claude/CLAUDE.md` file using the template above. Spend 10 minutes making it genuinely yours. This is the single most impactful thing you can do to improve your vibe coding sessions.
+</Callout>
+
+<NextModule
+  href="/workflow"
+  label="M2: The Vibe Coding Workflow"
+  description="Vision, build, deploy, refine, delegate, resume."
+/>
