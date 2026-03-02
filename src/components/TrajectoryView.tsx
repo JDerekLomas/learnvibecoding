@@ -8,7 +8,7 @@ interface TrajectoryViewProps {
 
 type TimelineEntry = {
   date: string;
-  type: "reflect" | "assess" | "project" | "critique" | "build" | "disconnect";
+  type: "reflect" | "assess" | "project" | "critique" | "build" | "disconnect" | "discover";
   label: string;
   detail?: string;
 };
@@ -20,6 +20,7 @@ const typeConfig: Record<TimelineEntry["type"], { color: string; bg: string; lab
   critique: { color: "bg-blue-400", bg: "bg-blue-50 dark:bg-blue-950/20", label: "Critique", icon: "<>" },
   build: { color: "bg-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-950/20", label: "Build", icon: ">" },
   disconnect: { color: "bg-slate-400", bg: "bg-slate-50 dark:bg-slate-950/20", label: "Disconnect", icon: "/" },
+  discover: { color: "bg-amber-500", bg: "bg-amber-50 dark:bg-amber-950/20", label: "Discovery", icon: "*" },
 };
 
 function buildTimeline(data: LearnerData): TimelineEntry[] {
@@ -77,6 +78,15 @@ function buildTimeline(data: LearnerData): TimelineEntry[] {
       type: "disconnect",
       label: d.id.replace(/-/g, " "),
       detail: d.reflection.length > 60 ? d.reflection.slice(0, 60) + "..." : d.reflection,
+    });
+  });
+
+  (data.discoveries ?? []).forEach((d) => {
+    entries.push({
+      date: d.date,
+      type: "discover",
+      label: "Project idea discovered",
+      detail: d.feelings.join(", "),
     });
   });
 

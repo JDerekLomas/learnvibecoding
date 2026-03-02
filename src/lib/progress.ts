@@ -36,6 +36,13 @@ export interface LearnerData {
     reflection: string;
     date: string;
   }>;
+  discoveries: Array<{
+    id: string;
+    prompt: string;
+    feelings: string[];
+    audience: string;
+    date: string;
+  }>;
 }
 
 function empty(): LearnerData {
@@ -47,6 +54,7 @@ function empty(): LearnerData {
     critiques: [],
     buildSessions: [],
     disconnects: [],
+    discoveries: [],
   };
 }
 
@@ -132,6 +140,13 @@ export function saveDisconnect(id: string, reflection: string) {
   notifyChange();
 }
 
+export function saveDiscovery(discovery: { id: string; prompt: string; feelings: string[]; audience: string }) {
+  const d = getData();
+  d.discoveries.push({ ...discovery, date: new Date().toISOString().slice(0, 10) });
+  save(d);
+  notifyChange();
+}
+
 export function hasExerciseData(path: string): boolean {
   const d = getData();
   const moduleKey = path.replace(/^\//, "");
@@ -142,5 +157,6 @@ export function hasExerciseData(path: string): boolean {
   const hasCritique = d.critiques.some((c) => c.id.startsWith(prefix));
   const hasBuildSession = d.buildSessions.some((b) => b.module === moduleKey);
   const hasDisconnect = d.disconnects.some((dc) => dc.id.startsWith(prefix));
-  return hasReflection || hasProject || hasAssessment || hasCritique || hasBuildSession || hasDisconnect;
+  const hasDiscovery = d.discoveries.some((disc) => disc.id.startsWith(prefix));
+  return hasReflection || hasProject || hasAssessment || hasCritique || hasBuildSession || hasDisconnect || hasDiscovery;
 }
