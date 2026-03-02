@@ -38,18 +38,34 @@ export function saveReflection(id: string, text: string) {
   const d = getData();
   d.reflections[id] = text;
   save(d);
+  notifyChange();
 }
 
 export function saveProject(project: { url: string; description: string; module: string }) {
   const d = getData();
   d.projects.push({ ...project, date: new Date().toISOString().slice(0, 10) });
   save(d);
+  notifyChange();
+}
+
+const CHANGE_EVENT = "lvc-progress-change";
+
+function notifyChange() {
+  window.dispatchEvent(new Event(CHANGE_EVENT));
+}
+
+export function onProgressChange(callback: () => void): () => void {
+  window.addEventListener(CHANGE_EVENT, callback);
+  return () => window.removeEventListener(CHANGE_EVENT, callback);
 }
 
 export function saveAssessment(id: string, value: number | string) {
   const d = getData();
+  const last = d.assessments.filter((a) => a.id === id).pop();
+  if (last && last.value === value) return;
   d.assessments.push({ id, value, date: new Date().toISOString().slice(0, 10) });
   save(d);
+  notifyChange();
 }
 
 export function markVisited(path: string) {
@@ -63,8 +79,9 @@ export function markVisited(path: string) {
 export function hasExerciseData(path: string): boolean {
   const d = getData();
   const moduleKey = path.replace(/^\//, "");
-  const hasReflection = Object.keys(d.reflections).some((k) => k.startsWith(moduleKey));
+  const prefix = moduleKey + "-";
+  const hasReflection = Object.keys(d.reflections).some((k) => k.startsWith(prefix));
   const hasProject = d.projects.some((p) => p.module === moduleKey);
-  const hasAssessment = d.assessments.some((a) => a.id.startsWith(moduleKey));
+  const hasAssessment = d.assessments.some((a) => a.id.startsWith(prefix));
   return hasReflection || hasProject || hasAssessment;
 }

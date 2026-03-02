@@ -2,6 +2,7 @@ import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
 import ReflectionPrompt from "@/components/ReflectionPrompt";
 import SelfAssessment from "@/components/SelfAssessment";
+import ProjectCapture from "@/components/ProjectCapture";
 
 export const metadata = {
   title: "When Things Break — Learn Vibe Coding",
@@ -179,6 +180,8 @@ Next time you hit a wall (and you will), consciously choose a repair pattern ins
   prompt="Describe a specific moment you got stuck. What repair pattern did you use? What would you do differently next time?"
 />
 
+Your relationship with frustration changes over time. Track where you are now — you can retake this later and see how you've grown.
+
 <SelfAssessment
   id="debugging-resilience"
   question="When something breaks, how do you feel?"
@@ -186,6 +189,8 @@ Next time you hit a wall (and you will), consciously choose a repair pattern ins
   lowLabel="Frustrated and stuck"
   highLabel="Curious and ready to debug"
 />
+
+<ProjectCapture module="debugging" />
 
 <NextModule
   href="/sessions"

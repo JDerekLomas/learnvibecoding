@@ -49,7 +49,7 @@ export default function ProjectShowcase({
                 {project.description}
               </p>
               {project.tags && project.tags.length > 0 && (
-                <div className="flex gap-1.5 mt-2">
+                <div className="flex flex-wrap gap-1.5 mt-2">
                   {project.tags.map((tag) => (
                     <span
                       key={tag}

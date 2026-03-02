@@ -110,7 +110,7 @@ export default function SelfAssessment(props: SelfAssessmentProps) {
       <div className="flex items-center justify-between mt-3">
         <p className="text-xs text-zinc-400 dark:text-zinc-500">
           {history.length > 1
-            ? `Taken ${history.length} times — retake anytime to see your trajectory.`
+            ? `Taken ${history.length} times — retake anytime as you grow.`
             : "No right answer. Both ends are valid."}
         </p>
         <button

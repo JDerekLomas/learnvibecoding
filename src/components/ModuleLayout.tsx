@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getData, markVisited, hasExerciseData } from "@/lib/progress";
+import { getData, markVisited, hasExerciseData, onProgressChange } from "@/lib/progress";
 
 interface ModuleLink {
   href: string;
@@ -102,19 +102,24 @@ export default function ModuleLayout({
   useEffect(() => {
     markVisited(pathname);
 
-    const d = getData();
-    const allLinks = [...entryPoints, ...sharedCore, ...advanced];
-    const states: Record<string, DotState> = {};
-    for (const link of allLinks) {
-      if (hasExerciseData(link.href)) {
-        states[link.href] = "done";
-      } else if (d.visited.includes(link.href)) {
-        states[link.href] = "visited";
-      } else {
-        states[link.href] = "none";
+    function refreshDots() {
+      const d = getData();
+      const allLinks = [...entryPoints, ...sharedCore, ...advanced];
+      const states: Record<string, DotState> = {};
+      for (const link of allLinks) {
+        if (hasExerciseData(link.href)) {
+          states[link.href] = "done";
+        } else if (d.visited.includes(link.href)) {
+          states[link.href] = "visited";
+        } else {
+          states[link.href] = "none";
+        }
       }
+      setDotStates(states);
     }
-    setDotStates(states);
+
+    refreshDots();
+    return onProgressChange(refreshDots);
   }, [pathname]);
 
   return (

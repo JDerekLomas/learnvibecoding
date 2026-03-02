@@ -1,5 +1,7 @@
 import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
+import ReflectionPrompt from "@/components/ReflectionPrompt";
+import ProjectCapture from "@/components/ProjectCapture";
 
 export const metadata = {
   title: "Claude Code for Developers — Learn Vibe Coding",
@@ -161,6 +163,13 @@ Never put API keys in `.env` files that Claude can read. Use environment variabl
 <Callout type="exercise" title="Try it now">
 Open a project you're working on. Start Claude Code in that directory. Give it a task you'd normally spend 30 minutes on. See what happens. You'll know within one session whether this is real.
 </Callout>
+
+<ReflectionPrompt
+  id="for-developers-letting-go"
+  prompt="After trying Claude Code on a real task — what was hardest about letting go of the keyboard? What was easier than expected?"
+/>
+
+<ProjectCapture module="for-developers" />
 
 <NextModule
   href="/know-yourself"
