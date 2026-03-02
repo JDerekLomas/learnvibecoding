@@ -1,5 +1,7 @@
 import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
+import ReflectionPrompt from "@/components/ReflectionPrompt";
+import ProjectCapture from "@/components/ProjectCapture";
 
 export const metadata = {
   title: "Build Something Real — Learn Vibe Coding",
@@ -117,6 +119,13 @@ You don't need to be an expert. You just need to have built something.
 <Callout type="exercise" title="Build your thing">
 By the end of this module, you should have deployed a real project — something you chose because you wanted it, not because someone told you to build it. If you haven't yet, stop reading and go build. Seriously. This curriculum is useless without practice.
 </Callout>
+
+<ReflectionPrompt
+  id="build-why"
+  prompt="Why did you choose this project? What desire or need drove it?"
+/>
+
+<ProjectCapture module="build" />
 
 <NextModule
   href="/debugging"

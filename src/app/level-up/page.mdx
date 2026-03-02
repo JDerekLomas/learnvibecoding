@@ -1,5 +1,6 @@
 import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
+import SelfAssessment from "@/components/SelfAssessment";
 
 export const metadata = {
   title: "Level Up — Learn Vibe Coding",
@@ -60,6 +61,17 @@ You blend research and building in the same session. You don't separate phases. 
 <Callout type="exercise" title="Self-assessment">
 Which archetype resonates most? Think about your last three building sessions. Were you researching deeply (Scholar), iterating on aesthetics (Aesthete), or blasting through tasks (Sprinter)? There's no wrong answer — this is about self-awareness, not optimization.
 </Callout>
+
+<SelfAssessment
+  id="level-up-archetype"
+  question="Which style resonates most with how you naturally work?"
+  type="radio"
+  options={[
+    { label: "Scholar", description: "You start by immersing in the domain. Research comes before building. You produce deeply thoughtful work." },
+    { label: "Aesthete", description: "You show, don't tell. References beat descriptions. You iterate fast with vibe words until it feels right." },
+    { label: "Sprinter", description: "You blend research and building in the same session. External deadlines create focus. You ship fast and dense." }
+  ]}
+/>
 
 ---
 

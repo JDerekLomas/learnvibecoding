@@ -1,5 +1,7 @@
 import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
+import ReflectionPrompt from "@/components/ReflectionPrompt";
+import SelfAssessment from "@/components/SelfAssessment";
 
 export const metadata = {
   title: "When Things Break — Learn Vibe Coding",
@@ -171,6 +173,19 @@ Your taste is the filter that separates "AI slop" from "work that resonates."
 <Callout type="exercise" title="Practice getting unstuck">
 Next time you hit a wall (and you will), consciously choose a repair pattern instead of just trying the same thing again. Notice which patterns work best for you. Over time, you'll develop your own repair toolkit.
 </Callout>
+
+<ReflectionPrompt
+  id="debugging-stuck"
+  prompt="Describe a specific moment you got stuck. What repair pattern did you use? What would you do differently next time?"
+/>
+
+<SelfAssessment
+  id="debugging-resilience"
+  question="When something breaks, how do you feel?"
+  type="slider"
+  lowLabel="Frustrated and stuck"
+  highLabel="Curious and ready to debug"
+/>
 
 <NextModule
   href="/sessions"

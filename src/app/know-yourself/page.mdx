@@ -1,5 +1,7 @@
 import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
+import ReflectionPrompt from "@/components/ReflectionPrompt";
+import SelfAssessment from "@/components/SelfAssessment";
 
 export const metadata = {
   title: "Know Yourself, Know Your Tools — Learn Vibe Coding",
@@ -118,6 +120,11 @@ Take a moment:
 
 Write this down. It becomes part of your CLAUDE.md. It becomes part of every prompt you give, implicitly or explicitly.
 
+<ReflectionPrompt
+  id="know-yourself-aesthetic"
+  prompt="What does 'good' look like to you? Name 2-3 websites or apps you admire and describe what draws you to them."
+/>
+
 ---
 
 ## Writing your CLAUDE.md as a self-portrait
@@ -150,6 +157,19 @@ Start with this template and make it yours:
 ```
 
 This isn't set-and-forget. Update it as you learn more about how you work. Every few weeks, revisit it. Your CLAUDE.md grows as you grow.
+
+<ReflectionPrompt
+  id="know-yourself-claudemd"
+  prompt="After writing your CLAUDE.md — what surprised you about articulating your own preferences?"
+/>
+
+<SelfAssessment
+  id="know-yourself-clarity"
+  question="Before prompting, how clearly do you know what you want?"
+  type="slider"
+  lowLabel="I figure it out as I go"
+  highLabel="Crystal clear before I type"
+/>
 
 ---
 

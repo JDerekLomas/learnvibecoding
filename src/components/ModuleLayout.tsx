@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getData, markVisited, hasExerciseData } from "@/lib/progress";
 
 interface ModuleLink {
   href: string;
@@ -29,14 +31,31 @@ const advanced: ModuleLink[] = [
   { href: "/craft", label: "The Craft", tag: "M7" },
 ];
 
+type DotState = "none" | "visited" | "done";
+
+function ProgressDot({ state }: { state: DotState }) {
+  if (state === "none") return null;
+  return (
+    <span
+      className={`inline-block w-1.5 h-1.5 rounded-full shrink-0 ${
+        state === "done"
+          ? "bg-emerald-500 dark:bg-emerald-400"
+          : "bg-zinc-300 dark:bg-zinc-600"
+      }`}
+    />
+  );
+}
+
 function NavSection({
   title,
   links,
   currentPath,
+  dotStates,
 }: {
   title: string;
   links: ModuleLink[];
   currentPath: string;
+  dotStates: Record<string, DotState>;
 }) {
   return (
     <div className="mb-6">
@@ -61,7 +80,8 @@ function NavSection({
                     {link.tag}
                   </span>
                 )}
-                {link.label}
+                <span className="flex-1">{link.label}</span>
+                <ProgressDot state={dotStates[link.href] || "none"} />
               </Link>
             </li>
           );
@@ -77,6 +97,25 @@ export default function ModuleLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const [dotStates, setDotStates] = useState<Record<string, DotState>>({});
+
+  useEffect(() => {
+    markVisited(pathname);
+
+    const d = getData();
+    const allLinks = [...entryPoints, ...sharedCore, ...advanced];
+    const states: Record<string, DotState> = {};
+    for (const link of allLinks) {
+      if (hasExerciseData(link.href)) {
+        states[link.href] = "done";
+      } else if (d.visited.includes(link.href)) {
+        states[link.href] = "visited";
+      } else {
+        states[link.href] = "none";
+      }
+    }
+    setDotStates(states);
+  }, [pathname]);
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12 lg:flex lg:gap-12">
@@ -86,16 +125,19 @@ export default function ModuleLayout({
             title="Start Here"
             links={entryPoints}
             currentPath={pathname}
+            dotStates={dotStates}
           />
           <NavSection
             title="Core"
             links={sharedCore}
             currentPath={pathname}
+            dotStates={dotStates}
           />
           <NavSection
             title="Advanced"
             links={advanced}
             currentPath={pathname}
+            dotStates={dotStates}
           />
         </div>
       </aside>
