@@ -2,6 +2,7 @@ import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
 import ReflectionPrompt from "@/components/ReflectionPrompt";
 import ProjectCapture from "@/components/ProjectCapture";
+import ProjectShowcase from "@/components/ProjectShowcase";
 
 export const metadata = {
   title: "Build Something Real — Learn Vibe Coding",
@@ -100,6 +101,24 @@ Each project teaches you something:
 - Project 3: "I have a style"
 - Project 4: "I can build things for other people"
 - Project 5: "I can build things that ship"
+
+<ProjectShowcase
+  caption="The portfolio effect in action — real projects, real people"
+  projects={[
+    {
+      title: "Prompt Archaeology",
+      description: "Visualized patterns from 10,497 prompts across 68 days of Claude Code usage. Data-driven self-reflection.",
+      url: "https://dereklomas.me/projects/promptarchaeology",
+      tags: ["data viz", "self-reflection", "Claude Code"]
+    },
+    {
+      title: "Learn Vibe Coding",
+      description: "This site. The curriculum you're reading right now was built entirely through vibe coding — a meta-example of the craft.",
+      url: "https://learnvibecoding.vercel.app",
+      tags: ["education", "Next.js", "meta"]
+    }
+  ]}
+/>
 
 Don't rush it. But don't stop after one project, either.
 

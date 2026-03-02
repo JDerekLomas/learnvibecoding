@@ -1,6 +1,7 @@
 import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
 import ProjectCapture from "@/components/ProjectCapture";
+import ProjectShowcase from "@/components/ProjectShowcase";
 
 export const metadata = {
   title: "Your First Build — Learn Vibe Coding",
@@ -73,6 +74,24 @@ claude
 ```
 
 That last command starts Claude Code. You're now in a conversation with an AI that can create files, run commands, and build things.
+
+<ProjectShowcase
+  caption="Examples of first builds — all made with AI"
+  projects={[
+    {
+      title: "Personal Portfolio Site",
+      description: "A clean personal site built in one Claude Code session. From empty folder to deployed in under 30 minutes.",
+      url: "https://dereklomas.me",
+      tags: ["Claude Code", "Next.js", "first project"]
+    },
+    {
+      title: "CodeVibing Gallery",
+      description: "A community gallery for sharing AI-generated components. Started as a simple idea, grew into a platform.",
+      url: "https://codevibing.com",
+      tags: ["Claude Code", "Next.js", "community"]
+    }
+  ]}
+/>
 
 ### Step 3: Build something
 

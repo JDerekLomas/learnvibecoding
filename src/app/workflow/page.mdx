@@ -2,6 +2,7 @@ import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
 import ReflectionPrompt from "@/components/ReflectionPrompt";
 import ProjectCapture from "@/components/ProjectCapture";
+import ProjectShowcase from "@/components/ProjectShowcase";
 
 export const metadata = {
   title: "The Vibe Coding Workflow — Learn Vibe Coding",
@@ -55,6 +56,24 @@ Deploy this to Vercel
 Why? Because looking at something on a real URL changes how you see it. Issues that are invisible in development become obvious on your phone. And having a live link lets you share progress with others.
 
 Deploy early. Deploy often. It's free and reversible.
+
+<ProjectShowcase
+  caption="Real projects built with this workflow"
+  projects={[
+    {
+      title: "Source Library",
+      description: "Translated Latin alchemical texts with citations. 300+ pages from Paracelsus, Agrippa, and others — built entirely through vibe coding.",
+      url: "https://sourcelibrary.org",
+      tags: ["Claude Code", "research", "scholarship"]
+    },
+    {
+      title: "Quantum Vibecoding",
+      description: "Run experiments on real quantum hardware using natural language. From prompt to superconducting qubits in 15 minutes.",
+      url: "https://codevibing.com",
+      tags: ["Claude Code", "quantum", "open source"]
+    }
+  ]}
+/>
 
 ### 4. Refine: iterate with vibes
 

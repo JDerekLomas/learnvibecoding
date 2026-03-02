@@ -1,6 +1,7 @@
 import Callout from "@/components/Callout";
 import NextModule from "@/components/NextModule";
 import SelfAssessment from "@/components/SelfAssessment";
+import ProjectShowcase from "@/components/ProjectShowcase";
 
 export const metadata = {
   title: "Level Up — Learn Vibe Coding",
@@ -88,6 +89,30 @@ Here's what the data shows about real vibe coding at scale:
 **Intensity is tidal.** 300-500 prompts/day during shipping. 40-100 during exploration. Don't fight the rhythm.
 
 **The most common prompt openers:** "this", "i", "yes". Not elaborate instructions. Just presence and direction.
+
+<ProjectShowcase
+  caption="Projects built by each archetype"
+  projects={[
+    {
+      title: "Source Library — Scholar archetype",
+      description: "Deep domain research into alchemical texts. Months of careful, methodical work translating and citing 300+ pages.",
+      url: "https://sourcelibrary.org",
+      tags: ["Scholar", "research", "long-term"]
+    },
+    {
+      title: "v0 by Vercel — Aesthete archetype",
+      description: "AI-powered design tool that speaks the language of aesthetes. Describe the vibe, iterate fast, ship beautiful.",
+      url: "https://v0.dev",
+      tags: ["Aesthete", "design", "visual"]
+    },
+    {
+      title: "Replit — Sprinter archetype",
+      description: "Full IDE in the browser. Build, deploy, iterate — all in one session. No setup, no friction, just go.",
+      url: "https://replit.com",
+      tags: ["Sprinter", "fast", "all-in-one"]
+    }
+  ]}
+/>
 
 ---
 
