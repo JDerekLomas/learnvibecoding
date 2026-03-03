@@ -10,6 +10,7 @@ import {
   type Skill,
 } from "@/lib/skills";
 import { onProgressChange } from "@/lib/progress";
+import { getQuizMapping, getQuizUrl } from "@/lib/quiz-mapping";
 
 // MathItemBank-style colors
 const UNIT_COLORS: Record<string, { gradient: string; badge: string; glow: string }> = {
@@ -124,6 +125,33 @@ function StatusIcon({ status }: { status: SkillStatus }) {
   );
 }
 
+function QuizBadge({ skillId, status }: { skillId: string; status: SkillStatus }) {
+  if (status === "locked") return null;
+
+  const mapping = getQuizMapping(skillId);
+  if (!mapping) return null;
+
+  const url = getQuizUrl(mapping);
+  const isComplete = status === "complete";
+
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      className="inline-flex items-center gap-1 bg-violet-100 text-violet-700 text-xs font-bold px-2 py-0.5 rounded-full hover:scale-110 hover:bg-violet-200 transition-transform duration-150"
+    >
+      {isComplete ? (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      ) : null}
+      Quiz{!isComplete && ` (${mapping.minItems})`}
+    </a>
+  );
+}
+
 function SkillNode({
   skill,
   status,
@@ -175,6 +203,9 @@ function SkillNode({
         <p className={`text-sm font-semibold mt-1 ${style.subtitle}`}>
           {skill.subtitle}
         </p>
+        <div className="mt-1.5">
+          <QuizBadge skillId={skill.id} status={status} />
+        </div>
       </div>
 
       {/* Arrow for available/active */}
