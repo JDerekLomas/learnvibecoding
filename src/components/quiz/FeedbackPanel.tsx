@@ -220,7 +220,7 @@ export default function FeedbackPanel({
 
           {/* Flag / Dispute */}
           {questionId && (
-            <div className="mt-2">
+            <div className="mt-2" onClick={(e) => e.stopPropagation()}>
               {!flagOpen ? (
                 <button
                   onClick={() => setFlagOpen(true)}

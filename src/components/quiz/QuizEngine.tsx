@@ -180,7 +180,10 @@ export default function QuizEngine({
       : undefined;
 
   return (
-    <div className={`min-h-screen ${theme.pageBg} flex flex-col relative transition-colors duration-700`}>
+    <div
+      className={`min-h-screen ${theme.pageBg} flex flex-col relative transition-colors duration-700`}
+      onClick={showFeedback ? handleContinue : undefined}
+    >
       {/* AI-generated doodle background */}
       <DoodleBg src={theme.doodleBg} opacity={theme.doodleOpacity} tile={theme.doodleTile} />
 
@@ -189,7 +192,7 @@ export default function QuizEngine({
         <div className="max-w-lg mx-auto">
           <div className="flex items-center gap-3 mb-4">
             <button
-              onClick={handleExit}
+              onClick={(e) => { e.stopPropagation(); handleExit(); }}
               className={`w-8 h-8 rounded-full flex items-center justify-center ${theme.closeBtnText} ${theme.closeBtnHover} transition-colors`}
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -276,31 +279,12 @@ export default function QuizEngine({
                 theme={theme}
               />
 
-              {/* Auto-continue for confident-correct */}
-              {feedbackType === 'confident-correct' && showFeedback && (
-                <AutoContinue onContinue={handleContinue} delay={1500} />
-              )}
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
     </div>
   );
-}
-
-function AutoContinue({
-  onContinue,
-  delay,
-}: {
-  onContinue: () => void;
-  delay: number;
-}) {
-  const hasRun = useRef(false);
-  if (!hasRun.current) {
-    hasRun.current = true;
-    setTimeout(onContinue, delay);
-  }
-  return null;
 }
 
 function initQuestions(
