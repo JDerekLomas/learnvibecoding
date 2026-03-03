@@ -1,16 +1,47 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const HIDDEN_PATHS = ['/quiz/play'];
 
+const linkClass =
+  'px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors';
+
 export function NavBar({ isCorporate }: { isCorporate: boolean }) {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
 
   if (HIDDEN_PATHS.some((p) => pathname.startsWith(p))) {
     return null;
   }
+
+  const links = (
+    <>
+      <Link href="/quiz" className={linkClass} onClick={() => setOpen(false)}>
+        Quiz
+      </Link>
+      {!isCorporate && (
+        <>
+          <Link href="/skill-map" className={linkClass} onClick={() => setOpen(false)}>
+            Skill Map
+          </Link>
+          <Link href="/curriculum" className={linkClass} onClick={() => setOpen(false)}>
+            Curriculum
+          </Link>
+        </>
+      )}
+      <a
+        href="https://codevibing.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={linkClass}
+      >
+        Community
+      </a>
+    </>
+  );
 
   return (
     <nav className="sticky top-0 z-50 border-b-2 border-stone-200 bg-white/80 backdrop-blur-sm">
@@ -18,42 +49,52 @@ export function NavBar({ isCorporate }: { isCorporate: boolean }) {
         <Link
           href="/"
           className="text-lg font-extrabold tracking-tight text-stone-900"
+          onClick={() => setOpen(false)}
         >
           {isCorporate ? 'AI Growth' : 'Learn Vibe Coding'}
         </Link>
-        <div className="flex items-center gap-1">
-          <Link
-            href="/quiz"
-            className="px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors"
+
+        {/* Desktop links */}
+        <div className="hidden sm:flex items-center gap-1">{links}</div>
+
+        {/* Mobile hamburger */}
+        <button
+          onClick={() => setOpen(!open)}
+          className="sm:hidden p-2 rounded-lg hover:bg-stone-100 transition-colors"
+          aria-label="Toggle menu"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            className="text-stone-600"
           >
-            Quiz
-          </Link>
-          {!isCorporate && (
-            <>
-              <Link
-                href="/skill-map"
-                className="px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors"
-              >
-                Skill Map
-              </Link>
-              <Link
-                href="/curriculum"
-                className="px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors"
-              >
-                Curriculum
-              </Link>
-            </>
-          )}
-          <a
-            href="https://codevibing.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors"
-          >
-            Community
-          </a>
-        </div>
+            {open ? (
+              <>
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </>
+            ) : (
+              <>
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </>
+            )}
+          </svg>
+        </button>
       </div>
+
+      {/* Mobile dropdown */}
+      {open && (
+        <div className="sm:hidden border-t border-stone-200 bg-white/95 backdrop-blur-sm px-6 py-3 flex flex-col gap-1">
+          {links}
+        </div>
+      )}
     </nav>
   );
 }
