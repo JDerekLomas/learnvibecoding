@@ -16,7 +16,7 @@ interface ConceptDetailProps {
 export default function ConceptDetail({ concept, mastered, onClose, onToggleMastered }: ConceptDetailProps) {
   const [memeIndex, setMemeIndex] = useState(0);
 
-  const memes = concept ? getMemesForConcept(concept.memeFolder) : [];
+  const memes = concept?.memeFolder ? getMemesForConcept(concept.memeFolder) : [];
   const quotes = concept ? getQuotesForConcept(concept.title) : [];
 
   const handleKeyDown = useCallback(

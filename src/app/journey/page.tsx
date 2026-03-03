@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { getTeamContext, reportProgress } from "@/lib/team";
+import { useRouter } from "next/navigation";
+import { getTeamContext, clearTeamContext, reportProgress } from "@/lib/team";
 import { getData } from "@/lib/progress";
 import type { TeamContext, JourneyStep } from "@/lib/team";
 
@@ -71,9 +72,11 @@ interface StepProgress {
 }
 
 export default function JourneyPage() {
+  const router = useRouter();
   const [teamCtx, setTeamCtx] = useState<TeamContext | null>(null);
   const [progress, setProgress] = useState<StepProgress>({});
   const [markingDone, setMarkingDone] = useState<string | null>(null);
+  const [leaving, setLeaving] = useState(false);
 
   const fetchProgress = useCallback(async (ctx: TeamContext) => {
     try {
@@ -300,15 +303,35 @@ export default function JourneyPage() {
           })}
         </div>
 
-        {/* Team dashboard link */}
+        {/* Team footer */}
         {teamCtx && (
-          <div className="mt-8 text-center">
+          <div className="mt-8 flex items-center justify-center gap-4">
             <Link
               href={`/dashboard/${teamCtx.teamSlug}`}
               className="text-sm text-indigo-600 font-medium hover:text-indigo-700 transition-colors"
             >
               View team dashboard
             </Link>
+            <span className="text-stone-300">|</span>
+            <button
+              onClick={async () => {
+                if (!confirm("Leave this team? Your progress will be removed.")) return;
+                setLeaving(true);
+                try {
+                  await fetch(`/api/teams/${teamCtx.teamSlug}/members/${teamCtx.memberId}`, {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ memberId: teamCtx.memberId }),
+                  });
+                } catch { /* best effort */ }
+                clearTeamContext();
+                router.push("/");
+              }}
+              disabled={leaving}
+              className="text-sm text-stone-400 font-medium hover:text-red-500 transition-colors disabled:opacity-50"
+            >
+              {leaving ? "Leaving..." : "Leave team"}
+            </button>
           </div>
         )}
       </div>

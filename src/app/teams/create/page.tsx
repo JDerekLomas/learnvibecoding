@@ -40,6 +40,7 @@ export default function CreateTeamPage() {
         teamName: data.team.name,
         memberId: data.member.id,
         memberName: data.member.name,
+        isCreator: true,
       });
 
       const inviteUrl = `${window.location.origin}/join/${data.team.slug}`;

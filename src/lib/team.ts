@@ -6,6 +6,7 @@ export interface TeamContext {
   teamName: string;
   memberId: string;
   memberName: string;
+  isCreator?: boolean;
 }
 
 export type JourneyStep = "discover" | "assess" | "learn" | "practice" | "share";

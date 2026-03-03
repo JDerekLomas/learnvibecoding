@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback, use } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { getTeamContext, clearTeamContext } from "@/lib/team";
 
 interface MemberProgress {
   id: string;
@@ -87,10 +89,17 @@ export default function DashboardPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
+  const router = useRouter();
   const [data, setData] = useState<DashboardData | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [teamCtx] = useState(() => getTeamContext());
+  const [removing, setRemoving] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const isCreator = teamCtx?.isCreator && teamCtx?.teamSlug === slug;
 
   const fetchData = useCallback(() => {
     fetch(`/api/teams/${slug}/dashboard`)
@@ -110,6 +119,51 @@ export default function DashboardPage({
     navigator.clipboard.writeText(`${window.location.origin}/join/${slug}`);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  }
+
+  async function handleRemoveMember(targetId: string) {
+    if (!teamCtx) return;
+    setRemoving(targetId);
+    try {
+      const res = await fetch(`/api/teams/${slug}/members/${targetId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ memberId: teamCtx.memberId }),
+      });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        alert(d.error || "Failed to remove member");
+      } else {
+        fetchData();
+      }
+    } catch {
+      alert("Failed to remove member");
+    } finally {
+      setRemoving(null);
+    }
+  }
+
+  async function handleDeleteTeam() {
+    if (!teamCtx) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/teams/${slug}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ memberId: teamCtx.memberId }),
+      });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        alert(d.error || "Failed to delete team");
+        setDeleting(false);
+      } else {
+        clearTeamContext();
+        router.push("/");
+      }
+    } catch {
+      alert("Failed to delete team");
+      setDeleting(false);
+    }
   }
 
   if (loading) {
@@ -160,7 +214,7 @@ export default function DashboardPage({
           <p className="text-sm text-stone-500 mb-4">
             Created by {data.team.creatorName}
           </p>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button
               onClick={handleCopyInvite}
               className="px-4 py-2 rounded-xl bg-stone-900 text-white text-sm font-semibold hover:bg-stone-800 transition-colors"
@@ -173,6 +227,31 @@ export default function DashboardPage({
             >
               My Journey
             </Link>
+            {isCreator && !confirmDelete && (
+              <button
+                onClick={() => setConfirmDelete(true)}
+                className="px-4 py-2 rounded-xl border-2 border-red-200 text-red-600 text-sm font-semibold hover:bg-red-50 transition-colors"
+              >
+                Delete Team
+              </button>
+            )}
+            {isCreator && confirmDelete && (
+              <div className="flex gap-2">
+                <button
+                  onClick={handleDeleteTeam}
+                  disabled={deleting}
+                  className="px-4 py-2 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-colors disabled:opacity-50"
+                >
+                  {deleting ? "Deleting..." : "Confirm Delete"}
+                </button>
+                <button
+                  onClick={() => setConfirmDelete(false)}
+                  className="px-4 py-2 rounded-xl border-2 border-stone-200 text-stone-500 text-sm font-semibold hover:bg-stone-50 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -220,10 +299,20 @@ export default function DashboardPage({
               key={member.id}
               className="grid grid-cols-[1fr_repeat(5,32px)] sm:grid-cols-[1fr_repeat(5,40px)] gap-1.5 sm:gap-2 px-3 sm:px-5 py-3 border-b border-stone-100 last:border-b-0 items-center"
             >
-              <div>
-                <p className="text-sm font-semibold text-stone-900">
+              <div className="flex items-center gap-2 min-w-0">
+                <p className="text-sm font-semibold text-stone-900 truncate">
                   {member.name}
                 </p>
+                {isCreator && member.id !== teamCtx?.memberId && (
+                  <button
+                    onClick={() => handleRemoveMember(member.id)}
+                    disabled={removing === member.id}
+                    className="shrink-0 text-[10px] text-stone-400 hover:text-red-500 transition-colors disabled:opacity-50"
+                    title="Remove member"
+                  >
+                    {removing === member.id ? "..." : "x"}
+                  </button>
+                )}
               </div>
               {STEPS.map((step) => (
                 <div key={step.key} className="flex justify-center">
