@@ -6,7 +6,6 @@ import TryQuestion from "@/components/TryQuestion";
 const entryPoints = [
   {
     href: "/landscape",
-    tag: "M0-A",
     title: "The AI Landscape",
     description: "Understand the tools, the players, and where we are in 2026.",
     audience: "Never used AI for coding",
@@ -14,7 +13,6 @@ const entryPoints = [
   },
   {
     href: "/first-build",
-    tag: "M0-B",
     title: "Your First Build",
     description: "Build and deploy a real website in minutes — no coding needed.",
     audience: "Non-coder, ready to build",
@@ -22,7 +20,6 @@ const entryPoints = [
   },
   {
     href: "/for-developers",
-    tag: "M0-C",
     title: "For Developers",
     description: "You write code. You haven't used AI tools seriously yet.",
     audience: "Developer, new to AI tools",
@@ -30,7 +27,6 @@ const entryPoints = [
   },
   {
     href: "/level-up",
-    tag: "M0-D",
     title: "Level Up",
     description: "Patterns, archetypes, and power-user techniques.",
     audience: "Active vibe coder",
@@ -48,41 +44,32 @@ const ENTRY_COLORS: Record<string, { iconBg: string; hoverBorder: string; hoverS
 const coreModules = [
   {
     href: "/know-yourself",
-    tag: "M1",
+    step: 1,
     title: "Know Yourself, Know Your Tools",
     description: "Why self-knowledge matters more than prompt templates.",
     color: "bg-amber-500",
   },
   {
     href: "/workflow",
-    tag: "M2",
+    step: 2,
     title: "The Vibe Coding Workflow",
     description: "Vision, build, deploy, refine, delegate, resume.",
     color: "bg-blue-500",
   },
   {
     href: "/build",
-    tag: "M3",
+    step: 3,
     title: "Build Something Real",
     description: "Choose from desire, not from tutorial lists.",
     color: "bg-emerald-500",
   },
   {
     href: "/debugging",
-    tag: "M4",
+    step: 4,
     title: "When Things Break",
     description: "Frustration is normal. Here's how to get unstuck.",
     color: "bg-red-500",
   },
-];
-
-const TOPIC_HIGHLIGHTS = [
-  { label: "Prompt Engineering", count: 12, color: "bg-amber-500" },
-  { label: "Reading AI Code", count: 12, color: "bg-blue-500" },
-  { label: "Dev Tooling", count: 12, color: "bg-emerald-500" },
-  { label: "Debugging", count: 10, color: "bg-indigo-500" },
-  { label: "Security", count: 8, color: "bg-rose-500" },
-  { label: "Architecture", count: 8, color: "bg-orange-500" },
 ];
 
 export default async function Home() {
@@ -350,11 +337,14 @@ function CorporateLanding() {
           </p>
         </div>
 
-        {/* Footer */}
-        <div className="mt-12 text-center">
-          <p className="text-sm text-stone-400">
+      </div>
+
+      {/* Footer */}
+      <div className="relative z-10 mt-8 bg-gradient-to-b from-stone-800 to-stone-950 py-10 px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-sm text-white/70">
             Questions?{" "}
-            <a href="mailto:derek@codevibing.com" className="underline hover:text-stone-600">derek@codevibing.com</a>
+            <a href="mailto:derek@codevibing.com" className="text-white underline underline-offset-4 decoration-white/30 hover:decoration-white/60 transition-colors">derek@codevibing.com</a>
           </p>
         </div>
       </div>
@@ -408,7 +398,7 @@ function ConsumerLanding() {
         <div className="mb-8">
           <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 px-6 py-5 mb-3">
             <h2 className="text-xs font-bold text-stone-400 uppercase tracking-wider text-center">
-              Where are you starting from?
+              Pick Your Starting Point
             </h2>
           </div>
           <div className="space-y-3">
@@ -416,105 +406,24 @@ function ConsumerLanding() {
               const colors = ENTRY_COLORS[entry.color];
               return (
                 <Link key={entry.href} href={entry.href}>
-                  <div className={`w-full rounded-2xl border-2 p-5 flex items-center gap-4 bg-white border-stone-200 shadow-sm hover:shadow-lg ${colors.hoverBorder} ${colors.hoverShadow} transition-all duration-200`}>
-                    <div className={`flex-shrink-0 w-12 h-12 rounded-xl ${colors.iconBg} flex items-center justify-center`}>
-                      <span className="text-white text-xs font-bold">{entry.tag}</span>
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-base font-extrabold leading-tight text-stone-900">
-                        {entry.title}
-                      </p>
-                      <p className="text-sm font-medium mt-0.5 text-stone-500">
-                        {entry.description}
+                  <div className={`w-full rounded-2xl border-2 p-5 bg-white border-stone-200 shadow-sm hover:shadow-lg ${colors.hoverBorder} ${colors.hoverShadow} transition-all duration-200`}>
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className={`w-2 h-2 rounded-full ${colors.iconBg}`} />
+                      <p className="text-xs font-semibold text-stone-400 uppercase tracking-wide">
+                        {entry.audience}
                       </p>
                     </div>
+                    <p className="text-base font-extrabold leading-tight text-stone-900">
+                      {entry.title}
+                    </p>
+                    <p className="text-sm font-medium mt-0.5 text-stone-500">
+                      {entry.description}
+                    </p>
                   </div>
                 </Link>
               );
             })}
           </div>
-        </div>
-
-        {/* Convergence diagram */}
-        <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6 text-center mb-8">
-          <p className="text-sm text-stone-500 font-medium mb-5">
-            Every entry point converges at the same core curriculum.
-          </p>
-
-          {/* Visual flow diagram */}
-          <div className="flex items-center justify-center gap-3">
-            {/* Entry nodes */}
-            <div className="flex flex-col gap-1.5">
-              {[
-                { tag: "M0-A", color: "bg-violet-500" },
-                { tag: "M0-B", color: "bg-amber-500" },
-                { tag: "M0-C", color: "bg-blue-500" },
-                { tag: "M0-D", color: "bg-emerald-500" },
-              ].map((e) => (
-                <div key={e.tag} className={`${e.color} text-white text-[10px] font-bold px-2.5 py-1 rounded-lg`}>
-                  {e.tag}
-                </div>
-              ))}
-            </div>
-
-            {/* Converge arrows */}
-            <div className="flex flex-col items-center justify-center">
-              <svg width="24" height="80" viewBox="0 0 24 80" className="text-stone-300">
-                <path d="M4 4 L20 40" stroke="currentColor" strokeWidth="2" fill="none" />
-                <path d="M4 27 L20 40" stroke="currentColor" strokeWidth="2" fill="none" />
-                <path d="M4 53 L20 40" stroke="currentColor" strokeWidth="2" fill="none" />
-                <path d="M4 76 L20 40" stroke="currentColor" strokeWidth="2" fill="none" />
-              </svg>
-            </div>
-
-            {/* Core nodes */}
-            <div className="flex items-center gap-1.5">
-              {[
-                { tag: "M1", color: "bg-amber-500" },
-                { tag: "M2", color: "bg-blue-500" },
-                { tag: "M3", color: "bg-emerald-500" },
-                { tag: "M4", color: "bg-red-500" },
-              ].map((m, i) => (
-                <div key={m.tag} className="flex items-center gap-1.5">
-                  <div className={`${m.color} text-white text-[10px] font-bold px-2.5 py-1 rounded-lg`}>
-                    {m.tag}
-                  </div>
-                  {i < 3 && (
-                    <svg width="12" height="12" viewBox="0 0 12 12" className="text-stone-300">
-                      <path d="M2 6 L10 6" stroke="currentColor" strokeWidth="2" fill="none" />
-                      <path d="M7 3 L10 6 L7 9" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Fan-out arrows */}
-            <div className="flex flex-col items-center justify-center">
-              <svg width="24" height="60" viewBox="0 0 24 60" className="text-stone-300">
-                <path d="M4 30 L20 10" stroke="currentColor" strokeWidth="2" fill="none" />
-                <path d="M4 30 L20 30" stroke="currentColor" strokeWidth="2" fill="none" />
-                <path d="M4 30 L20 50" stroke="currentColor" strokeWidth="2" fill="none" />
-              </svg>
-            </div>
-
-            {/* Advanced nodes */}
-            <div className="flex flex-col gap-1.5">
-              {[
-                { tag: "M5", color: "bg-indigo-500" },
-                { tag: "M6", color: "bg-teal-500" },
-                { tag: "M7", color: "bg-purple-500" },
-              ].map((m) => (
-                <div key={m.tag} className={`${m.color} text-white text-[10px] font-bold px-2.5 py-1 rounded-lg`}>
-                  {m.tag}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <p className="text-xs text-stone-400 mt-5 font-medium">
-            Choose your entry. Everyone converges. Then specialize.
-          </p>
         </div>
 
         {/* Core modules */}
@@ -528,8 +437,8 @@ function ConsumerLanding() {
             {coreModules.map((mod) => (
               <Link key={mod.href} href={mod.href}>
                 <div className="w-full rounded-2xl border-2 border-stone-200 bg-white p-5 flex items-center gap-4 shadow-sm hover:shadow-lg hover:border-stone-300 transition-all duration-200">
-                  <div className={`flex-shrink-0 w-12 h-12 rounded-xl ${mod.color} flex items-center justify-center`}>
-                    <span className="text-white text-xs font-bold">{mod.tag}</span>
+                  <div className={`flex-shrink-0 w-10 h-10 rounded-xl ${mod.color} flex items-center justify-center`}>
+                    <span className="text-white text-sm font-bold">{mod.step}</span>
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-base font-extrabold leading-tight text-stone-900">
@@ -545,15 +454,18 @@ function ConsumerLanding() {
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="mt-12 text-center">
-          <p className="text-sm text-stone-400">
+      </div>
+
+      {/* Footer */}
+      <div className="relative z-10 mt-8 bg-gradient-to-b from-stone-800 to-stone-950 py-10 px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-sm text-white/70">
             Built by{" "}
-            <a href="https://dereklomas.me" className="underline hover:text-stone-600" target="_blank" rel="noopener noreferrer">
+            <a href="https://dereklomas.me" className="text-white underline underline-offset-4 decoration-white/30 hover:decoration-white/60 transition-colors" target="_blank" rel="noopener noreferrer">
               Derek Lomas
             </a>
             . Part of the{" "}
-            <a href="https://codevibing.com" className="underline hover:text-stone-600" target="_blank" rel="noopener noreferrer">
+            <a href="https://codevibing.com" className="text-white underline underline-offset-4 decoration-white/30 hover:decoration-white/60 transition-colors" target="_blank" rel="noopener noreferrer">
               CodeVibing
             </a>{" "}
             ecosystem.
