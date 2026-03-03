@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { QuizQuestion, getFeedbackType } from './types';
 import { QuizTheme } from './theme';
-import { TOPIC_TAGS, getPrimaryTopic } from './sample-questions';
+import { TOPIC_TAGS, getPrimaryTopic, TOPIC_CONCEPTS } from './sample-questions';
+import { concepts } from '@/data/concepts';
 import DoodleBg from './DoodleBg';
 import confetti from 'canvas-confetti';
 import { useEffect } from 'react';
@@ -227,7 +228,7 @@ export default function SessionSummary({
                   <p className={`text-xs font-bold uppercase tracking-wider mb-2 ${theme.mode === 'dark' ? 'text-amber-400' : 'text-amber-600'}`}>
                     Focus Areas
                   </p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mb-3">
                     {focusAreas.map((t) => (
                       <span
                         key={t.topicId}
@@ -237,6 +238,30 @@ export default function SessionSummary({
                       </span>
                     ))}
                   </div>
+                  {(() => {
+                    const conceptIds = new Set(focusAreas.flatMap((t) => TOPIC_CONCEPTS[t.topicId] || []));
+                    const relatedConcepts = concepts.filter((c) => conceptIds.has(c.id));
+                    if (relatedConcepts.length === 0) return null;
+                    return (
+                      <div className="mt-2 pt-2 border-t border-dashed border-stone-200 dark:border-stone-700">
+                        <p className={`text-[11px] font-semibold mb-1.5 ${theme.questionSubtext}`}>
+                          Concepts to review:
+                        </p>
+                        <div className="space-y-1">
+                          {relatedConcepts.slice(0, 5).map((c) => (
+                            <Link
+                              key={c.id}
+                              href={`/concepts#${c.id}`}
+                              className={`block text-xs py-1 px-2 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors ${theme.questionText}`}
+                            >
+                              <span className="font-semibold">{c.title}</span>
+                              <span className={`ml-1.5 ${theme.questionSubtext}`}>— {c.tagline}</span>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
               )}
             </motion.div>
@@ -331,7 +356,7 @@ export default function SessionSummary({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
-                className={`mb-8 p-4 rounded-xl ${theme.scoreBg} border ${theme.scoreBorder} text-center`}
+                className={`mb-4 p-4 rounded-xl ${theme.scoreBg} border ${theme.scoreBorder} text-center`}
               >
                 <p className={`text-sm ${theme.scoreText} font-medium`}>
                   You discovered {misconceptionsCleared} misconception
@@ -340,6 +365,40 @@ export default function SessionSummary({
                 </p>
               </motion.div>
             )}
+
+            {/* Concept remediation for wrong answers */}
+            {(() => {
+              const wrongTopics = questions
+                .filter((q) => !q.isCorrect)
+                .map((q) => getPrimaryTopic(q.item.tags));
+              const conceptIds = new Set(wrongTopics.flatMap((t) => TOPIC_CONCEPTS[t] || []));
+              const relatedConcepts = concepts.filter((c) => conceptIds.has(c.id));
+              if (relatedConcepts.length === 0) return null;
+              return (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.9 }}
+                  className={`mb-8 p-4 rounded-xl border ${theme.cardWrongBg} ${theme.cardWrongBorder}`}
+                >
+                  <p className={`text-xs font-bold uppercase tracking-wider mb-2 ${theme.mode === 'dark' ? 'text-amber-400' : 'text-amber-600'}`}>
+                    Concepts to Review
+                  </p>
+                  <div className="space-y-1">
+                    {relatedConcepts.slice(0, 4).map((c) => (
+                      <Link
+                        key={c.id}
+                        href={`/concepts#${c.id}`}
+                        className={`block text-xs py-1 px-2 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors ${theme.questionText}`}
+                      >
+                        <span className="font-semibold">{c.title}</span>
+                        <span className={`ml-1.5 ${theme.questionSubtext}`}>— {c.tagline}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </motion.div>
+              );
+            })()}
 
             {/* Actions */}
             <motion.div

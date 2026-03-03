@@ -1819,6 +1819,29 @@ export const TOPIC_TAGS: Record<string, { label: string; tags: string[]; color: 
   'shipping-deploy': { label: 'Shipping & Deploy', tags: ['shipping-deploy'], color: 'teal' },
 };
 
+/**
+ * Maps quiz topics to related concept IDs from src/data/concepts.ts.
+ * Used to show concept remediation links when questions are answered wrong.
+ */
+export const TOPIC_CONCEPTS: Record<string, string[]> = {
+  'prompt-engineering': ['knowing-what-you-want', 'the-director', 'encourage-the-machine'],
+  'reading-code': ['comprehension-debt', 'junior-dev'],
+  'tooling': ['scaffold-before-walls', 'commit-save-button', 'context-engineering'],
+  'web': ['build-to-learn', 'layer-cake'],
+  'debugging': ['context-rot', 'fresh-eyes', 'verification-gap'],
+  'testing': ['verification-gap', 'security-blindspot'],
+  'security': ['security-blindspot', 'verification-gap'],
+  'ai-tool-selection': ['orchestrator-shift', 'the-director'],
+  'architecture': ['layer-cake', 'spec-is-anchor', 'plan-before-code'],
+  'shipping-deploy': ['commit-save-button', 'pareto-paradox'],
+};
+
+/** Returns concept IDs related to a question based on its topic */
+export function getConceptsForQuestion(tags: string[]): string[] {
+  const topic = getPrimaryTopic(tags);
+  return TOPIC_CONCEPTS[topic] || [];
+}
+
 /** Returns the topic ID for a question based on its tags, or 'unknown' */
 export function getPrimaryTopic(tags: string[]): string {
   for (const [topicId, topic] of Object.entries(TOPIC_TAGS)) {
