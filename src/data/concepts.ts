@@ -4,8 +4,8 @@ export interface Concept {
   tagline: string;
   description: string;
   theme: "mindset" | "context" | "process" | "ai" | "pitfalls";
-  memeFolder: string;
-  primaryMeme: string;
+  memeFolder?: string;
+  primaryMeme?: string;
 }
 
 export interface Theme {
@@ -47,7 +47,7 @@ export const concepts: Concept[] = [
   { id: "plan-before-code", title: "Plan Before Code", tagline: "Ask for a plan before implementation.", description: "Get the AI to outline its approach first. Catch problems before they become code.", theme: "process", memeFolder: "plan-before-code", primaryMeme: "01-measure-twice.png" },
 
   // Working with AI
-  { id: "encourage-the-machine", title: "Encourage the Machine", tagline: "AI hedges. Push past the first 'no'.", description: "AI is trained to be cautious. When it hedges, push it to be more direct and specific.", theme: "ai", memeFolder: "claude-pilled", primaryMeme: "01-google-engineer-not-joking.png" },
+  { id: "encourage-the-machine", title: "Encourage the Machine", tagline: "AI hedges. Push past the first 'no'.", description: "AI is trained to be cautious. When it hedges, push it to be more direct and specific.", theme: "ai" },
   { id: "junior-dev", title: "The Junior Dev With a Photographic Memory", tagline: "Knows everything, understands nothing.", description: "AI has seen all the code ever written. It doesn't understand what any of it means.", theme: "ai", memeFolder: "junior-dev", primaryMeme: "01-junior-vs-senior.png" },
   { id: "the-director", title: "The Director, Not the Screenwriter", tagline: "Direct outcomes, not implementations.", description: "You define what 'done' looks like. The AI figures out the code to get there.", theme: "ai", memeFolder: "director", primaryMeme: "01-director-robot.png" },
 
@@ -56,6 +56,6 @@ export const concepts: Concept[] = [
   { id: "sycophancy-trap", title: "The Sycophancy Trap", tagline: "AI agrees with bad ideas.", description: "AI wants to please you. It will validate bad approaches instead of pushing back.", theme: "pitfalls", memeFolder: "sycophancy-trap", primaryMeme: "01-yes-robot.png" },
   { id: "comprehension-debt", title: "Comprehension Debt", tagline: "Every line you don't understand is a loan.", description: "Code you can't read is code you can't fix. The debt compounds with every feature.", theme: "pitfalls", memeFolder: "comprehension-debt", primaryMeme: "01-self-driving.png" },
   { id: "verification-gap", title: "The Verification Gap", tagline: "'It works' doesn't mean 'it's correct'.", description: "AI code often passes the happy path but fails on edge cases, security, and accessibility.", theme: "pitfalls", memeFolder: "verification-gap", primaryMeme: "01-backwards-binoculars.png" },
-  { id: "security-blindspot", title: "The Security Blindspot", tagline: "AI writes working code, not safe code.", description: "72% of AI-generated code had security vulnerabilities. Working isn't the same as secure.", theme: "pitfalls", memeFolder: "security", primaryMeme: "01-ai-replacing-after-define.png" },
+  { id: "security-blindspot", title: "The Security Blindspot", tagline: "AI writes working code, not safe code.", description: "72% of AI-generated code had security vulnerabilities. Working isn't the same as secure.", theme: "pitfalls" },
   { id: "perception-gap", title: "The Perception Gap", tagline: "Feels faster. Actually slower.", description: "METR study: AI developers felt 20% faster but were 19% slower. Flow state isn't the same as productivity.", theme: "pitfalls", memeFolder: "perception-gap", primaryMeme: "01-speedometer.png" },
 ];

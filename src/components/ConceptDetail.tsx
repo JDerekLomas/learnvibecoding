@@ -72,48 +72,50 @@ export default function ConceptDetail({ concept, mastered, onClose, onToggleMast
               </svg>
             </button>
 
-            {/* Meme image */}
-            <div className="relative w-full aspect-[4/3] bg-stone-100 rounded-t-2xl overflow-hidden">
-              <Image
-                src={`/memes/${concept.memeFolder}/${memes[memeIndex] || concept.primaryMeme}`}
-                alt={concept.title}
-                fill
-                className="object-contain"
-                sizes="(max-width: 640px) 100vw, 512px"
-              />
+            {/* Meme image (only if concept has memes) */}
+            {memes.length > 0 && concept.memeFolder && (
+              <div className="relative w-full aspect-[4/3] bg-stone-100 rounded-t-2xl overflow-hidden">
+                <Image
+                  src={`/memes/${concept.memeFolder}/${memes[memeIndex] || concept.primaryMeme}`}
+                  alt={concept.title}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 640px) 100vw, 512px"
+                />
 
-              {/* Carousel controls */}
-              {memes.length > 1 && (
-                <>
-                  <button
-                    onClick={() => setMemeIndex((i) => (i - 1 + memes.length) % memes.length)}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center transition-colors"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="15 18 9 12 15 6" />
-                    </svg>
-                  </button>
-                  <button
-                    onClick={() => setMemeIndex((i) => (i + 1) % memes.length)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center transition-colors"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="9 6 15 12 9 18" />
-                    </svg>
-                  </button>
-                  {/* Dots */}
-                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-                    {memes.map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setMemeIndex(i)}
-                        className={`w-2 h-2 rounded-full transition-colors ${i === memeIndex ? "bg-white" : "bg-white/50"}`}
-                      />
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
+                {/* Carousel controls */}
+                {memes.length > 1 && (
+                  <>
+                    <button
+                      onClick={() => setMemeIndex((i) => (i - 1 + memes.length) % memes.length)}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center transition-colors"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="15 18 9 12 15 6" />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => setMemeIndex((i) => (i + 1) % memes.length)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center transition-colors"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="9 6 15 12 9 18" />
+                      </svg>
+                    </button>
+                    {/* Dots */}
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                      {memes.map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setMemeIndex(i)}
+                          className={`w-2 h-2 rounded-full transition-colors ${i === memeIndex ? "bg-white" : "bg-white/50"}`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
 
             {/* Content */}
             <div className="p-6">
@@ -125,12 +127,23 @@ export default function ConceptDetail({ concept, mastered, onClose, onToggleMast
               {quotes.length > 0 && (
                 <div className="mt-5 space-y-3">
                   {quotes.map((quote, i) => (
-                    <blockquote key={i} className="border-l-3 border-stone-300 pl-4 py-1">
+                    <a
+                      key={i}
+                      href={quote.source}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block border-l-3 border-stone-300 pl-4 py-1 hover:border-indigo-400 hover:bg-stone-50 rounded-r-lg transition-colors no-underline"
+                    >
                       <p className="text-sm text-stone-600 italic">&ldquo;{quote.text}&rdquo;</p>
-                      <p className="text-xs text-stone-400 mt-1 font-semibold">
+                      <p className="text-xs text-stone-400 mt-1 font-semibold flex items-center gap-1">
                         — {quote.author}, {quote.role}
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block ml-0.5">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                          <polyline points="15 3 21 3 21 9" />
+                          <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
                       </p>
-                    </blockquote>
+                    </a>
                   ))}
                 </div>
               )}
