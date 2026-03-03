@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { getTeamContext } from '@/lib/team';
 
 const HIDDEN_PATHS = ['/quiz/play'];
 
@@ -12,6 +13,12 @@ const linkClass =
 export function NavBar({ isCorporate }: { isCorporate: boolean }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [teamSlug, setTeamSlug] = useState<string | null>(null);
+
+  useEffect(() => {
+    const ctx = getTeamContext();
+    if (ctx) setTeamSlug(ctx.teamSlug);
+  }, []);
 
   if (HIDDEN_PATHS.some((p) => pathname.startsWith(p))) {
     return null;
@@ -25,6 +32,11 @@ export function NavBar({ isCorporate }: { isCorporate: boolean }) {
       <Link href="/quiz" className={linkClass} onClick={() => setOpen(false)}>
         Quiz
       </Link>
+      {teamSlug && (
+        <Link href={`/dashboard/${teamSlug}`} className={linkClass} onClick={() => setOpen(false)}>
+          Dashboard
+        </Link>
+      )}
       <a
         href="https://codevibing.com"
         target="_blank"
