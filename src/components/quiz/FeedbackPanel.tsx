@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FeedbackType } from './types';
 import { QuizTheme } from './theme';
@@ -9,8 +10,28 @@ interface FeedbackPanelProps {
   feedbackType: FeedbackType | null;
   explanation: string;
   misconception?: string | undefined;
+  questionId?: string;
   onContinue: () => void;
   theme: QuizTheme;
+}
+
+type FlagReason = 'wrong-answer' | 'unclear' | 'outdated' | 'other';
+
+interface QuestionFlag {
+  questionId: string;
+  reason: FlagReason;
+  details: string;
+  timestamp: number;
+}
+
+function saveFlag(flag: QuestionFlag) {
+  try {
+    const existing = JSON.parse(localStorage.getItem('quiz-flags') || '[]');
+    existing.push(flag);
+    localStorage.setItem('quiz-flags', JSON.stringify(existing));
+  } catch {
+    // Best effort
+  }
 }
 
 interface FeedbackConfig {
@@ -103,11 +124,34 @@ export default function FeedbackPanel({
   feedbackType,
   explanation,
   misconception,
+  questionId,
   onContinue,
   theme,
 }: FeedbackPanelProps) {
+  const [flagOpen, setFlagOpen] = useState(false);
+  const [flagReason, setFlagReason] = useState<FlagReason>('wrong-answer');
+  const [flagDetails, setFlagDetails] = useState('');
+  const [flagSent, setFlagSent] = useState(false);
+
   if (!feedbackType) return null;
   const config = getFeedbackConfig(feedbackType, theme.mode === 'dark');
+  const isDark = theme.mode === 'dark';
+
+  function handleSubmitFlag() {
+    if (!questionId) return;
+    saveFlag({
+      questionId,
+      reason: flagReason,
+      details: flagDetails,
+      timestamp: Date.now(),
+    });
+    setFlagSent(true);
+    setTimeout(() => {
+      setFlagOpen(false);
+      setFlagSent(false);
+      setFlagDetails('');
+    }, 1500);
+  }
 
   return (
     <AnimatePresence>
@@ -159,18 +203,104 @@ export default function FeedbackPanel({
             {explanation}
           </p>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={onContinue}
-            className={`
-              w-full py-3 rounded-xl font-semibold text-base
-              ${config.buttonBg} ${config.buttonText}
-              shadow-sm transition-colors duration-150
-            `}
-          >
-            {feedbackType === 'confident-correct' ? 'Next' : 'Got it'}
-          </motion.button>
+          <div className="flex items-center gap-2 mb-1">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={onContinue}
+              className={`
+                flex-1 py-3 rounded-xl font-semibold text-base
+                ${config.buttonBg} ${config.buttonText}
+                shadow-sm transition-colors duration-150
+              `}
+            >
+              {feedbackType === 'confident-correct' ? 'Next' : 'Got it'}
+            </motion.button>
+          </div>
+
+          {/* Flag / Dispute */}
+          {questionId && (
+            <div className="mt-2">
+              {!flagOpen ? (
+                <button
+                  onClick={() => setFlagOpen(true)}
+                  className={`text-xs ${isDark ? 'text-white/40 hover:text-white/70' : 'text-stone-400 hover:text-stone-600'} transition-colors`}
+                >
+                  Dispute this answer
+                </button>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  className={`mt-1 p-3 rounded-xl border ${isDark ? 'bg-white/5 border-white/10' : 'bg-white/60 border-stone-200'}`}
+                >
+                  {flagSent ? (
+                    <p className={`text-sm font-medium ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
+                      Flagged — thanks for the feedback.
+                    </p>
+                  ) : (
+                    <>
+                      <div className="flex flex-wrap gap-1.5 mb-2">
+                        {([
+                          ['wrong-answer', 'Wrong answer'],
+                          ['unclear', 'Unclear question'],
+                          ['outdated', 'Outdated info'],
+                          ['other', 'Other'],
+                        ] as [FlagReason, string][]).map(([value, label]) => (
+                          <button
+                            key={value}
+                            onClick={() => setFlagReason(value)}
+                            className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+                              flagReason === value
+                                ? isDark
+                                  ? 'bg-white/20 border-white/30 text-white'
+                                  : 'bg-stone-900 border-stone-900 text-white'
+                                : isDark
+                                  ? 'border-white/15 text-white/50 hover:text-white/70'
+                                  : 'border-stone-200 text-stone-500 hover:text-stone-700'
+                            }`}
+                          >
+                            {label}
+                          </button>
+                        ))}
+                      </div>
+                      <textarea
+                        value={flagDetails}
+                        onChange={(e) => setFlagDetails(e.target.value)}
+                        placeholder="What's wrong? (optional)"
+                        rows={2}
+                        className={`w-full text-xs p-2 rounded-lg border resize-none mb-2 ${
+                          isDark
+                            ? 'bg-white/5 border-white/10 text-white/80 placeholder:text-white/30'
+                            : 'bg-white border-stone-200 text-stone-700 placeholder:text-stone-400'
+                        }`}
+                      />
+                      <div className="flex gap-2">
+                        <button
+                          onClick={handleSubmitFlag}
+                          className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${
+                            isDark
+                              ? 'bg-white/15 text-white hover:bg-white/25'
+                              : 'bg-stone-900 text-white hover:bg-stone-800'
+                          }`}
+                        >
+                          Submit
+                        </button>
+                        <button
+                          onClick={() => { setFlagOpen(false); setFlagDetails(''); }}
+                          className={`text-xs px-3 py-1.5 rounded-lg transition-colors ${
+                            isDark ? 'text-white/40 hover:text-white/60' : 'text-stone-400 hover:text-stone-600'
+                          }`}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </motion.div>
+              )}
+            </div>
+          )}
         </motion.div>
       )}
     </AnimatePresence>

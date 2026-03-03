@@ -271,6 +271,7 @@ export default function QuizEngine({
                 feedbackType={feedbackType}
                 explanation={current.item.explanation}
                 misconception={misconception}
+                questionId={current.item.id}
                 onContinue={handleContinue}
                 theme={theme}
               />
