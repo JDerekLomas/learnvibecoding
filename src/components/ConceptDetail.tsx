@@ -136,7 +136,7 @@ export default function ConceptDetail({ concept, mastered, onClose, onToggleMast
                     >
                       <p className="text-sm text-stone-600 italic">&ldquo;{quote.text}&rdquo;</p>
                       <p className="text-xs text-stone-400 mt-1 font-semibold flex items-center gap-1">
-                        — {quote.author}, {quote.role}
+                        — {quote.author}, {quote.role} ({quote.date})
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block ml-0.5">
                           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                           <polyline points="15 3 21 3 21 9" />

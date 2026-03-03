@@ -16,13 +16,13 @@ export default function SkillMapPage() {
         }}
       />
 
-      <div className="mx-auto max-w-2xl px-6 py-12 relative z-10">
-        <div className="text-center mb-8 bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 px-8 py-6">
-          <h1 className="text-4xl font-extrabold tracking-tight text-stone-900">
+      <div className="mx-auto max-w-2xl px-6 py-8 relative z-10">
+        <div className="mb-6 px-2">
+          <h1 className="text-2xl font-extrabold tracking-tight text-stone-900">
             Skill Map
           </h1>
-          <p className="mt-2 text-lg font-medium text-stone-500">
-            Your path from first conversation to shipped product.
+          <p className="mt-1 text-sm text-stone-500">
+            Track your progress across all vibe coding skills. Complete quizzes to unlock topics.
           </p>
         </div>
         <SkillMap />
