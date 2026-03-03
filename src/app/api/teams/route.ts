@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { rateLimit, getClientIP } from "@/lib/rate-limit";
+
+const MAX_TEAM_NAME_LENGTH = 100;
+const MAX_NAME_LENGTH = 50;
 
 function generateSlug(): string {
-  // 6-char alphanumeric slug
   const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
   let slug = "";
   for (let i = 0; i < 6; i++) {
@@ -13,6 +16,16 @@ function generateSlug(): string {
 
 export async function POST(request: Request) {
   try {
+    // Rate limit: 5 team creations per IP per minute
+    const ip = getClientIP(request);
+    const { success } = rateLimit(`create-team:${ip}`, { limit: 5, windowMs: 60_000 });
+    if (!success) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     const { teamName, creatorName } = await request.json();
 
     if (!teamName?.trim() || !creatorName?.trim()) {
@@ -21,6 +34,9 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    const cleanTeamName = teamName.trim().slice(0, MAX_TEAM_NAME_LENGTH);
+    const cleanCreatorName = creatorName.trim().slice(0, MAX_NAME_LENGTH);
 
     // Generate a unique slug (retry on collision)
     let slug = generateSlug();
@@ -39,7 +55,7 @@ export async function POST(request: Request) {
     // Create the team
     const { data: team, error: teamError } = await supabase
       .from("teams")
-      .insert({ slug, name: teamName.trim(), creator_name: creatorName.trim() })
+      .insert({ slug, name: cleanTeamName, creator_name: cleanCreatorName })
       .select()
       .single();
 
@@ -50,7 +66,7 @@ export async function POST(request: Request) {
     // Auto-join the creator as a member
     const { data: member, error: memberError } = await supabase
       .from("team_members")
-      .insert({ team_id: team.id, name: creatorName.trim() })
+      .insert({ team_id: team.id, name: cleanCreatorName })
       .select()
       .single();
 
