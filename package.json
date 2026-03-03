@@ -9,17 +9,21 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.36",
+    "@ai-sdk/react": "^3.0.110",
     "@anthropic-ai/sdk": "^0.78.0",
     "@elevenlabs/react": "^0.14.1",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.1.6",
     "@supabase/supabase-js": "^2.98.0",
+    "ai": "^6.0.108",
     "canvas-confetti": "^1.9.4",
     "framer-motion": "^12.34.4",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
