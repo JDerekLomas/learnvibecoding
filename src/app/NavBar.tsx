@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getTeamContext } from '@/lib/team';
 
-const HIDDEN_PATHS = ['/quiz/play'];
+const HIDDEN_PATHS = ['/quiz/play', '/quiz-chat'];
 
 const linkClass =
   'px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors';
@@ -28,6 +28,9 @@ export function NavBar({ isCorporate }: { isCorporate: boolean }) {
     <>
       <Link href="/journey" className={linkClass} onClick={() => setOpen(false)}>
         Journey
+      </Link>
+      <Link href="/quiz-chat" className={linkClass} onClick={() => setOpen(false)}>
+        AI Quiz
       </Link>
       <Link href="/quiz" className={linkClass} onClick={() => setOpen(false)}>
         Quiz
