@@ -37,11 +37,11 @@ const entryPoints = [
   },
 ];
 
-const ENTRY_COLORS: Record<string, { iconBg: string; border: string; shadow: string }> = {
-  violet: { iconBg: "bg-violet-500", border: "border-violet-400", shadow: "shadow-violet-200/60" },
-  amber: { iconBg: "bg-amber-500", border: "border-amber-400", shadow: "shadow-amber-200/60" },
-  blue: { iconBg: "bg-blue-500", border: "border-blue-400", shadow: "shadow-blue-200/60" },
-  emerald: { iconBg: "bg-emerald-500", border: "border-emerald-400", shadow: "shadow-emerald-200/60" },
+const ENTRY_COLORS: Record<string, { iconBg: string; hoverBorder: string; hoverShadow: string }> = {
+  violet: { iconBg: "bg-violet-500", hoverBorder: "hover:border-violet-400", hoverShadow: "hover:shadow-violet-200/60" },
+  amber: { iconBg: "bg-amber-500", hoverBorder: "hover:border-amber-400", hoverShadow: "hover:shadow-amber-200/60" },
+  blue: { iconBg: "bg-blue-500", hoverBorder: "hover:border-blue-400", hoverShadow: "hover:shadow-blue-200/60" },
+  emerald: { iconBg: "bg-emerald-500", hoverBorder: "hover:border-emerald-400", hoverShadow: "hover:shadow-emerald-200/60" },
 };
 
 const coreModules = [
@@ -240,7 +240,7 @@ function ConsumerLanding() {
               const colors = ENTRY_COLORS[entry.color];
               return (
                 <Link key={entry.href} href={entry.href}>
-                  <div className={`w-full rounded-2xl border-2 p-5 flex items-center gap-4 bg-white border-stone-200 shadow-sm hover:shadow-lg hover:${colors.border} hover:${colors.shadow} transition-all duration-200`}>
+                  <div className={`w-full rounded-2xl border-2 p-5 flex items-center gap-4 bg-white border-stone-200 shadow-sm hover:shadow-lg ${colors.hoverBorder} ${colors.hoverShadow} transition-all duration-200`}>
                     <div className={`flex-shrink-0 w-12 h-12 rounded-xl ${colors.iconBg} flex items-center justify-center`}>
                       <span className="text-white text-xs font-bold">{entry.tag}</span>
                     </div>
