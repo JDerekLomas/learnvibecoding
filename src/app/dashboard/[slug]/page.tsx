@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, useCallback, use } from "react";
 import Link from "next/link";
 
 interface MemberProgress {
@@ -92,13 +92,19 @@ export default function DashboardPage({
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
+  const fetchData = useCallback(() => {
     fetch(`/api/teams/${slug}/dashboard`)
       .then((res) => (res.ok ? res.json() : Promise.reject("Not found")))
       .then(setData)
       .catch(() => setError("Team not found"))
       .finally(() => setLoading(false));
   }, [slug]);
+
+  useEffect(() => {
+    fetchData();
+    const interval = setInterval(fetchData, 30_000);
+    return () => clearInterval(interval);
+  }, [fetchData]);
 
   function handleCopyInvite() {
     navigator.clipboard.writeText(`${window.location.origin}/join/${slug}`);
@@ -171,7 +177,7 @@ export default function DashboardPage({
         </div>
 
         {/* Summary bar */}
-        <div className="grid grid-cols-5 gap-2 mb-6">
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mb-6">
           {completionCounts.map((s) => (
             <div
               key={s.key}
@@ -193,7 +199,7 @@ export default function DashboardPage({
         {/* Members grid */}
         <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 overflow-hidden">
           {/* Header row */}
-          <div className="grid grid-cols-[1fr_repeat(5,40px)] gap-2 px-5 py-3 border-b-2 border-stone-100 bg-stone-50">
+          <div className="grid grid-cols-[1fr_repeat(5,32px)] sm:grid-cols-[1fr_repeat(5,40px)] gap-1.5 sm:gap-2 px-3 sm:px-5 py-3 border-b-2 border-stone-100 bg-stone-50">
             <div className="text-xs font-bold text-stone-400 uppercase tracking-wider">
               Member
             </div>
@@ -212,7 +218,7 @@ export default function DashboardPage({
           {data.members.map((member) => (
             <div
               key={member.id}
-              className="grid grid-cols-[1fr_repeat(5,40px)] gap-2 px-5 py-3 border-b border-stone-100 last:border-b-0 items-center"
+              className="grid grid-cols-[1fr_repeat(5,32px)] sm:grid-cols-[1fr_repeat(5,40px)] gap-1.5 sm:gap-2 px-3 sm:px-5 py-3 border-b border-stone-100 last:border-b-0 items-center"
             >
               <div>
                 <p className="text-sm font-semibold text-stone-900">
