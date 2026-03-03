@@ -261,16 +261,82 @@ function ConsumerLanding() {
 
         {/* Convergence diagram */}
         <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6 text-center mb-8">
-          <p className="text-sm text-stone-500 font-medium mb-4">
+          <p className="text-sm text-stone-500 font-medium mb-5">
             Every entry point converges at the same core curriculum.
           </p>
-          <div className="font-mono text-xs text-stone-400 leading-relaxed whitespace-pre">
-{`  M0-A ──┐
-  M0-B ──┤── M1 → M2 → M3 → M4 ──┬── M5
-  M0-C ──┤                         ├── M6
-  M0-D ──┘                         └── M7`}
+
+          {/* Visual flow diagram */}
+          <div className="flex items-center justify-center gap-3">
+            {/* Entry nodes */}
+            <div className="flex flex-col gap-1.5">
+              {[
+                { tag: "M0-A", color: "bg-violet-500" },
+                { tag: "M0-B", color: "bg-amber-500" },
+                { tag: "M0-C", color: "bg-blue-500" },
+                { tag: "M0-D", color: "bg-emerald-500" },
+              ].map((e) => (
+                <div key={e.tag} className={`${e.color} text-white text-[10px] font-bold px-2.5 py-1 rounded-lg`}>
+                  {e.tag}
+                </div>
+              ))}
+            </div>
+
+            {/* Converge arrows */}
+            <div className="flex flex-col items-center justify-center">
+              <svg width="24" height="80" viewBox="0 0 24 80" className="text-stone-300">
+                <path d="M4 4 L20 40" stroke="currentColor" strokeWidth="2" fill="none" />
+                <path d="M4 27 L20 40" stroke="currentColor" strokeWidth="2" fill="none" />
+                <path d="M4 53 L20 40" stroke="currentColor" strokeWidth="2" fill="none" />
+                <path d="M4 76 L20 40" stroke="currentColor" strokeWidth="2" fill="none" />
+              </svg>
+            </div>
+
+            {/* Core nodes */}
+            <div className="flex items-center gap-1.5">
+              {[
+                { tag: "M1", color: "bg-amber-500" },
+                { tag: "M2", color: "bg-blue-500" },
+                { tag: "M3", color: "bg-emerald-500" },
+                { tag: "M4", color: "bg-red-500" },
+              ].map((m, i) => (
+                <div key={m.tag} className="flex items-center gap-1.5">
+                  <div className={`${m.color} text-white text-[10px] font-bold px-2.5 py-1 rounded-lg`}>
+                    {m.tag}
+                  </div>
+                  {i < 3 && (
+                    <svg width="12" height="12" viewBox="0 0 12 12" className="text-stone-300">
+                      <path d="M2 6 L10 6" stroke="currentColor" strokeWidth="2" fill="none" />
+                      <path d="M7 3 L10 6 L7 9" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Fan-out arrows */}
+            <div className="flex flex-col items-center justify-center">
+              <svg width="24" height="60" viewBox="0 0 24 60" className="text-stone-300">
+                <path d="M4 30 L20 10" stroke="currentColor" strokeWidth="2" fill="none" />
+                <path d="M4 30 L20 30" stroke="currentColor" strokeWidth="2" fill="none" />
+                <path d="M4 30 L20 50" stroke="currentColor" strokeWidth="2" fill="none" />
+              </svg>
+            </div>
+
+            {/* Advanced nodes */}
+            <div className="flex flex-col gap-1.5">
+              {[
+                { tag: "M5", color: "bg-indigo-500" },
+                { tag: "M6", color: "bg-teal-500" },
+                { tag: "M7", color: "bg-purple-500" },
+              ].map((m) => (
+                <div key={m.tag} className={`${m.color} text-white text-[10px] font-bold px-2.5 py-1 rounded-lg`}>
+                  {m.tag}
+                </div>
+              ))}
+            </div>
           </div>
-          <p className="text-xs text-stone-400 mt-4">
+
+          <p className="text-xs text-stone-400 mt-5 font-medium">
             Choose your entry. Everyone converges. Then specialize.
           </p>
         </div>
