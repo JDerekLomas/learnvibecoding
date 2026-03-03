@@ -4,9 +4,195 @@ import { useConversation } from '@elevenlabs/react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { PHYSICS_TUTOR_PROMPT } from '@/lib/physics-tutor-prompt';
 
 const AGENT_ID = process.env.NEXT_PUBLIC_ELEVENLABS_AGENT_ID || '';
+
+/* ── Canvas voice orb ────────────────────────────────────────── */
+
+function VoiceOrb({
+  speaking,
+  active,
+  size = 220,
+}: {
+  speaking: boolean;
+  active: boolean;
+  size?: number;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const stateRef = useRef({
+    time: 0,
+    smoothSpeaking: 0,
+    smoothActive: 0,
+    pointRadii: new Float32Array(10),
+  });
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d')!;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
+    ctx.scale(dpr, dpr);
+
+    const numPoints = 10;
+    const state = stateRef.current;
+    let raf: number;
+
+    function draw() {
+      // Smooth transitions — fast attack, slow release
+      state.smoothSpeaking +=
+        ((speaking ? 1 : 0) - state.smoothSpeaking) *
+        (speaking ? 0.14 : 0.06);
+      state.smoothActive +=
+        ((active ? 1 : 0) - state.smoothActive) * (active ? 0.08 : 0.04);
+
+      const sl = state.smoothSpeaking;
+      const al = state.smoothActive;
+
+      // Time advances faster when speaking
+      state.time += 0.012 + sl * 0.028;
+      const t = state.time;
+
+      ctx.clearRect(0, 0, size, size);
+
+      const cx = size / 2;
+      const cy = size / 2;
+      const baseRadius = size * 0.28;
+      const angleStep = (Math.PI * 2) / numPoints;
+
+      const points: { x: number; y: number }[] = [];
+
+      for (let i = 0; i < numPoints; i++) {
+        const angle = angleStep * i;
+
+        // Organic wobble: stacked sines at irrational frequency ratios
+        const wobble =
+          Math.sin(t * 1.1 + i * 2.1) * 0.06 +
+          Math.sin(t * 0.7 + i * 3.4) * 0.05 +
+          Math.sin(t * 1.9 + i * 1.3) * 0.03;
+
+        // Speech reactivity: rapid pseudo-random oscillation
+        const speechPulse =
+          sl *
+          (Math.sin(t * 4.7 + i * 2.9) * 0.13 +
+            Math.sin(t * 6.3 + i * 1.7) * 0.09 +
+            Math.sin(t * 3.1 + i * 4.1) * 0.06);
+
+        // Breathing: slow pulse when connected but not speaking
+        const breathing = al * (1 - sl) * Math.sin(t * 0.8) * 0.04;
+
+        const targetR = baseRadius * (1 + wobble + speechPulse + breathing);
+
+        // Per-point smoothing
+        const currentR = state.pointRadii[i] || baseRadius;
+        const smoothR = currentR + (targetR - currentR) * 0.18;
+        state.pointRadii[i] = smoothR;
+
+        points.push({
+          x: cx + Math.cos(angle) * smoothR,
+          y: cy + Math.sin(angle) * smoothR,
+        });
+      }
+
+      // Draw blob shape
+      ctx.beginPath();
+      catmullRomClosed(ctx, points, 0.4);
+
+      // Gradient fill — terracotta / gold
+      const grad = ctx.createRadialGradient(
+        cx - baseRadius * 0.25,
+        cy - baseRadius * 0.25,
+        baseRadius * 0.1,
+        cx,
+        cy,
+        baseRadius * (1.3 + sl * 0.2)
+      );
+      grad.addColorStop(0, '#F2CC8F');
+      grad.addColorStop(0.5, '#E07A5F');
+      grad.addColorStop(1, '#943c2a');
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Glow
+      ctx.save();
+      ctx.shadowColor = `rgba(224, 122, 95, ${0.15 + sl * 0.5})`;
+      ctx.shadowBlur = 20 + sl * 50;
+      ctx.fill();
+      ctx.restore();
+
+      // Specular highlight
+      ctx.beginPath();
+      catmullRomClosed(ctx, points, 0.4);
+      const specGrad = ctx.createRadialGradient(
+        cx - baseRadius * 0.3,
+        cy - baseRadius * 0.35,
+        0,
+        cx - baseRadius * 0.1,
+        cy - baseRadius * 0.1,
+        baseRadius * 0.65
+      );
+      specGrad.addColorStop(0, 'rgba(255, 255, 255, 0.25)');
+      specGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.08)');
+      specGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.fillStyle = specGrad;
+      ctx.fill();
+
+      raf = requestAnimationFrame(draw);
+    }
+
+    raf = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(raf);
+  }, [speaking, active, size]);
+
+  return (
+    <div className="relative" style={{ width: size, height: size }}>
+      <canvas ref={canvasRef} style={{ width: size, height: size }} />
+      {/* Star overlay */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <svg
+          width={size * 0.17}
+          height={size * 0.17}
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path
+            d="M12 2L14.09 8.26L20 9.27L15.55 13.97L16.91 20L12 16.9L7.09 20L8.45 13.97L4 9.27L9.91 8.26L12 2Z"
+            fill="white"
+            opacity={0.85}
+          />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+function catmullRomClosed(
+  ctx: CanvasRenderingContext2D,
+  points: { x: number; y: number }[],
+  tension: number
+) {
+  const n = points.length;
+  if (n < 3) return;
+  ctx.moveTo(points[0].x, points[0].y);
+  for (let i = 0; i < n; i++) {
+    const p0 = points[(i - 1 + n) % n];
+    const p1 = points[i];
+    const p2 = points[(i + 1) % n];
+    const p3 = points[(i + 2) % n];
+    ctx.bezierCurveTo(
+      p1.x + ((p2.x - p0.x) * tension) / 3,
+      p1.y + ((p2.y - p0.y) * tension) / 3,
+      p2.x - ((p3.x - p1.x) * tension) / 3,
+      p2.y - ((p3.y - p1.y) * tension) / 3,
+      p2.x,
+      p2.y
+    );
+  }
+  ctx.closePath();
+}
+
+/* ── Main page ───────────────────────────────────────────────── */
 
 export default function PhysicsVoicePage() {
   const [hasStarted, setHasStarted] = useState(false);
@@ -29,7 +215,8 @@ export default function PhysicsVoicePage() {
       startedRef.current = false;
     },
     onError: (err: string | Error) => {
-      const msg = typeof err === 'string' ? err : err.message || 'Connection error';
+      const msg =
+        typeof err === 'string' ? err : err.message || 'Connection error';
       setError(msg);
       setStatusLog((prev) => [...prev, `Error: ${msg}`]);
     },
@@ -82,37 +269,45 @@ export default function PhysicsVoicePage() {
   const isConnected = conversation.status === 'connected';
   const isConnecting = conversation.status === 'connecting';
 
-  // Avoid hydration mismatch — wait for client mount
-  if (!mounted) {
-    return null;
-  }
+  if (!mounted) return null;
 
-  // Fallback if no agent ID
+  /* ── Fallback: no agent ID ──────────────────────────────── */
+
   if (!AGENT_ID) {
     return (
       <div className="max-w-2xl mx-auto px-6 py-8">
         <Link
           href="/physicsdemo"
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-stone-400 hover:text-stone-600 transition-colors no-underline mb-6"
+          className="inline-flex items-center gap-1.5 text-sm font-bold text-stone-400 hover:text-stone-900 transition-colors no-underline mb-5 w-fit"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <polyline points="15 18 9 12 15 6" />
           </svg>
           Back to Hub
         </Link>
-        <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-sm p-8 text-center">
-          <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-stone-100 mb-4">
-            <svg className="w-8 h-8 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
-            </svg>
+        <div className="bg-white rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] p-8 text-center">
+          <div className="flex justify-center mb-4">
+            <VoiceOrb speaking={false} active={false} size={100} />
           </div>
-          <h2 className="text-xl font-bold text-stone-900 mb-2">Voice coming soon</h2>
+          <h2 className="text-xl font-black text-stone-900 mb-2">
+            Voice coming soon
+          </h2>
           <p className="text-sm text-stone-500 mb-6">
-            Voice conversations require an ElevenLabs agent. In the meantime, try the text chat.
+            Voice conversations require an ElevenLabs agent. In the meantime,
+            try the text chat.
           </p>
           <Link
             href="/physicsdemo/chat"
-            className="inline-block px-5 py-2.5 text-sm font-semibold rounded-xl bg-amber-500 text-white hover:bg-amber-600 transition-colors no-underline"
+            className="inline-block px-5 py-2.5 text-sm font-black rounded-lg border-[2.5px] border-stone-900 bg-[#E07A5F] text-white shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all no-underline"
           >
             Try the text chat instead
           </Link>
@@ -121,113 +316,96 @@ export default function PhysicsVoicePage() {
     );
   }
 
+  /* ── Main voice UI ──────────────────────────────────────── */
+
   return (
     <div className="max-w-2xl mx-auto px-6 py-8">
       {/* Back nav */}
       <Link
         href="/physicsdemo"
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-stone-400 hover:text-stone-600 transition-colors no-underline mb-6"
+        className="inline-flex items-center gap-1.5 text-sm font-bold text-stone-400 hover:text-stone-900 transition-colors no-underline mb-5 w-fit"
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <polyline points="15 18 9 12 15 6" />
         </svg>
         Back to Hub
       </Link>
 
-      {/* Voice card */}
+      {/* Voice card — neobrutalist */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="bg-white rounded-2xl border-2 border-stone-200 shadow-sm overflow-hidden"
+        className="bg-white rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] overflow-hidden"
       >
-        <div className="px-8 py-10 text-center">
-          {/* Animated orb */}
+        <div
+          className="px-8 py-10 text-center"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle, #e7e5e4 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+          }}
+        >
+          {/* Orb */}
           <div className="flex justify-center mb-6">
-            <motion.div
-              animate={
-                isConnected
-                  ? {
-                      scale: conversation.isSpeaking ? [1, 1.15, 1] : [1, 1.05, 1],
-                      opacity: conversation.isSpeaking ? [1, 0.8, 1] : 1,
-                    }
-                  : {}
-              }
-              transition={
-                isConnected
-                  ? {
-                      duration: conversation.isSpeaking ? 0.6 : 2,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    }
-                  : {}
-              }
-              className={`
-                h-20 w-20 rounded-full flex items-center justify-center
-                ${isConnected
-                  ? conversation.isSpeaking
-                    ? 'bg-gradient-to-br from-orange-500 to-amber-600 shadow-xl shadow-orange-500/40'
-                    : 'bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/30'
-                  : 'bg-gradient-to-br from-stone-300 to-stone-400'
-                }
-                transition-colors duration-500
-              `}
-            >
-              {isConnecting ? (
-                <div className="flex gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-white animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="h-2 w-2 rounded-full bg-white animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="h-2 w-2 rounded-full bg-white animate-bounce" style={{ animationDelay: '300ms' }} />
-                </div>
-              ) : (
-                <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
-                </svg>
-              )}
-            </motion.div>
+            <VoiceOrb
+              speaking={conversation.isSpeaking}
+              active={isConnected}
+              size={200}
+            />
           </div>
 
-          <h2 className="text-2xl font-extrabold text-stone-900 mb-2">
-            {isConnected
-              ? conversation.isSpeaking
-                ? 'Listening...'
-                : 'Your turn'
-              : 'Voice Physics Tutor'}
+          {/* Status text */}
+          <h2 className="text-2xl font-black text-stone-900 mb-2">
+            {isConnecting
+              ? 'Connecting...'
+              : isConnected
+                ? conversation.isSpeaking
+                  ? 'Tutor is speaking...'
+                  : 'Listening...'
+                : 'Voice Physics Tutor'}
           </h2>
 
-          <p className="text-base font-medium text-stone-500 mb-6 max-w-sm mx-auto">
+          <p className="text-sm font-medium text-stone-500 mb-8 max-w-sm mx-auto leading-relaxed">
             {isConnected
               ? conversation.isSpeaking
-                ? 'The tutor is explaining...'
-                : 'Ask about heat, temperature, or thermal energy.'
-              : 'Have a voice conversation about heat and thermal energy. Ask anything — the tutor will guide you with questions.'}
+                ? 'The tutor is explaining — listen up.'
+                : 'Your turn — ask about heat, temperature, or thermal energy.'
+              : 'Have a voice conversation about heat and thermal energy. The tutor will guide you with questions.'}
           </p>
 
+          {/* Error */}
           {error && (
-            <div className="mb-6 rounded-xl bg-red-50 border-2 border-red-200 px-4 py-3 text-sm font-medium text-red-600">
+            <div className="mb-6 rounded-lg border-[2.5px] border-red-400 bg-red-50 px-4 py-3 text-sm font-bold text-red-600 max-w-sm mx-auto">
               {error}
             </div>
           )}
 
+          {/* Action buttons */}
           {!hasStarted ? (
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+            <button
               onClick={handleStartVoice}
               disabled={isConnecting}
-              className="px-8 py-3 text-base font-extrabold rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg shadow-amber-500/25 border-2 border-white/20 cursor-pointer disabled:opacity-50"
+              className="px-8 py-3.5 text-base font-black rounded-lg border-[2.5px] border-stone-900 bg-[#E07A5F] text-white shadow-[4px_4px_0_#1c1917] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[4px_4px_0_#1c1917] cursor-pointer"
             >
               {isConnecting ? 'Connecting...' : 'Start Conversation'}
-            </motion.button>
+            </button>
           ) : (
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+            <button
               onClick={handleEndVoice}
-              className="px-6 py-3 text-sm font-extrabold rounded-xl border-2 border-stone-200 text-stone-600 hover:border-stone-300 hover:bg-stone-50 transition-all cursor-pointer"
+              className="px-6 py-3 text-sm font-black rounded-lg border-[2.5px] border-stone-900 bg-white text-stone-900 shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all cursor-pointer"
             >
               End Conversation
-            </motion.button>
+            </button>
           )}
 
           {/* Connected indicator */}
@@ -241,7 +419,9 @@ export default function PhysicsVoicePage() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
               </span>
-              <span className="text-xs font-semibold text-stone-400">Connected</span>
+              <span className="text-xs font-bold text-stone-400">
+                Connected
+              </span>
             </motion.div>
           )}
         </div>
@@ -250,7 +430,9 @@ export default function PhysicsVoicePage() {
         {statusLog.length > 0 && (
           <div className="px-8 pb-4">
             <details className="text-left">
-              <summary className="text-xs font-semibold text-stone-300 cursor-pointer">Debug log</summary>
+              <summary className="text-xs font-bold text-stone-300 cursor-pointer">
+                Debug log
+              </summary>
               <div className="mt-2 text-xs font-mono text-stone-400 space-y-0.5">
                 {statusLog.map((log, i) => (
                   <div key={i}>{log}</div>
@@ -263,10 +445,10 @@ export default function PhysicsVoicePage() {
         )}
 
         {/* Text alternative */}
-        <div className="border-t-2 border-stone-100 px-8 py-4 text-center">
+        <div className="border-t-[3px] border-stone-900 px-8 py-4 text-center bg-[#FFF8F0]">
           <Link
             href="/physicsdemo/chat"
-            className="text-sm font-semibold text-stone-400 hover:text-stone-600 transition-colors no-underline"
+            className="text-sm font-bold text-stone-400 hover:text-stone-900 transition-colors no-underline"
           >
             Prefer typing? Use the text chat
           </Link>
