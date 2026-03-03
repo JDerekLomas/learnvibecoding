@@ -1,6 +1,5 @@
 export type Confidence = 'think' | 'know';
 export type QuestionPhase = 'answering' | 'selected' | 'feedback' | 'complete';
-export type SessionPhase = 'warmup' | 'challenge' | 'resolution';
 export type Difficulty = 'beginning' | 'developing' | 'proficient' | 'advanced';
 
 export interface QuizItem {
@@ -27,15 +26,6 @@ export interface QuizQuestion {
   timeStartedMs: number;
   timeSpentMs: number;
   phase: QuestionPhase;
-}
-
-export interface QuizSession {
-  id: string;
-  startedAt: number;
-  questions: QuizQuestion[];
-  currentIndex: number;
-  xp: number;
-  sessionPhase: SessionPhase;
 }
 
 export type FeedbackType =

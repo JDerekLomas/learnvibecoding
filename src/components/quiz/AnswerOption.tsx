@@ -8,7 +8,6 @@ interface AnswerOptionProps {
   text: string;
   index: number;
   isSelected: boolean;
-  isCorrect: boolean;
   feedbackType: FeedbackType | null;
   showFeedback: boolean;
   isCorrectAnswer: boolean;

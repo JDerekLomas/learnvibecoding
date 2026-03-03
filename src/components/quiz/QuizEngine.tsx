@@ -46,13 +46,11 @@ export default function QuizEngine({
   const [xp, setXP] = useState(0);
   const [showXPFloat, setShowXPFloat] = useState(false);
   const [xpFloatAmount, setXPFloatAmount] = useState(0);
-  const [direction, setDirection] = useState(1);
   const questionStartTime = useRef(Date.now());
 
   const theme = getThemeByMode(themeMode);
   const current = questions[currentIndex];
-  const hasSelected = current?.selectedIndex !== null;
-  const showConfidence = hasSelected && current?.confidence === null;
+  const showConfidence = current?.selectedIndex !== null && current?.confidence === null;
   const showFeedback = current?.phase === 'feedback';
   const feedbackType =
     current?.confidence && current?.isCorrect !== null
@@ -133,7 +131,6 @@ export default function QuizEngine({
     });
 
     if (currentIndex < questions.length - 1) {
-      setDirection(1);
       setCurrentIndex((prev) => prev + 1);
       questionStartTime.current = Date.now();
     } else {
@@ -215,13 +212,13 @@ export default function QuizEngine({
       {/* Question area */}
       <div className="flex-1 flex flex-col px-6 pb-8 relative z-10">
         <div className="max-w-lg mx-auto w-full flex-1 flex flex-col">
-          <AnimatePresence mode="wait" custom={direction}>
+          <AnimatePresence mode="wait" custom={1}>
             <motion.div
               key={currentIndex}
-              custom={direction}
-              initial={{ opacity: 0, x: direction * 60 }}
+              custom={1}
+              initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: direction * -60 }}
+              exit={{ opacity: 0, x: -60 }}
               transition={{
                 duration: 0.3,
                 ease: [0.25, 0.46, 0.45, 0.94],
@@ -250,7 +247,6 @@ export default function QuizEngine({
                     text={option}
                     index={i}
                     isSelected={current.selectedIndex === i}
-                    isCorrect={current.isCorrect ?? false}
                     feedbackType={feedbackType}
                     showFeedback={showFeedback}
                     isCorrectAnswer={i === current.correctIndex}
