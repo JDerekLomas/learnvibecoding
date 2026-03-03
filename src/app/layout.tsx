@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { headers } from "next/headers";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { AudienceProvider } from "./AudienceProvider";
 import { NavBar } from "./NavBar";
@@ -81,6 +82,7 @@ export default async function RootLayout({
           {children}
         </AudienceProvider>
         <InputWidget allowedHosts={["localhost", "vercel.app"]} />
+        <Analytics />
       </body>
     </html>
   );

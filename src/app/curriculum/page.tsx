@@ -30,9 +30,9 @@ const modules = [
     section: "Advanced",
     description: "Go deeper once you've built a few things.",
     items: [
-      { href: "/sessions", tag: "M5", title: "Mastering Sessions", status: "coming" as const },
-      { href: "/shipping", tag: "M6", title: "Portfolio & Shipping", status: "coming" as const },
-      { href: "/craft", tag: "M7", title: "The Craft", status: "coming" as const },
+      { href: "/sessions", tag: "M5", title: "Mastering Sessions", status: "available" as const },
+      { href: "/shipping", tag: "M6", title: "Portfolio & Shipping", status: "available" as const },
+      { href: "/craft", tag: "M7", title: "The Craft", status: "available" as const },
     ],
   },
 ];
@@ -76,11 +76,6 @@ export default function CurriculumPage() {
                 <span className="font-medium text-zinc-900 dark:text-zinc-100 group-hover:underline">
                   {item.title}
                 </span>
-                {item.status === "coming" && (
-                  <span className="ml-auto text-xs text-zinc-400 dark:text-zinc-500">
-                    Coming soon
-                  </span>
-                )}
               </Link>
             ))}
           </div>
