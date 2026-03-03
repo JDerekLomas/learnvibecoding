@@ -38,6 +38,9 @@ export default function RootLayout({
               Learn Vibe Coding
             </Link>
             <div className="flex items-center gap-6 text-sm text-zinc-500 dark:text-zinc-400">
+              <Link href="/skill-map" className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
+                Skill Map
+              </Link>
               <Link href="/curriculum" className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
                 Curriculum
               </Link>
