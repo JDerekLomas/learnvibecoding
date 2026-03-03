@@ -31,7 +31,7 @@ export function getQuizMapping(skillId: string): SkillQuizMapping | undefined {
 export function getQuizUrl(mapping: SkillQuizMapping): string {
   const tags = mapping.quizTags.join(",");
   if (mapping.quizTopicId) {
-    return `https://ai-growth.net/quiz/play?topic=${mapping.quizTopicId}&tags=${tags}`;
+    return `/quiz/play?topic=${mapping.quizTopicId}&tags=${tags}`;
   }
-  return `https://ai-growth.net/quiz/play?topic=all&tags=${tags}`;
+  return `/quiz/play?topic=all&tags=${tags}`;
 }

@@ -137,8 +137,6 @@ function QuizBadge({ skillId, status }: { skillId: string; status: SkillStatus }
   return (
     <a
       href={url}
-      target="_blank"
-      rel="noopener noreferrer"
       onClick={(e) => e.stopPropagation()}
       className="inline-flex items-center gap-1 bg-violet-100 text-violet-700 text-xs font-bold px-2 py-0.5 rounded-full hover:scale-110 hover:bg-violet-200 transition-transform duration-150"
     >
