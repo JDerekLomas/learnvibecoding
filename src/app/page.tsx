@@ -112,53 +112,104 @@ function CorporateLanding() {
 
       <div className="mx-auto max-w-2xl px-6 py-12 relative z-10">
         {/* Hero card */}
-        <div className="text-center mb-8 bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 px-8 py-10">
+        <div className="text-center mb-8 bg-white rounded-2xl border-3 border-stone-300 shadow-lg shadow-stone-200/60 px-8 py-10">
           <p className="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-3">
-            AI Upskilling for Teams
+            AI Upskilling for CEOs
           </p>
           <h1 className="text-4xl font-extrabold tracking-tight text-stone-900">
-            Your Team Can Build with AI.
+            Ready to 10x
             <br />
-            <span className="text-stone-400">They Just Need the Right Start.</span>
+            <span className="text-stone-400">Your Organization?</span>
           </h1>
           <p className="mt-4 text-lg font-medium text-stone-500 max-w-lg mx-auto leading-relaxed">
-            A guided learning program that takes your team from &ldquo;I&apos;ve heard of vibe coding&rdquo; to shipping real projects with AI tools. Discovery interviews, structured modules, hands-on quizzes, and a dashboard to track progress.
+            Your people are your competitive advantage. Give them the AI skills to prove it. A structured program that gets your entire team building with AI — with a dashboard so you can see it happening.
           </p>
         </div>
 
         {/* CTAs */}
         <div className="mb-8 space-y-3">
           <Link href="/quiz-chat">
-            <div className="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-extrabold text-base text-center shadow-xl shadow-indigo-500/25 hover:from-indigo-600 hover:to-violet-600 transition-all duration-150 border-2 border-white/20">
-              See Where You Stand
+            <div className="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-extrabold text-base text-center shadow-xl shadow-indigo-500/25 hover:from-indigo-600 hover:to-violet-600 transition-all duration-150 border-3 border-white/20">
+              Try the AI Assessment Yourself
             </div>
           </Link>
           <div className="grid grid-cols-2 gap-3">
             <Link href="/teams/create">
-              <div className="w-full py-4 rounded-2xl border-2 border-stone-300 text-stone-700 font-semibold text-base text-center hover:bg-white hover:border-stone-400 transition-all duration-150">
-                Create a Team
+              <div className="w-full py-4 rounded-2xl border-3 border-stone-300 text-stone-700 font-semibold text-base text-center hover:bg-white hover:border-stone-400 transition-all duration-150">
+                Enroll Your Team
               </div>
             </Link>
             <Link href="/journey">
-              <div className="w-full py-4 rounded-2xl border-2 border-stone-300 text-stone-700 font-semibold text-base text-center hover:bg-white hover:border-stone-400 transition-all duration-150">
-                Try It Solo
+              <div className="w-full py-4 rounded-2xl border-3 border-stone-300 text-stone-700 font-semibold text-base text-center hover:bg-white hover:border-stone-400 transition-all duration-150">
+                Preview the Journey
               </div>
             </Link>
           </div>
         </div>
 
         {/* Try a question */}
-        <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6 mb-8">
+        <div className="bg-white rounded-2xl border-3 border-stone-300 shadow-lg shadow-stone-200/60 p-6 mb-8">
           <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-5 text-center">
-            Try a Sample Question
+            Can Your Team Answer This?
           </h3>
           <TryQuestion />
         </div>
 
-        {/* What your team gets */}
-        <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6 mb-8">
+        {/* The problem */}
+        <div className="bg-white rounded-2xl border-3 border-stone-300 shadow-lg shadow-stone-200/60 p-6 mb-8">
           <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-5 text-center">
-            What Your Team Gets
+            The Problem
+          </h3>
+          <div className="space-y-4">
+            {[
+              {
+                icon: (
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                ),
+                title: "AI tools are here. Your team isn't using them.",
+                desc: "Copilot seats are purchased. ChatGPT is bookmarked. But nobody's actually building anything with AI yet.",
+                color: "bg-red-500",
+              },
+              {
+                icon: (
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                  </svg>
+                ),
+                title: "Your competitors are moving faster.",
+                desc: "The gap between AI-enabled teams and everyone else is widening every month. This is the year it becomes permanent.",
+                color: "bg-amber-500",
+              },
+              {
+                icon: (
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                ),
+                title: "Workshops don't stick.",
+                desc: "A one-day AI workshop creates excitement, not capability. Your team needs hands-on practice with real projects, not slide decks.",
+                color: "bg-stone-500",
+              },
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-4">
+                <div className={`flex-shrink-0 w-10 h-10 rounded-xl ${item.color} flex items-center justify-center text-white`}>
+                  {item.icon}
+                </div>
+                <div>
+                  <p className="text-sm font-extrabold text-stone-900">{item.title}</p>
+                  <p className="text-sm text-stone-500">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* The solution */}
+        <div className="bg-white rounded-2xl border-3 border-stone-300 shadow-lg shadow-stone-200/60 p-6 mb-8">
+          <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-5 text-center">
+            The Solution
           </h3>
           <div className="space-y-4">
             {[
@@ -169,7 +220,7 @@ function CorporateLanding() {
                   </svg>
                 ),
                 title: "AI Discovery Interview",
-                desc: "Each team member has a 1:1 conversation with AI to find a project that fits their interests and role.",
+                desc: "Each person finds a real project that fits their role. Not a toy demo — something they actually want to build.",
                 color: "bg-amber-500",
               },
               {
@@ -178,8 +229,8 @@ function CorporateLanding() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 ),
-                title: "Skills Assessment",
-                desc: "AI-powered quiz conversation that adapts to your level and teaches as it goes.",
+                title: "Adaptive AI Assessment",
+                desc: "Meets each person where they are. No one sits through basics they already know. No one gets lost.",
                 color: "bg-violet-500",
               },
               {
@@ -188,8 +239,8 @@ function CorporateLanding() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
                 ),
-                title: "Structured Curriculum",
-                desc: "4 core modules with interactive exercises: self-knowledge, workflow, building, and debugging.",
+                title: "Hands-On Curriculum",
+                desc: "4 modules: self-knowledge, AI workflow, building, and debugging. Interactive exercises, not passive reading.",
                 color: "bg-blue-500",
               },
               {
@@ -198,8 +249,8 @@ function CorporateLanding() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 ),
-                title: "Manager Dashboard",
-                desc: "See every team member's progress across all 5 steps. Know who's started, who's stuck, who's shipped.",
+                title: "CEO Dashboard",
+                desc: "See every team member's progress in real time. Who's started, who's stuck, who's shipped. No guessing.",
                 color: "bg-emerald-500",
               },
             ].map((item, i) => (
@@ -217,17 +268,17 @@ function CorporateLanding() {
         </div>
 
         {/* The 5 steps */}
-        <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6 mb-8">
+        <div className="bg-white rounded-2xl border-3 border-stone-300 shadow-lg shadow-stone-200/60 p-6 mb-8">
           <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-5 text-center">
             The 5-Step Journey
           </h3>
           <div className="space-y-3">
             {[
-              { label: "Discover", desc: "AI-powered conversation to find what excites you", color: "bg-amber-500" },
-              { label: "Assess", desc: "AI quiz conversation that meets you where you are", color: "bg-violet-500" },
-              { label: "Learn", desc: "Structured modules on vibe coding fundamentals", color: "bg-blue-500" },
-              { label: "Practice", desc: "Targeted practice to reinforce key concepts", color: "bg-emerald-500" },
-              { label: "Share", desc: "Post your project to the community", color: "bg-rose-500" },
+              { label: "Discover", desc: "AI finds the right project for each person's role", color: "bg-amber-500" },
+              { label: "Assess", desc: "Adaptive quiz that meets them where they are", color: "bg-violet-500" },
+              { label: "Learn", desc: "Structured modules on AI-assisted building", color: "bg-blue-500" },
+              { label: "Practice", desc: "Hands-on exercises that build real confidence", color: "bg-emerald-500" },
+              { label: "Ship", desc: "Every person delivers a working project", color: "bg-rose-500" },
             ].map((step, i) => (
               <div key={i} className="flex items-center gap-3">
                 <div className={`flex-shrink-0 w-8 h-8 rounded-lg ${step.color} flex items-center justify-center text-white text-xs font-bold`}>
@@ -242,39 +293,16 @@ function CorporateLanding() {
           </div>
         </div>
 
-        {/* Topic highlights */}
-        <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6 mb-8">
-          <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-5 text-center">
-            96 Questions Across 11 Topics
-          </h3>
-          <div className="grid grid-cols-2 gap-3">
-            {TOPIC_HIGHLIGHTS.map((topic) => (
-              <div
-                key={topic.label}
-                className="flex items-center gap-3 rounded-xl border-2 border-stone-200 bg-white p-3"
-              >
-                <div className={`flex-shrink-0 w-9 h-9 rounded-lg ${topic.color} flex items-center justify-center text-white text-xs font-bold`}>
-                  {topic.count}
-                </div>
-                <p className="text-sm font-semibold text-stone-700">{topic.label}</p>
-              </div>
-            ))}
-          </div>
-          <p className="text-xs text-stone-400 text-center mt-4">
-            Plus: Testing &amp; Quality, AI Tool Selection, Architecture, Web Fundamentals, Shipping &amp; Deploy
-          </p>
-        </div>
-
         {/* How it works */}
-        <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6 mb-8">
+        <div className="bg-white rounded-2xl border-3 border-stone-300 shadow-lg shadow-stone-200/60 p-6 mb-8">
           <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-5 text-center">
-            Get Started in 60 Seconds
+            Get Your Team Started in 60 Seconds
           </h3>
           <div className="space-y-4">
             {[
-              { num: 1, title: "Create a team", desc: "Pick a name, get an invite link. No accounts or passwords." },
-              { num: 2, title: "Share the link", desc: "Team members join by clicking the link and entering their name." },
-              { num: 3, title: "Track progress", desc: "Your dashboard shows who's discovering, learning, and shipping." },
+              { num: 1, title: "Create a team", desc: "Pick a name, get an invite link. No IT tickets, no SSO setup." },
+              { num: 2, title: "Share the link", desc: "Team members join with one click. No accounts or passwords." },
+              { num: 3, title: "Watch the dashboard", desc: "See who's discovering, learning, building, and shipping — in real time." },
             ].map((item) => (
               <div key={item.num} className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white font-extrabold">
@@ -289,14 +317,14 @@ function CorporateLanding() {
           </div>
 
           <Link href="/teams/create">
-            <div className="mt-6 w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-bold text-base text-center shadow-lg shadow-indigo-500/25 hover:from-indigo-600 hover:to-violet-600 transition-all duration-150 border-2 border-white/20">
-              Create a Team
+            <div className="mt-6 w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-bold text-base text-center shadow-lg shadow-indigo-500/25 hover:from-indigo-600 hover:to-violet-600 transition-all duration-150 border-3 border-white/20">
+              Enroll Your Team
             </div>
           </Link>
         </div>
 
         {/* Credibility */}
-        <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6 mb-8">
+        <div className="bg-white rounded-2xl border-3 border-stone-300 shadow-lg shadow-stone-200/60 p-6 mb-8">
           <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-4 text-center">
             Built By
           </h3>
@@ -310,15 +338,15 @@ function CorporateLanding() {
         </div>
 
         {/* Free */}
-        <div className="bg-gradient-to-r from-indigo-500 to-violet-500 rounded-2xl p-6 mb-8 text-center border-2 border-white/20 shadow-xl shadow-indigo-500/15">
+        <div className="bg-gradient-to-r from-indigo-500 to-violet-500 rounded-2xl p-6 mb-8 text-center border-3 border-white/20 shadow-xl shadow-indigo-500/15">
           <p className="text-white/80 text-xs font-bold uppercase tracking-wider mb-2">
             Currently Free
           </p>
           <p className="text-white text-lg font-bold">
-            No credit card. No account. Just create a team and go.
+            No credit card. No procurement. Just create a team and go.
           </p>
           <p className="text-white/60 text-sm mt-2">
-            We&apos;re building in public. Early teams help shape the product.
+            Early adopters help shape the product. Get in before we charge.
           </p>
         </div>
 

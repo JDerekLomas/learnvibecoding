@@ -81,7 +81,7 @@ export function NavBar({ isCorporate }: { isCorporate: boolean }) {
           className="text-lg font-extrabold tracking-tight text-stone-900"
           onClick={() => setOpen(false)}
         >
-          {isCorporate ? 'AI Growth' : 'Learn Vibe Coding'}
+          {isCorporate ? 'AI Growth Net' : 'Learn Vibe Coding'}
         </Link>
 
         {/* Desktop links */}
