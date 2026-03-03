@@ -29,13 +29,42 @@ const STEPS = [
   { key: "share", label: "Share", short: "S" },
 ];
 
-function StatusCell({ value }: { value: { status: string } | null }) {
+function StatusCell({
+  value,
+  step,
+}: {
+  value: { status: string; metadata: Record<string, unknown> } | null;
+  step: string;
+}) {
   if (!value) {
     return (
       <div className="w-8 h-8 rounded-lg bg-stone-100 border border-stone-200" />
     );
   }
+
+  const hasScore =
+    (step === "assess" || step === "practice") &&
+    value.status === "completed" &&
+    typeof value.metadata?.score === "number" &&
+    typeof value.metadata?.total === "number";
+
   if (value.status === "completed") {
+    if (hasScore) {
+      const score = value.metadata.score as number;
+      const total = value.metadata.total as number;
+      const pct = total > 0 ? score / total : 0;
+      const bg = pct >= 0.7 ? "bg-emerald-500" : pct >= 0.4 ? "bg-amber-500" : "bg-red-400";
+      return (
+        <div
+          className={`w-8 h-8 rounded-lg ${bg} flex items-center justify-center`}
+          title={`${score}/${total} correct`}
+        >
+          <span className="text-[10px] font-bold text-white leading-none">
+            {score}/{total}
+          </span>
+        </div>
+      );
+    }
     return (
       <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center">
         <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -192,7 +221,7 @@ export default function DashboardPage({
               </div>
               {STEPS.map((step) => (
                 <div key={step.key} className="flex justify-center">
-                  <StatusCell value={member.progress[step.key]} />
+                  <StatusCell value={member.progress[step.key]} step={step.key} />
                 </div>
               ))}
             </div>
