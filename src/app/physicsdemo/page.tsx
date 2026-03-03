@@ -9,8 +9,12 @@ const modalities = [
     description: 'Interactive guide with thought experiments',
     href: '/physicsdemo/learn',
     icon: (
-      <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+      /* Open book with wavy pages */
+      <svg className="w-7 h-7 text-white" viewBox="0 0 28 28" fill="none">
+        <path d="M4 7c2-2 5-3 8-2.5C14 5 14 5.5 14 6v14c-3-1-6-.5-8 1" stroke="currentColor" strokeWidth={2} strokeLinecap="round" fill="none" />
+        <path d="M24 7c-2-2-5-3-8-2.5C14 5 14 5.5 14 6v14c3-1 6-.5 8 1" stroke="currentColor" strokeWidth={2} strokeLinecap="round" fill="none" />
+        <path d="M6 10c2-.8 4-.6 6 0M6 13.5c2-.8 4-.6 6 0" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" opacity={0.6} />
+        <path d="M22 10c-2-.8-4-.6-6 0M22 13.5c-2-.8-4-.6-6 0" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" opacity={0.6} />
       </svg>
     ),
     gradient: 'from-amber-500 to-orange-500',
@@ -22,8 +26,10 @@ const modalities = [
     description: 'Test your intuitions (XP + confetti)',
     href: '/physicsdemo/quiz',
     icon: (
-      <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+      /* Lightning bolt in a thought bubble */
+      <svg className="w-7 h-7 text-white" viewBox="0 0 28 28" fill="none">
+        <path d="M7 14c0-4.5 3-8 7-8s7 3.5 7 8c0 3-1.5 5-4 6l-1 3-2-3c-4-.5-7-3-7-6z" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M13 10l-1 4h4l-2 5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
     gradient: 'from-orange-500 to-red-500',
@@ -35,8 +41,14 @@ const modalities = [
     description: 'Socratic physics tutor',
     href: '/physicsdemo/chat',
     icon: (
-      <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+      /* Friendly robot face */
+      <svg className="w-7 h-7 text-white" viewBox="0 0 28 28" fill="none">
+        <rect x="5" y="8" width="18" height="14" rx="4" stroke="currentColor" strokeWidth={2} />
+        <circle cx="10.5" cy="15" r="1.5" fill="currentColor" />
+        <circle cx="17.5" cy="15" r="1.5" fill="currentColor" />
+        <path d="M12 19c1 1 3 1 4 0" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" />
+        <line x1="14" y1="4" x2="14" y2="8" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+        <circle cx="14" cy="4" r="1.5" fill="currentColor" />
       </svg>
     ),
     gradient: 'from-amber-600 to-amber-500',
@@ -48,8 +60,14 @@ const modalities = [
     description: 'Voice conversation about heat',
     href: '/physicsdemo/voice',
     icon: (
-      <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+      /* Sound waves radiating from mouth */
+      <svg className="w-7 h-7 text-white" viewBox="0 0 28 28" fill="none">
+        <circle cx="10" cy="14" r="5" stroke="currentColor" strokeWidth={2} />
+        <path d="M8.5 13c.5-.5 1.5-.5 2 0" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
+        <circle cx="9" cy="12" r="0.8" fill="currentColor" />
+        <circle cx="12" cy="12" r="0.8" fill="currentColor" />
+        <path d="M17 10c1.5 1.5 1.5 6.5 0 8" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+        <path d="M20 7.5c2.5 2.5 2.5 10.5 0 13" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
       </svg>
     ),
     gradient: 'from-red-500 to-rose-500',
@@ -106,7 +124,7 @@ export default function PhysicsDemoHub() {
                 {m.icon}
               </div>
               <p className="text-base font-extrabold text-stone-900">{m.label}</p>
-              <p className="text-xs font-medium text-stone-400 mt-0.5">{m.description}</p>
+              <p className="text-sm font-medium text-stone-400 mt-0.5">{m.description}</p>
             </Link>
           </motion.div>
         ))}
@@ -117,6 +135,7 @@ export default function PhysicsDemoHub() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.5 }}
+        className="bg-white rounded-2xl border-2 border-stone-200 shadow-sm px-6 py-5"
       >
         <h2 className="text-sm font-bold uppercase tracking-wider text-stone-400 mb-4">
           What you&apos;ll learn
@@ -138,17 +157,19 @@ export default function PhysicsDemoHub() {
       </motion.div>
 
       {/* Footer note */}
-      <motion.p
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="mt-12 text-center text-xs text-stone-400"
+        className="mt-8 bg-white/80 rounded-xl px-4 py-3 text-center"
       >
-        An experiment in multi-modal learning by{' '}
-        <a href="https://ai-growth.net" className="underline hover:text-stone-600 transition-colors">
-          ai-growth.net
-        </a>
-      </motion.p>
+        <p className="text-xs text-stone-400">
+          An experiment in multi-modal learning by{' '}
+          <a href="https://ai-growth.net" className="underline hover:text-stone-600 transition-colors">
+            ai-growth.net
+          </a>
+        </p>
+      </motion.div>
     </div>
   );
 }
