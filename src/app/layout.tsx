@@ -5,6 +5,7 @@ import "./globals.css";
 import { AudienceProvider } from "./AudienceProvider";
 import { NavBar } from "./NavBar";
 import type { Audience } from "@/lib/audience";
+import InputWidget from "@/components/InputWidget";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default async function RootLayout({
           <NavBar isCorporate={isCorporate} />
           {children}
         </AudienceProvider>
+        <InputWidget allowedHosts={["localhost", "vercel.app"]} />
       </body>
     </html>
   );
