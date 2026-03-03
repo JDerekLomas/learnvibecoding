@@ -3,6 +3,7 @@ import NextModule from "@/components/NextModule";
 import ReflectionPrompt from "@/components/ReflectionPrompt";
 import ProjectShowcase from "@/components/ProjectShowcase";
 import BuildSession from "@/components/BuildSession";
+import ConceptCallout from "@/components/ConceptCallout";
 
 export const metadata = {
   title: "The Vibe Coding Workflow — Learn Vibe Coding",
@@ -129,17 +130,23 @@ The resume step is the least glamorous but most important for long projects. Goo
 
 Claude Code has a finite context window. Think of it as working memory. Manage it:
 
+<ConceptCallout id="context-rot" />
+
 ### /compact
 At ~75% context usage, compress the conversation. Claude summarizes what's happened and frees space. Use this proactively — don't wait until it's too late.
 
 ### /clear
 Fresh start. Use when switching tasks or when the context has become confused. Better to start clean than to fight stale context.
 
+<ConceptCallout id="context-engineering" />
+
 ### Be specific
 "Look at src/components/Header.tsx" is better than "look at the header." Help Claude find things quickly instead of searching.
 
 ### One thing at a time
 Big, multi-part prompts waste context. "Add dark mode, fix the mobile nav, update the footer, and change the font" is four tasks crammed into one. Do them sequentially — each one builds on the last.
+
+<ConceptCallout id="one-task-one-session" />
 
 ---
 

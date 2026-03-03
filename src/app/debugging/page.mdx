@@ -4,6 +4,7 @@ import ReflectionPrompt from "@/components/ReflectionPrompt";
 import SelfAssessment from "@/components/SelfAssessment";
 import CritiqueExercise from "@/components/CritiqueExercise";
 import DisconnectExercise from "@/components/DisconnectExercise";
+import ConceptCallout from "@/components/ConceptCallout";
 
 export const metadata = {
   title: "When Things Break — Learn Vibe Coding",
@@ -40,6 +41,9 @@ Frustration is actually useful information. It means you care about the outcome 
 
 **Fix:** Use `/compact` to summarize the conversation and free space. If it's too far gone, use `/clear` and start a new session with the key context: "I'm working on X. Here's where I am. The problem is Y."
 
+<ConceptCallout id="context-rot" />
+<ConceptCallout id="fresh-eyes" />
+
 ### Claude is going in circles
 
 **Symptoms:** Claude fixes one thing, breaks another, fixes that, breaks the first thing again.
@@ -51,6 +55,8 @@ Let's step back. The core goal is [X].
 The current approach of [Y] isn't working.
 What's a different way to achieve this?
 ```
+
+<ConceptCallout id="sycophancy-trap" />
 
 ### Wrong direction entirely
 
@@ -150,6 +156,8 @@ The important parts:
 
 You don't need to understand error messages. You need to show them to Claude.
 
+<ConceptCallout id="verification-gap" />
+
 **Common error types (plain language):**
 - "Cannot find module X" → a package needs to be installed
 - "Type error" → the code expects one type of data but got another
@@ -171,6 +179,8 @@ The best vibe coders don't blindly accept AI output. They look at every result a
 If the answer is no, iterate. If you can't articulate why it's wrong, that's okay — "something feels off about this, make it feel more [X]" is a perfectly valid prompt.
 
 Your taste is the filter that separates "AI slop" from "work that resonates."
+
+<ConceptCallout id="dark-flow" />
 
 <CritiqueExercise
   id="debugging-find-bug"
