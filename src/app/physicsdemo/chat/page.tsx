@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -15,15 +16,64 @@ const STARTERS = [
   'Why is steam more dangerous than boiling water?',
 ];
 
-function TutorAvatar() {
+/* ── Morphing blob avatar ────────────────────────────────────── */
+
+function TutorBlob({
+  size = 28,
+  thinking = false,
+}: {
+  size?: number;
+  thinking?: boolean;
+}) {
   return (
-    <div className="h-7 w-7 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shrink-0">
-      <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-      </svg>
+    <div className="shrink-0 relative" style={{ width: size, height: size }}>
+      <div
+        className={`absolute inset-0 bg-gradient-to-br from-[#E07A5F] to-[#F2CC8F] ${
+          thinking ? 'animate-[blob-think_1.8s_ease-in-out_infinite]' : 'animate-[blob-idle_6s_ease-in-out_infinite]'
+        }`}
+      />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <svg
+          width={size * 0.42}
+          height={size * 0.42}
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path
+            d="M12 2L14.09 8.26L20 9.27L15.55 13.97L16.91 20L12 16.9L7.09 20L8.45 13.97L4 9.27L9.91 8.26L12 2Z"
+            fill="white"
+            opacity={0.9}
+          />
+        </svg>
+      </div>
     </div>
   );
 }
+
+/* ── Thinking indicator ──────────────────────────────────────── */
+
+function ThinkingIndicator() {
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex gap-1">
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className="w-1.5 h-1.5 rounded-full bg-[#E07A5F]"
+            style={{
+              animation: `thinking-dot 1.4s ease-in-out ${i * 0.2}s infinite`,
+            }}
+          />
+        ))}
+      </div>
+      <span className="text-[11px] font-bold text-stone-400 tracking-wide">
+        thinking
+      </span>
+    </div>
+  );
+}
+
+/* ── Main chat page ──────────────────────────────────────────── */
 
 export default function PhysicsChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -36,7 +86,10 @@ export default function PhysicsChatPage() {
 
   const scrollToBottom = useCallback(() => {
     setTimeout(() => {
-      chatEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      chatEndRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
     }, 50);
   }, []);
 
@@ -45,7 +98,8 @@ export default function PhysicsChatPage() {
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.style.height = 'auto';
-      inputRef.current.style.height = Math.min(inputRef.current.scrollHeight, 120) + 'px';
+      inputRef.current.style.height =
+        Math.min(inputRef.current.scrollHeight, 120) + 'px';
     }
   }, [input]);
 
@@ -54,7 +108,10 @@ export default function PhysicsChatPage() {
     if (!trimmed || streaming) return;
 
     setError('');
-    const newMessages: Message[] = [...messages, { role: 'user', content: trimmed }];
+    const newMessages: Message[] = [
+      ...messages,
+      { role: 'user', content: trimmed },
+    ];
     setMessages(newMessages);
     setInput('');
     setStreaming(true);
@@ -105,7 +162,10 @@ export default function PhysicsChatPage() {
       }
 
       if (accumulated) {
-        setMessages((prev) => [...prev, { role: 'assistant', content: accumulated }]);
+        setMessages((prev) => [
+          ...prev,
+          { role: 'assistant', content: accumulated },
+        ]);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
@@ -126,145 +186,224 @@ export default function PhysicsChatPage() {
   const hasMessages = messages.length > 0;
 
   return (
-    <div className="max-w-2xl mx-auto px-6 py-8 flex flex-col min-h-[calc(100vh-4rem)]">
-      {/* Back nav */}
-      <Link
-        href="/physicsdemo"
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-stone-400 hover:text-stone-600 transition-colors no-underline mb-6 shrink-0"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="15 18 9 12 15 6" />
-        </svg>
-        Back to Hub
-      </Link>
+    <>
+      {/* Keyframe animations */}
+      <style>{`
+        @keyframes blob-idle {
+          0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+          25%       { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+          50%       { border-radius: 50% 60% 30% 60% / 30% 50% 70% 50%; }
+          75%       { border-radius: 40% 60% 50% 40% / 60% 30% 60% 40%; }
+        }
+        @keyframes blob-think {
+          0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: scale(1); }
+          33%      { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: scale(1.1); }
+          66%      { border-radius: 50% 60% 30% 60% / 30% 50% 70% 50%; transform: scale(0.9); }
+        }
+        @keyframes thinking-dot {
+          0%, 80%, 100% { opacity: 0.25; transform: scale(0.75); }
+          40%           { opacity: 1;    transform: scale(1); }
+        }
+      `}</style>
 
-      {/* Chat card */}
-      <div className="flex-1 flex flex-col bg-white rounded-2xl border-2 border-stone-200 shadow-sm overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center gap-2.5 px-5 py-3 border-b border-stone-100 bg-stone-50/50 shrink-0">
-          <TutorAvatar />
-          <div>
-            <p className="text-sm font-bold text-stone-900">Physics Tutor</p>
-            <p className="text-[10px] text-stone-400">Ask me about heat and thermal energy</p>
-          </div>
-        </div>
+      <div className="max-w-2xl mx-auto px-6 py-8 flex flex-col min-h-[calc(100vh-4rem)]">
+        {/* Back nav */}
+        <Link
+          href="/physicsdemo"
+          className="inline-flex items-center gap-1.5 text-sm font-bold text-stone-400 hover:text-stone-900 transition-colors no-underline mb-5 shrink-0 w-fit"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+          Back to Hub
+        </Link>
 
-        {/* Messages area */}
-        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
-          {/* Welcome / starters */}
-          {!hasMessages && !streaming && (
-            <div className="text-center py-8">
-              <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-br from-amber-100 to-orange-100 mb-4">
-                <svg className="w-7 h-7 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold text-stone-900 mb-1">
-                Curious about heat?
-              </h3>
-              <p className="text-sm text-stone-500 mb-6 max-w-sm mx-auto">
-                I&apos;m a Socratic tutor — I&apos;ll ask questions that help you figure things out, not just give you answers.
+        {/* ── Chat card (neobrutalist) ──────────────────────── */}
+        <div className="flex-1 flex flex-col bg-white rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] overflow-hidden">
+          {/* Header */}
+          <div className="flex items-center gap-3 px-5 py-3 border-b-[3px] border-stone-900 bg-[#FFF8F0] shrink-0">
+            <TutorBlob size={32} />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-black text-stone-900 leading-tight">
+                Physics Tutor
               </p>
-              <div className="flex flex-wrap justify-center gap-2">
-                {STARTERS.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => sendMessage(s)}
-                    className="px-3.5 py-2 text-sm font-medium rounded-xl border-2 border-amber-200 text-amber-700 hover:bg-amber-50 hover:border-amber-300 transition-colors"
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
+              <p className="text-[10px] font-bold text-stone-400">
+                Powered by Claude
+              </p>
             </div>
-          )}
+            {hasMessages && (
+              <button
+                onClick={() => {
+                  setMessages([]);
+                  setError('');
+                }}
+                className="text-[11px] font-bold text-stone-400 hover:text-stone-900 transition-colors px-2.5 py-1 rounded-md border-2 border-stone-200 hover:border-stone-900 hover:bg-white"
+              >
+                New chat
+              </button>
+            )}
+          </div>
 
-          {/* Message bubbles */}
-          {messages.map((msg, i) => {
-            if (msg.role === 'assistant') {
-              return (
-                <div key={i} className="flex gap-2.5 items-start">
-                  <TutorAvatar />
-                  <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-amber-50 border border-amber-100 px-4 py-2.5">
-                    <p className="text-sm text-stone-700 leading-relaxed whitespace-pre-wrap">
-                      {msg.content}
-                    </p>
-                  </div>
+          {/* Messages area */}
+          <div
+            className="flex-1 overflow-y-auto px-5 py-5 space-y-4"
+            style={{
+              backgroundImage:
+                'radial-gradient(circle, #e7e5e4 1px, transparent 1px)',
+              backgroundSize: '24px 24px',
+            }}
+          >
+            {/* Welcome / starters */}
+            {!hasMessages && !streaming && (
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="text-center py-6"
+              >
+                <div className="flex justify-center mb-4">
+                  <TutorBlob size={56} />
                 </div>
-              );
-            }
-            return (
-              <div key={i} className="flex justify-end">
-                <div className="max-w-[80%] rounded-2xl rounded-tr-md bg-amber-500 px-4 py-2.5">
-                  <p className="text-sm text-white whitespace-pre-wrap">{msg.content}</p>
-                </div>
-              </div>
-            );
-          })}
-
-          {/* Streaming */}
-          {streaming && streamingText && (
-            <div className="flex gap-2.5 items-start">
-              <TutorAvatar />
-              <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-amber-50 border border-amber-100 px-4 py-2.5">
-                <p className="text-sm text-stone-700 leading-relaxed whitespace-pre-wrap">
-                  {streamingText}
-                  <span className="inline-block w-1.5 h-4 bg-amber-400 ml-0.5 animate-pulse rounded-sm" />
+                <h3 className="text-xl font-black text-stone-900 mb-1">
+                  Curious about heat?
+                </h3>
+                <p className="text-sm text-stone-500 mb-6 max-w-xs mx-auto leading-relaxed">
+                  I&apos;m a Socratic tutor &mdash; I&apos;ll ask questions that
+                  help you figure things out, not just give you answers.
                 </p>
-              </div>
-            </div>
-          )}
-
-          {/* Typing indicator */}
-          {streaming && !streamingText && (
-            <div className="flex gap-2.5 items-start">
-              <TutorAvatar />
-              <div className="rounded-2xl rounded-tl-md bg-amber-50 border border-amber-100 px-4 py-3">
-                <div className="flex gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-amber-400 animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="h-2 w-2 rounded-full bg-amber-400 animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="h-2 w-2 rounded-full bg-amber-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+                <div className="flex flex-wrap justify-center gap-2.5">
+                  {STARTERS.map((s, i) => (
+                    <motion.button
+                      key={s}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.15 + i * 0.08 }}
+                      onClick={() => sendMessage(s)}
+                      className="px-4 py-2.5 text-sm font-bold rounded-lg border-[2.5px] border-stone-900 bg-white shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all active:translate-x-[3px] active:translate-y-[3px] active:shadow-none text-stone-800"
+                    >
+                      {s}
+                    </motion.button>
+                  ))}
                 </div>
-              </div>
+              </motion.div>
+            )}
+
+            {/* Message bubbles */}
+            <AnimatePresence initial={false}>
+              {messages.map((msg, i) => (
+                <motion.div
+                  key={`${msg.role}-${i}`}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                >
+                  {msg.role === 'assistant' ? (
+                    <div className="flex gap-2.5 items-start">
+                      <TutorBlob size={28} />
+                      <div className="max-w-[85%] rounded-xl rounded-tl-sm border-[2.5px] border-stone-900 bg-white shadow-[2px_2px_0_#d6d3d1] px-4 py-2.5">
+                        <p className="text-sm text-stone-700 leading-relaxed whitespace-pre-wrap">
+                          {msg.content}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex justify-end">
+                      <div className="max-w-[80%] rounded-xl rounded-tr-sm border-[2.5px] border-stone-900 bg-[#E07A5F] shadow-[2px_2px_0_#943c2a] px-4 py-2.5">
+                        <p className="text-sm text-white font-medium whitespace-pre-wrap">
+                          {msg.content}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+
+            {/* Streaming text */}
+            {streaming && streamingText && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex gap-2.5 items-start"
+              >
+                <TutorBlob size={28} />
+                <div className="max-w-[85%] rounded-xl rounded-tl-sm border-[2.5px] border-stone-900 bg-white shadow-[2px_2px_0_#d6d3d1] px-4 py-2.5">
+                  <p className="text-sm text-stone-700 leading-relaxed whitespace-pre-wrap">
+                    {streamingText}
+                    <span className="inline-block w-[3px] h-4 bg-[#E07A5F] ml-0.5 animate-pulse rounded-sm align-text-bottom" />
+                  </p>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Thinking indicator */}
+            {streaming && !streamingText && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex gap-2.5 items-start"
+              >
+                <TutorBlob size={28} thinking />
+                <div className="rounded-xl border-[2.5px] border-stone-900 bg-white px-4 py-3">
+                  <ThinkingIndicator />
+                </div>
+              </motion.div>
+            )}
+
+            {/* Error */}
+            {error && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex gap-2.5 items-start"
+              >
+                <TutorBlob size={28} />
+                <div className="rounded-xl border-[2.5px] border-red-400 bg-red-50 px-4 py-2.5">
+                  <p className="text-sm font-bold text-red-600">{error}</p>
+                </div>
+              </motion.div>
+            )}
+
+            <div ref={chatEndRef} />
+          </div>
+
+          {/* Input bar */}
+          <div className="border-t-[3px] border-stone-900 px-4 py-3 bg-[#FFF8F0] shrink-0">
+            <div className="flex gap-2.5 items-end">
+              <textarea
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={
+                  streaming
+                    ? 'Thinking...'
+                    : 'Ask about heat and thermal energy...'
+                }
+                disabled={streaming}
+                rows={1}
+                className="flex-1 rounded-lg border-[2.5px] border-stone-900 bg-white px-3.5 py-2.5 text-sm font-medium text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:ring-offset-1 transition-all resize-none disabled:opacity-50"
+              />
+              <button
+                onClick={() => sendMessage(input)}
+                disabled={streaming || !input.trim()}
+                className="px-5 py-2.5 text-sm font-black rounded-lg border-[2.5px] border-stone-900 bg-[#E07A5F] text-white shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[3px_3px_0_#1c1917] shrink-0"
+              >
+                Send
+              </button>
             </div>
-          )}
-
-          {/* Error */}
-          {error && (
-            <div className="flex gap-2.5 items-start">
-              <TutorAvatar />
-              <div className="rounded-2xl rounded-tl-md bg-red-50 border border-red-200 px-4 py-2.5">
-                <p className="text-sm text-red-600">{error}</p>
-              </div>
-            </div>
-          )}
-
-          <div ref={chatEndRef} />
-        </div>
-
-        {/* Input */}
-        <div className="border-t border-stone-100 px-4 py-3 bg-stone-50/50 shrink-0">
-          <div className="flex gap-2 items-end">
-            <textarea
-              ref={inputRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder={streaming ? 'Thinking...' : 'Ask about heat and thermal energy...'}
-              disabled={streaming}
-              rows={1}
-              className="flex-1 rounded-xl border border-stone-200 bg-white px-3.5 py-2.5 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-300 transition-colors resize-none disabled:opacity-50"
-            />
-            <button
-              onClick={() => sendMessage(input)}
-              disabled={streaming || !input.trim()}
-              className="px-4 py-2.5 text-sm font-semibold rounded-xl bg-amber-500 text-white hover:bg-amber-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
-            >
-              Send
-            </button>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
