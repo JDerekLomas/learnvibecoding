@@ -6,6 +6,7 @@ import QuizEngine from '@/components/quiz/QuizEngine';
 import {
   vibecodingQuestions,
   mathQuestions,
+  selectCrossTopicQuestions,
 } from '@/components/quiz/sample-questions';
 import { ThemeMode } from '@/components/quiz/theme';
 import { QuizItem } from '@/components/quiz/types';
@@ -22,6 +23,8 @@ function QuizPlayInner() {
   const items: QuizItem[] = useMemo(() => {
     if (topicParam === 'math') return mathQuestions;
 
+    if (isAssess) return selectCrossTopicQuestions(vibecodingQuestions);
+
     if (tagsParam) {
       const tags = tagsParam.split(',');
       const filtered = vibecodingQuestions.filter((q) =>
@@ -31,7 +34,7 @@ function QuizPlayInner() {
     }
 
     return vibecodingQuestions;
-  }, [topicParam, tagsParam]);
+  }, [topicParam, tagsParam, isAssess]);
 
   return (
     <QuizEngine

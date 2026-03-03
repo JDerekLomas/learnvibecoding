@@ -1803,3 +1803,62 @@ export function buildQuizOptions(item: QuizItem): {
 
   return { options: shuffled, correctIndex };
 }
+
+// ── Topic mapping for cross-topic assessment ────────────────────────
+
+export const TOPIC_TAGS: Record<string, { label: string; tags: string[]; color: string }> = {
+  'prompt-engineering': { label: 'Prompt Engineering', tags: ['prompt-engineering'], color: 'amber' },
+  'reading-code': { label: 'Reading AI Code', tags: ['reading-code'], color: 'blue' },
+  'tooling': { label: 'Dev Tooling', tags: ['tooling'], color: 'emerald' },
+  'web': { label: 'Web Fundamentals', tags: ['react', 'nextjs', 'tailwind', 'deployment', 'css', 'server-components', 'responsive', 'api', 'forms', 'performance'], color: 'red' },
+  'debugging': { label: 'Debugging with AI', tags: ['debugging'], color: 'indigo' },
+  'testing': { label: 'Testing & Quality', tags: ['testing'], color: 'cyan' },
+  'security': { label: 'Security', tags: ['security'], color: 'rose' },
+  'ai-tool-selection': { label: 'AI Tool Selection', tags: ['ai-tool-selection'], color: 'purple' },
+  'architecture': { label: 'Architecture', tags: ['architecture'], color: 'orange' },
+  'shipping-deploy': { label: 'Shipping & Deploy', tags: ['shipping-deploy'], color: 'teal' },
+};
+
+/** Returns the topic ID for a question based on its tags, or 'unknown' */
+export function getPrimaryTopic(tags: string[]): string {
+  for (const [topicId, topic] of Object.entries(TOPIC_TAGS)) {
+    if (tags.some((tag) => topic.tags.includes(tag))) {
+      return topicId;
+    }
+  }
+  return 'unknown';
+}
+
+/** Select one question per topic for cross-topic assessment */
+export function selectCrossTopicQuestions(questions: QuizItem[]): QuizItem[] {
+  const topicIds = Object.keys(TOPIC_TAGS);
+  const grouped = new Map<string, QuizItem[]>();
+
+  for (const q of questions) {
+    const topic = getPrimaryTopic(q.tags);
+    if (topic === 'unknown') continue;
+    if (!grouped.has(topic)) grouped.set(topic, []);
+    grouped.get(topic)!.push(q);
+  }
+
+  const selected: QuizItem[] = [];
+  for (const topicId of topicIds) {
+    const pool = grouped.get(topicId);
+    if (pool && pool.length > 0) {
+      const shuffled = shuffleArray(pool);
+      selected.push(shuffled[0]);
+    }
+  }
+
+  // If we somehow have fewer than 10 (shouldn't happen), fill randomly
+  if (selected.length < 10) {
+    const selectedIds = new Set(selected.map((q) => q.id));
+    const remaining = shuffleArray(questions.filter((q) => !selectedIds.has(q.id)));
+    for (const q of remaining) {
+      if (selected.length >= 10) break;
+      selected.push(q);
+    }
+  }
+
+  return shuffleArray(selected);
+}
