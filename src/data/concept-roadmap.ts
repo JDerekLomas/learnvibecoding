@@ -36,14 +36,12 @@ const memeManifest: Record<string, string[]> = {
   "git-commit": ["01-in-case-of-fire.png", "02-commit-msg-entropy.jpeg", "03-blank-commit-msg.png"],
   "scaffold-before-walls": ["01-construction.png"],
   "plan-before-code": ["01-measure-twice.png"],
-  "claude-pilled": ["01-google-engineer-not-joking.png"],
   "junior-dev": ["01-junior-vs-senior.png", "02-me-as-junior.jpeg", "03-who-broke-build.png", "04-oreilly-danger.png", "05-trainee-code.png"],
   "director": ["01-director-robot.png"],
   "dark-flow": ["01-dog-driving.png"],
   "sycophancy-trap": ["01-yes-robot.png"],
   "comprehension-debt": ["01-self-driving.png"],
   "verification-gap": ["01-backwards-binoculars.png"],
-  "security": ["01-ai-replacing-after-define.png"],
   "perception-gap": ["01-speedometer.png"],
 };
 
