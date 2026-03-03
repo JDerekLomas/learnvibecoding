@@ -113,22 +113,76 @@ function CorporateLanding() {
         {/* Hero card */}
         <div className="text-center mb-8 bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 px-8 py-10">
           <h1 className="text-4xl font-extrabold tracking-tight text-stone-900">
-            AI Growth
+            Get Your Team Building with AI
           </h1>
           <p className="mt-3 text-lg font-medium text-stone-500 max-w-md mx-auto">
-            Assess and grow your team&apos;s AI coding skills with confidence-based practice.
-          </p>
-          <p className="mt-2 text-sm text-stone-400">
-            96 questions across 11 topics. Know what you know — and what you don&apos;t.
+            A guided 5-step journey from discovery to deployment. Create a team, share the link, track everyone&apos;s progress.
           </p>
         </div>
 
-        {/* Start CTA */}
-        <Link href="/quiz">
-          <div className="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-extrabold text-lg text-center shadow-xl shadow-indigo-500/25 hover:from-indigo-600 hover:to-violet-600 transition-all duration-150 border-2 border-white/20 mb-8">
-            Start Assessment
+        {/* Primary CTA */}
+        <Link href="/teams/create">
+          <div className="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-extrabold text-lg text-center shadow-xl shadow-indigo-500/25 hover:from-indigo-600 hover:to-violet-600 transition-all duration-150 border-2 border-white/20 mb-3">
+            Create a Team
           </div>
         </Link>
+
+        {/* Secondary CTA */}
+        <Link href="/journey">
+          <div className="w-full py-3.5 rounded-2xl border-2 border-stone-300 text-stone-700 font-semibold text-base text-center hover:bg-white hover:border-stone-400 transition-all duration-150 mb-8">
+            I&apos;m here to learn on my own
+          </div>
+        </Link>
+
+        {/* How it works */}
+        <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6 mb-8">
+          <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-5 text-center">
+            How it works
+          </h3>
+          <div className="space-y-4">
+            {[
+              { num: 1, title: "Create a team", desc: "Pick a name, get an invite link in seconds." },
+              { num: 2, title: "Share the link", desc: "Team members join and start a guided 5-step journey." },
+              { num: 3, title: "Track progress", desc: "See who's discovering, learning, and shipping on your dashboard." },
+            ].map((item) => (
+              <div key={item.num} className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white font-extrabold">
+                  {item.num}
+                </div>
+                <div>
+                  <p className="text-sm font-extrabold text-stone-900">{item.title}</p>
+                  <p className="text-sm text-stone-500">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* The 5 steps */}
+        <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6 mb-8">
+          <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-5 text-center">
+            The 5-Step Journey
+          </h3>
+          <div className="space-y-3">
+            {[
+              { label: "Discover", desc: "AI-powered conversation to find what excites you", color: "bg-amber-500" },
+              { label: "Assess", desc: "Confidence-based quiz across 11 AI topics", color: "bg-violet-500" },
+              { label: "Learn", desc: "Structured modules on vibe coding fundamentals", color: "bg-blue-500" },
+              { label: "Practice", desc: "Targeted practice to reinforce key concepts", color: "bg-emerald-500" },
+              { label: "Share", desc: "Post your project to the community", color: "bg-rose-500" },
+            ].map((step, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <div className={`flex-shrink-0 w-8 h-8 rounded-lg ${step.color} flex items-center justify-center text-white text-xs font-bold`}>
+                  {i + 1}
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-stone-900">{step.label}</span>
+                  <span className="text-sm text-stone-500"> — {step.desc}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Topic highlights */}
         <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6 mb-8">
@@ -145,27 +199,6 @@ function CorporateLanding() {
                   {topic.count}
                 </div>
                 <p className="text-sm font-semibold text-stone-700">{topic.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* How it works */}
-        <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6">
-          <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-5 text-center">
-            How it works
-          </h3>
-          <div className="grid grid-cols-3 gap-4 text-center">
-            {[
-              { label: "Pick an answer", color: "bg-violet-500" },
-              { label: "Rate your confidence", color: "bg-indigo-500" },
-              { label: "Learn from feedback", color: "bg-emerald-500" },
-            ].map((item, i) => (
-              <div key={i}>
-                <div className={`w-11 h-11 mx-auto mb-2.5 rounded-xl ${item.color} flex items-center justify-center text-lg font-extrabold text-white`}>
-                  {i + 1}
-                </div>
-                <p className="text-xs text-stone-500 font-semibold">{item.label}</p>
               </div>
             ))}
           </div>

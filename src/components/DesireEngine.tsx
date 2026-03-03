@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { saveDiscovery } from "@/lib/progress";
+import { reportProgress } from "@/lib/team";
 
 interface Message {
   role: "user" | "assistant";
@@ -131,6 +132,7 @@ export default function DesireEngine({ id = "desire-engine" }: { id?: string }) 
             feelings: [],
             audience: allUserText.slice(0, 100),
           });
+          reportProgress("discover", "completed");
         }
       }
     } catch (err) {
@@ -145,6 +147,7 @@ export default function DesireEngine({ id = "desire-engine" }: { id?: string }) 
   async function handleStart() {
     setStarted(true);
     setStreaming(true);
+    reportProgress("discover", "started");
     setStreamingText("");
     setError("");
 

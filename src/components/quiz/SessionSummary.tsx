@@ -6,6 +6,7 @@ import { QuizTheme } from './theme';
 import DoodleBg from './DoodleBg';
 import confetti from 'canvas-confetti';
 import { useEffect } from 'react';
+import { reportProgress } from '@/lib/team';
 
 interface SessionSummaryProps {
   questions: QuizQuestion[];
@@ -31,6 +32,12 @@ export default function SessionSummary({
   const misconceptionsCleared = confidentWrong;
 
   useEffect(() => {
+    reportProgress('practice', 'completed', {
+      score: correct,
+      total,
+      xp: totalXP,
+    });
+
     const end = Date.now() + 1500;
     const colors = ['#4F46E5', '#22C55E', '#F59E0B', '#EC4899'];
 
