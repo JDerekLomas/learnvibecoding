@@ -49,6 +49,9 @@ export function NavBar({ isCorporate }: { isCorporate: boolean }) {
     </>
   ) : (
     <>
+      <Link href="/concepts" className={linkClass} onClick={() => setOpen(false)}>
+        Concepts
+      </Link>
       <Link href="/quiz" className={linkClass} onClick={() => setOpen(false)}>
         Quiz
       </Link>
