@@ -127,17 +127,24 @@ function CorporateLanding() {
         </div>
 
         {/* CTAs */}
-        <div className="grid grid-cols-2 gap-3 mb-8">
-          <Link href="/teams/create">
+        <div className="mb-8 space-y-3">
+          <Link href="/quiz?mode=assess">
             <div className="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-extrabold text-base text-center shadow-xl shadow-indigo-500/25 hover:from-indigo-600 hover:to-violet-600 transition-all duration-150 border-2 border-white/20">
-              Create a Team
+              See Where You Stand
             </div>
           </Link>
-          <Link href="/journey">
-            <div className="w-full py-4 rounded-2xl border-2 border-stone-300 text-stone-700 font-semibold text-base text-center hover:bg-white hover:border-stone-400 transition-all duration-150">
-              Try It Solo
-            </div>
-          </Link>
+          <div className="grid grid-cols-2 gap-3">
+            <Link href="/teams/create">
+              <div className="w-full py-4 rounded-2xl border-2 border-stone-300 text-stone-700 font-semibold text-base text-center hover:bg-white hover:border-stone-400 transition-all duration-150">
+                Create a Team
+              </div>
+            </Link>
+            <Link href="/journey">
+              <div className="w-full py-4 rounded-2xl border-2 border-stone-300 text-stone-700 font-semibold text-base text-center hover:bg-white hover:border-stone-400 transition-all duration-150">
+                Try It Solo
+              </div>
+            </Link>
+          </div>
         </div>
 
         {/* Try a question */}

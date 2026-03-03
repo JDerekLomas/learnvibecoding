@@ -12,42 +12,42 @@ interface DemoQuestion {
 const DEMO_QUESTIONS: DemoQuestion[] = [
   {
     question:
-      "You want AI to build a login form. Which prompt will get the best result?",
+      "You want AI to build a login page for your SaaS app. Which prompt will get the best result?",
     options: [
+      'Build a login form with email and password fields, a "Sign in" button, input validation that shows errors inline, and a "Forgot password?" link below',
+      "I need a login page. Research how Linear, Clerk, and Supabase handle theirs, then build something that feels that clean. Dark mode, minimal.",
       "Make me a login page",
-      'Build a login form with email and password fields, a "Sign in" button, inline validation errors, and a "Forgot password?" link',
       "Create the best login form possible using modern best practices",
-      "I need authentication for my app",
     ],
     correctIndex: 1,
     explanation:
-      "Specific prompts with concrete requirements produce much better results than vague ones. \"Best practices\" is subjective. \"Make me a login page\" leaves too many decisions to the AI.",
+      "In vibe coding, you paint the destination and let the AI bring its competence. Pointing at reference sites gives a taste target — the AI researches real examples and synthesizes something informed. Over-specifying pixel details upfront limits the AI's judgment. Strategic ambiguity wins.",
   },
   {
     question:
-      "AI generated a component but the styling is off. What's the most effective follow-up?",
+      "The AI built your landing page but something feels off. What's the best way to iterate?",
     options: [
+      "Change the border-radius to 16px, padding to 24px, and use a linear-gradient from #fff to #f9fafb",
+      "The hero section feels cramped and corporate. I want it to breathe more — look at how Notion's landing page uses whitespace. Warmer, more inviting.",
       "Make it look better",
-      "The styling is wrong, fix it",
-      "Make the corners more rounded (16px), increase padding to 24px, and add a subtle gradient from white to gray-50",
       "Start over with a completely new design",
     ],
-    correctIndex: 2,
+    correctIndex: 1,
     explanation:
-      'Effective iteration gives specific, measurable corrections. "Make it look better" gives no direction. Starting over throws away working logic — iterate on what you have.',
+      "Effective iteration describes the feeling you want, not the CSS values. \"Cramped and corporate\" tells the AI what's wrong. Pointing at Notion gives a reference for the vibe. The AI translates feelings into code better than you'd write the spec yourself.",
   },
   {
     question:
-      "You want to build a full e-commerce checkout flow. What's the best approach?",
+      "You're starting a new project with Claude Code. What's the most important thing to set up first?",
     options: [
-      "Write one detailed prompt describing the entire checkout flow at once",
-      "Break it into steps: cart summary, then address form, then payment, then order confirmation",
-      "Ask for the whole thing and then fix whatever is wrong",
-      "Copy a checkout flow from another site and ask the AI to replicate it",
+      "A detailed technical spec listing every component, route, and database schema",
+      "Your CLAUDE.md file — describing your aesthetic, how you work, and what \"good\" looks like to you",
+      "A list of the exact npm packages you want to use",
+      "A wireframe of every screen before writing any code",
     ],
     correctIndex: 1,
     explanation:
-      "Complex features should be decomposed into sequential steps. Each step can be reviewed before building on it. One massive prompt often produces inconsistent results.",
+      "Your CLAUDE.md is a portrait of your taste and working style. It shapes every interaction — the AI learns whether you prefer minimal or bold, fast iteration or careful planning. This context is worth more than any technical spec because it helps the AI make thousands of small decisions the way you would.",
   },
 ];
 
