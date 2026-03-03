@@ -380,7 +380,7 @@ function ConsumerLanding() {
           </p>
           <p className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-stone-400 bg-stone-100 px-3 py-1.5 rounded-full">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-            4 modules, ~2 hours total
+            7 modules · 4 core + 3 advanced
           </p>
         </div>
 

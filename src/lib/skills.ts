@@ -134,7 +134,7 @@ export const SKILL_UNITS: SkillUnit[] = [
       {
         id: "sessions",
         title: "Mastering Sessions",
-        subtitle: "Coming soon",
+        subtitle: "Session hygiene & prompt archaeology",
         href: "/sessions",
         unit: "advanced",
         prerequisites: ["/debugging"],
@@ -142,7 +142,7 @@ export const SKILL_UNITS: SkillUnit[] = [
       {
         id: "shipping",
         title: "Portfolio & Shipping",
-        subtitle: "Coming soon",
+        subtitle: "Polish, portfolio & user testing",
         href: "/shipping",
         unit: "advanced",
         prerequisites: ["/debugging"],
@@ -150,7 +150,7 @@ export const SKILL_UNITS: SkillUnit[] = [
       {
         id: "craft",
         title: "The Craft",
-        subtitle: "Coming soon",
+        subtitle: "Advanced patterns & the Grimoire",
         href: "/craft",
         unit: "advanced",
         prerequisites: ["/debugging"],
