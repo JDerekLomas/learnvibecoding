@@ -166,7 +166,7 @@ function CorporateLanding() {
           <div className="space-y-3">
             {[
               { label: "Discover", desc: "AI-powered conversation to find what excites you", color: "bg-amber-500" },
-              { label: "Assess", desc: "Confidence-based quiz across 11 AI topics", color: "bg-violet-500" },
+              { label: "Assess", desc: "AI-powered quiz chatbot that adapts to your level", color: "bg-violet-500" },
               { label: "Learn", desc: "Structured modules on vibe coding fundamentals", color: "bg-blue-500" },
               { label: "Practice", desc: "Targeted practice to reinforce key concepts", color: "bg-emerald-500" },
               { label: "Share", desc: "Post your project to the community", color: "bg-rose-500" },
