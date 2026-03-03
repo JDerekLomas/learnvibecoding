@@ -18,8 +18,8 @@ export const chapters: Chapter[] = [
     title: "Temperature vs. Thermal Energy",
     subtitle: "They feel the same — but they're completely different.",
     heroImage:
-      "https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=800&q=80",
-    heroAlt: "Metal and wooden spoons on a kitchen counter",
+      "https://images.unsplash.com/photo-1766399654242-e3af854f2a94?w=800&q=80",
+    heroAlt: "Metal spoons arranged on a wooden surface, contrasting metal and wood materials",
     content: (
       <>
         <p>
@@ -76,8 +76,8 @@ export const chapters: Chapter[] = [
     title: "Conduction: Heat Through Contact",
     subtitle: "Why your metal spoon handle gets hot in soup.",
     heroImage:
-      "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=800&q=80",
-    heroAlt: "Steam rising from a pot of soup on a stove",
+      "https://images.unsplash.com/photo-1605035856436-80b082b9a4cd?w=800&q=80",
+    heroAlt: "A metal pot heating over an open fire, showing heat conduction through the metal",
     content: (
       <>
         <p>
@@ -128,8 +128,8 @@ export const chapters: Chapter[] = [
     title: "Convection: Heat Through Movement",
     subtitle: 'People say "heat rises." That\'s not quite right.',
     heroImage:
-      "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=800&q=80",
-    heroAlt: "Boiling water with bubbles rising in a pot",
+      "https://images.unsplash.com/photo-1768912742570-e10b7d2b755b?w=800&q=80",
+    heroAlt: "Steam rising from pots on a stove, showing convection currents in action",
     content: (
       <>
         <p>
@@ -172,8 +172,8 @@ export const chapters: Chapter[] = [
     title: "Radiation: Heat Through Empty Space",
     subtitle: "How the Sun heats Earth through literal nothingness.",
     heroImage:
-      "https://images.unsplash.com/photo-1475332363613-a549d6aef353?w=800&q=80",
-    heroAlt: "Campfire flames glowing at night",
+      "https://images.unsplash.com/photo-1761665861443-71545198cb02?w=800&q=80",
+    heroAlt: "Campfire flames and sparks radiating heat into the night",
     content: (
       <>
         <p>
@@ -228,8 +228,8 @@ export const chapters: Chapter[] = [
     title: "Phase Changes: The Hidden Heat",
     subtitle: "You're adding heat but the temperature won't budge. Where's it going?",
     heroImage:
-      "https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?w=800&q=80",
-    heroAlt: "Ice melting with water droplets on a surface",
+      "https://images.unsplash.com/photo-1737099950717-929f96f5419f?w=800&q=80",
+    heroAlt: "A translucent ice cube melting on a reflective surface",
     content: (
       <>
         <p>
