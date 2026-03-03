@@ -19,7 +19,8 @@ function BotAvatar() {
   );
 }
 
-export default function DesireEngine({ id = "desire-engine" }: { id?: string }) {
+export default function DesireEngine({ id = "desire-engine", audience = "consumer" }: { id?: string; audience?: "consumer" | "corporate" }) {
+  const isCorporate = audience === "corporate";
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
@@ -75,7 +76,7 @@ export default function DesireEngine({ id = "desire-engine" }: { id?: string }) 
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages, userContext: prepContext }),
+        body: JSON.stringify({ messages: newMessages, userContext: prepContext, audience }),
       });
 
       if (!res.ok) {
@@ -120,7 +121,7 @@ export default function DesireEngine({ id = "desire-engine" }: { id?: string }) 
         setMessages((prev) => [...prev, { role: "assistant", content: accumulated }]);
 
         // Check if this looks like a final response with a vision prompt
-        if (accumulated.includes("Starter prompt") || accumulated.includes("starter prompt")) {
+        if (accumulated.includes("Starter prompt") || accumulated.includes("starter prompt") || accumulated.includes("Skills to assess")) {
           // Extract feelings/audience from conversation for localStorage
           const allUserText = newMessages
             .filter((m) => m.role === "user")
@@ -155,13 +156,16 @@ export default function DesireEngine({ id = "desire-engine" }: { id?: string }) 
       // Send empty conversation to get the opening message
       const kickoff = prepContext
         ? `[The user just clicked 'Start' to begin the discovery conversation. They already shared some context in a warm-up: "${prepContext}" — use it to skip the basics and go deeper. Send your opening message. Don't introduce yourself or explain the process. Just ask your first question.]`
-        : "[The user just clicked 'Start' to begin the discovery conversation. Send your opening message — something surprising and thought-provoking. Don't introduce yourself or explain the process. Just ask your first question.]";
+        : isCorporate
+          ? "[The user just clicked 'Start' to begin the discovery conversation. This is a team lead or manager exploring AI for their team. Send your opening message — direct, no fluff. Ask about a specific team pain point. Don't introduce yourself or explain the process.]"
+          : "[The user just clicked 'Start' to begin the discovery conversation. Send your opening message — something surprising and thought-provoking. Don't introduce yourself or explain the process. Just ask your first question.]";
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: [{ role: "user", content: kickoff }],
           userContext: prepContext,
+          audience,
         }),
       });
 
@@ -274,10 +278,12 @@ export default function DesireEngine({ id = "desire-engine" }: { id?: string }) 
               </svg>
             </div>
             <h4 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
-              Discover What You Want to Build
+              {isCorporate ? "Find Your Team's First AI Project" : "Discover What You Want to Build"}
             </h4>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-5 max-w-sm mx-auto">
-              A short conversation to help you figure out what actually excites you. No menus, no quizzes — just honest questions and a vision prompt at the end.
+              {isCorporate
+                ? "A quick conversation to identify the right first project for your team. Three questions, then a concrete plan."
+                : "A short conversation to help you figure out what actually excites you. No menus, no quizzes — just honest questions and a vision prompt at the end."}
             </p>
             <button
               onClick={handleStart}
@@ -285,6 +291,14 @@ export default function DesireEngine({ id = "desire-engine" }: { id?: string }) 
             >
               Let&apos;s go
             </button>
+            {isCorporate && (
+              <a
+                href="/quiz-chat"
+                className="block mt-3 text-xs text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+              >
+                Already know what you need? Skip to assessment
+              </a>
+            )}
           </div>
         </div>
       </div>
@@ -299,8 +313,8 @@ export default function DesireEngine({ id = "desire-engine" }: { id?: string }) 
           <div className="flex items-center gap-2.5">
             <BotAvatar />
             <div>
-              <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Discover Your Project</p>
-              <p className="text-[10px] text-zinc-400 dark:text-zinc-500">AI-powered discovery interview</p>
+              <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{isCorporate ? "Team Project Discovery" : "Discover Your Project"}</p>
+              <p className="text-[10px] text-zinc-400 dark:text-zinc-500">{isCorporate ? "Find your team's first AI win" : "AI-powered discovery interview"}</p>
             </div>
           </div>
           {messages.length > 2 && (

@@ -4,8 +4,10 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import DoodleBg from '@/components/quiz/DoodleBg';
 import DesireEngine from '@/components/DesireEngine';
+import { useAudience } from '@/lib/audience';
 
 export default function DiscoverPage() {
+  const audience = useAudience();
   return (
     <div className="min-h-screen bg-[#f0f0f0] relative overflow-hidden">
       <DoodleBg src="/textures/vibecode-light-1.png" opacity={0.18} />
@@ -29,7 +31,7 @@ export default function DiscoverPage() {
           </Link>
         </motion.div>
 
-        <DesireEngine id="discover" />
+        <DesireEngine id="discover" audience={audience} />
 
         {/* Voice alternative link */}
         <div className="mt-6 text-center">
