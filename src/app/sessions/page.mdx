@@ -1,4 +1,9 @@
 import Callout from "@/components/Callout";
+import NextModule from "@/components/NextModule";
+import BuildSession from "@/components/BuildSession";
+import DisconnectExercise from "@/components/DisconnectExercise";
+import ReflectionPrompt from "@/components/ReflectionPrompt";
+import SelfAssessment from "@/components/SelfAssessment";
 
 export const metadata = {
   title: "Mastering Sessions — Learn Vibe Coding",
@@ -7,16 +12,210 @@ export const metadata = {
 
 # Mastering Sessions
 
-*Coming soon.*
+You've been building things. You've had good sessions and bad ones. Moments of flow and moments of frustration. But have you noticed the *patterns*?
 
-This module will cover:
+This module is about becoming a student of your own process. Not just building things — but understanding *how* you build them, and using that understanding to build better.
 
-- **Session hygiene**: when to compact, when to clear, when to save handoffs
-- **Prompt archaeology on your own work**: analyzing your conversation history to find patterns
-- **Your prompting signature**: what your prompt style reveals about how you think
-- **Intensity management**: working with natural energy cycles, not against them
-- **Multi-project flow**: managing context across parallel streams of work
+---
 
-<Callout type="info" title="In the meantime">
-The best preparation for this module is experience. Keep building. After 5-10 sessions, you'll start noticing your own patterns — that's when this material will click.
+## Session hygiene
+
+Every Claude Code session is a conversation with a finite memory. The context window fills up. Old details get fuzzy. Eventually, the session degrades. Good session hygiene prevents this.
+
+### When to start fresh
+
+Start a new session when:
+- You're switching to a completely different project
+- The session has become confused (Claude keeps referencing something wrong)
+- You've been going in circles for more than 10 minutes
+- Context is above ~75% and `/compact` won't save it
+
+Don't start fresh when:
+- You're in the middle of something that's working
+- Claude has rich context about your project and you're iterating productively
+- You just hit a snag — try a repair pattern first
+
+### Compacting context
+
+`/compact` tells Claude to summarize the conversation so far and free up space. Use it proactively — at ~75% context, not 95%.
+
+Think of it like saving your game. You don't wait until you're about to die. You save when things are going well and you want to preserve that state.
+
+```
+/compact
+```
+
+After compacting, quickly verify Claude still has the key context:
+
+```
+What are we working on and what's left to do?
+```
+
+If the summary is wrong or incomplete, correct it. Those first few exchanges after a compact set the foundation for the rest of the session.
+
+### Saving handoffs
+
+For long-running projects, save a handoff before ending your session:
+
+```
+Save a handoff to .claude/handoffs/ with today's date.
+Include: what we built, what's working, what's left,
+and any decisions we made.
+```
+
+This is your future self's briefing document. When you come back tomorrow, you (or Claude) can read it and pick up exactly where you left off instead of reconstructing context from scratch.
+
+<Callout type="tip" title="The commit-before-close rule">
+Always commit and push before ending a session. Uncommitted work is invisible work. If you forget, your next session starts with confusion about what changed and why.
 </Callout>
+
+---
+
+## Prompt archaeology
+
+Here's something most people never do: go back and read their own conversations with AI.
+
+Your prompt history is a goldmine of self-knowledge. It reveals how you think, what you struggle with, what you skip, and where you get stuck. Reading your own prompts is like watching game tape — athletes do it, musicians do it, but somehow builders rarely do.
+
+### What to look for
+
+**Your opening moves.** Do you start with vision or with specifications? Do you set context or dive straight in? Your opening move sets the trajectory of the entire session.
+
+**Your correction patterns.** When Claude gets something wrong, how do you respond? Do you explain calmly? Get terse? Abandon and restart? Your correction style affects how quickly you recover from mistakes.
+
+**Your energy arc.** Look at the length and complexity of your prompts over time. Most people start with long, thoughtful prompts and get progressively shorter and more impatient. When in the session does your energy peak? When does it fade?
+
+**Your blind spots.** What do you *never* prompt for? Mobile responsiveness? Error handling? Accessibility? The things you don't ask about reveal the things you don't naturally think about.
+
+<DisconnectExercise
+  id="sessions-prompt-archaeology"
+  title="Prompt Archaeology Dig"
+  instructions="Open three past AI conversations (Claude, ChatGPT, whatever you've used). Read them straight through without AI help. For each conversation, write down: (1) Your opening prompt — what does it reveal about your thinking style? (2) The moment the session went best — what preceded it? (3) The moment the session went worst — what caused it? (4) One pattern you see across all three."
+  duration={20}
+  reflectionPrompt="What surprised you about reading your own prompts? Did you notice patterns you weren't aware of while building?"
+/>
+
+---
+
+## Your prompting signature
+
+Everyone develops a prompting signature — a characteristic way of talking to AI that reflects how they think. Some people are terse. Some are verbose. Some are visual. Some are analytical. None of these are wrong, but understanding your signature helps you play to your strengths.
+
+### Common signatures
+
+**The Over-Specifier.** You describe everything in advance. Pixel values, color codes, exact behavior for every edge case. Your prompts are long and precise.
+
+*Strength:* You get exactly what you asked for.
+*Weakness:* You constrain Claude from applying its own judgment. You spend more energy on specification than on vision.
+
+**The Under-Specifier.** "Make it good." "Fix it." You trust Claude to figure out the details and only intervene when something's obviously wrong.
+
+*Strength:* Fast iteration, room for Claude's competence.
+*Weakness:* Sometimes you get something completely different from what you wanted, because you never said what you wanted.
+
+**The Conversationalist.** You talk it through. "I'm thinking about...", "What if we tried...", "The problem is that..." Your prompts read like thinking out loud.
+
+*Strength:* Claude gets deep context about your reasoning and can push back or suggest alternatives.
+*Weakness:* Can use a lot of context window on discussion instead of action.
+
+**The Commander.** Short, direct instructions. "Add dark mode." "Fix the nav." "Deploy." You know what you want and you say it.
+
+*Strength:* Efficient, clear intent.
+*Weakness:* Misses opportunities for Claude to offer better approaches you hadn't considered.
+
+Most people are a blend, shifting between signatures depending on their energy and confidence. The point isn't to pick one. It's to notice which one you default to, and to deliberately shift when the situation calls for it.
+
+<ReflectionPrompt
+  id="sessions-signature"
+  prompt="Which prompting signature do you default to? Think about your most recent building session. Were you over-specifying, under-specifying, conversing, or commanding? How did that work out?"
+/>
+
+---
+
+## Energy management
+
+Vibe coding is mentally demanding in a way that doesn't feel like work. You're not writing code, but you're making hundreds of small judgment calls: Is this what I wanted? Should I iterate or accept? Is this good enough? What's next?
+
+That judgment fatigue is real. And it follows patterns.
+
+### The energy curve
+
+Most people have a predictable arc:
+
+1. **Ramp-up (first 10 min):** Setting context, establishing vision, getting Claude oriented.
+2. **Flow (10-40 min):** Productive collaboration. Decisions come easy. Iteration is fast.
+3. **Plateau (40-60 min):** Still productive, but decisions slow down. You start accepting things you'd normally push back on.
+4. **Decline (60+ min):** Diminishing returns. You're going in circles or accepting mediocre output because you're tired of iterating.
+
+The sweet spot is the flow phase. The mistake is pushing through the decline phase thinking you'll power through. You won't. The quality drops and you'll redo it tomorrow anyway.
+
+### Working with your energy
+
+**Build during flow.** Don't waste your peak energy on setup or planning. Have your project ready, your context loaded, your vision clear. When you sit down, go straight to building.
+
+**Refine during plateau.** When your energy dips, switch from building to polishing. Error states, mobile layout, copy editing. These tasks require less creative energy but still move the project forward.
+
+**Stop during decline.** When you notice yourself accepting things you don't love, stop. Commit what you have. Save a handoff. Walk away. The project will be there tomorrow, and tomorrow-you will have fresh judgment.
+
+**Use breaks strategically.** A 10-minute break can reset you from decline to flow. Stand up, move, look at something that isn't a screen. When you come back, re-read the last few exchanges before continuing.
+
+<Callout type="warning" title="The 'one more thing' trap">
+The most common mistake is "let me just fix one more thing" at the end of a session. This is when bugs get introduced, designs get worse, and working code gets broken. If you've been at it for an hour, commit and stop. The one more thing can wait.
+</Callout>
+
+---
+
+## Multi-project flow
+
+Real vibe coders don't work on one project at a time. They have 3-5 going. This is natural and productive — but it requires discipline to prevent context bleed.
+
+### Context bleed
+
+Context bleed is when mental models from one project leak into another. You're building a minimalist portfolio and suddenly you're adding features because you were just working on a feature-rich dashboard. Or you use patterns from Project A in Project B where they don't make sense.
+
+### Preventing bleed
+
+**One session per project.** Don't switch projects within a session. When you switch projects, `/clear` and start fresh. The time it takes to reload context is much less than the time you'll waste untangling bleed.
+
+**Different folders, different CLAUDE.md files.** Each project should have its own CLAUDE.md with project-specific instructions. This isn't just organization — it's telling Claude (and yourself) "we're in a different context now."
+
+**Use handoffs as boundaries.** When you finish a session on Project A, write a handoff. When you start Project B, don't carry Project A's momentum. Read Project B's handoff and re-enter *that* world.
+
+**Name your sessions.** Even just mentally: "this is a Source Library session" or "this is a portfolio session." Naming creates cognitive boundaries.
+
+<BuildSession
+  id="sessions-practice"
+  module="sessions"
+  prompt="Run a full session using the techniques from this module. Choose a project (new or existing). Before starting: set an intention, note your energy level, and plan your session length. During: use /compact proactively, take a break if energy dips. After: save a handoff, commit, and debrief below."
+  suggestedDuration={45}
+  intentionQuestions={[
+    "What will you build or work on?",
+    "How long will you work before stopping — regardless of where you are?"
+  ]}
+  debriefQuestions={[
+    "Did you use /compact? Did you notice your energy shift? What would you do differently?",
+    "Did you stop when you planned to, or did you push past it?"
+  ]}
+/>
+
+---
+
+## Tracking your growth
+
+Session management is a skill. Like any skill, it improves with practice and honest self-assessment. Where are you right now?
+
+<SelfAssessment
+  id="sessions-management"
+  question="How intentional are your building sessions?"
+  type="slider"
+  lowLabel="I just open Claude and go until I stop"
+  highLabel="I plan sessions, manage energy, compact proactively, and save handoffs"
+/>
+
+Your answers here are just for you. Come back after a few more weeks of building and see how your relationship with sessions has changed.
+
+<NextModule
+  href="/shipping"
+  label="M6: Portfolio & Shipping"
+  description="Go from 'built things' to 'shipped things.'"
+/>

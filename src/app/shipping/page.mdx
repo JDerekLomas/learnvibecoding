@@ -1,4 +1,10 @@
 import Callout from "@/components/Callout";
+import NextModule from "@/components/NextModule";
+import BuildSession from "@/components/BuildSession";
+import DisconnectExercise from "@/components/DisconnectExercise";
+import ReflectionPrompt from "@/components/ReflectionPrompt";
+import SelfAssessment from "@/components/SelfAssessment";
+import CritiqueExercise from "@/components/CritiqueExercise";
 
 export const metadata = {
   title: "Portfolio & Shipping — Learn Vibe Coding",
@@ -7,17 +13,194 @@ export const metadata = {
 
 # Portfolio & Shipping
 
-*Coming soon.*
+You've built things. You have working projects on Vercel. URLs you can share. But there's a gap between "I built a thing" and "people use my thing." This module is about crossing that gap.
 
-This module will cover:
+Shipping isn't just deploying. It's the act of declaring something ready for other humans to encounter. That changes everything about how you think about your work.
 
-- **The gap between "built" and "shipped"**: what it takes to go from prototype to product
-- **Polish as a skill**: the last 10% that makes something feel professional
-- **Building a portfolio**: presenting your work to the world
-- **Publishing on CodeVibing**: community visibility and feedback
-- **User testing basics**: watching someone else use your thing (and surviving it)
-- **Iteration after launch**: the work doesn't stop at deploy
+---
 
-<Callout type="info" title="In the meantime">
-Focus on building. Ship at least 3 projects before worrying about portfolio presentation. The work comes first — the narrative comes later.
+## Built vs. shipped
+
+A project is *built* when it works on your machine and you feel good about it.
+
+A project is *shipped* when someone else can use it without you standing over their shoulder explaining how it works.
+
+The difference is bigger than you think. Built projects have happy paths. Shipped projects handle unhappy paths. Built projects look good in the demo. Shipped projects look good at 3am on a cracked phone screen.
+
+Here's a test: send someone a link to your project right now, with no explanation. Just the URL. Can they figure out what it is and use it? If not, it's built but not shipped.
+
+### What "the last 10%" actually means
+
+Developers talk about "the last 10%" as if it's a small thing. It's not. The last 10% of effort often takes 50% of the time. Here's what's in that 10%:
+
+**Error states.** What happens when the API call fails? What happens when the user enters something unexpected? What happens when they lose their internet connection? AI-generated code almost never handles these. You have to ask for them explicitly.
+
+```
+Add error handling for all API calls.
+Show a user-friendly error message when things fail.
+Don't just console.log — show the user what happened.
+```
+
+**Loading states.** Every time data is being fetched, the user should see something — a skeleton, a spinner, a subtle shimmer. A blank screen followed by sudden content is jarring. It feels broken even when it's working.
+
+```
+Add loading states for everything that fetches data.
+Use skeleton screens instead of spinners where possible.
+```
+
+**Empty states.** What does the page look like when there's no data yet? An empty table? A blank page? These are the first thing new users see, and they're usually terrible. A good empty state explains what should be here and how to get started.
+
+**Mobile.** Open your project on your actual phone. Not Chrome DevTools with a phone frame — your actual phone. Tap things with your actual finger. Is the text readable? Can you tap the buttons without hitting the wrong one? Does it scroll smoothly?
+
+**Edge cases.** What if the user's name is 200 characters long? What if they paste an essay into a single-line input? What if they double-click the submit button? What if they hit back in the browser?
+
+<Callout type="tip" title="The polish prompt">
+After your project works, try this: "Look at this project as a first-time user who just received the link with no context. What would confuse them? What's missing? Fix everything you find." Claude is surprisingly good at this — it just needs permission to be critical.
 </Callout>
+
+---
+
+## Polish as communication
+
+Here's something non-obvious: polish isn't just about quality. It's communication.
+
+When someone opens your project and sees a loading spinner instead of a blank screen, they receive a message: *someone thought about me.* When there's a helpful empty state instead of a bare page, the message is: *someone cared enough to guide me.* When the layout works perfectly on mobile, the message is: *this was made for real people, not just for demo day.*
+
+Polish says "I respect your time." Lack of polish says "I didn't think about you."
+
+This matters especially for a portfolio. A hiring manager, collaborator, or potential user spends about 10 seconds on your project before deciding whether to engage further. Those 10 seconds are almost entirely about polish, not functionality.
+
+Three things they notice immediately:
+1. **Does it load fast?** A slow load is an instant close.
+2. **Does it look intentional?** Consistent spacing, readable text, clear hierarchy.
+3. **Can I figure out what this is?** A clear headline or description, not a mystery.
+
+You don't need to be a designer. You need to care enough to check.
+
+<CritiqueExercise
+  id="shipping-polish-comparison"
+  prompt="Both versions are the same weather app with the same functionality. One is built, one is shipped. Which one would you put in a portfolio?"
+  type="pick-best"
+  items={[
+    {
+      label: "Version A",
+      content: "Weather App\n\nCity: [input field] [Search]\n\nTemperature: 72°F\nHumidity: 45%\nWind: 8 mph\nCondition: Sunny\n\n[Raw JSON data dump at bottom of page]\n[No loading state — blank then sudden content]\n[Broken layout on mobile — text overflows]\n[No error message if city not found — just blank]"
+    },
+    {
+      label: "Version B",
+      content: "☀ Weather\nWhat's it like outside?\n\n[input with placeholder: 'Try \"Tokyo\" or \"Paris\"'] [Search]\n\n72°F — Sunny\nFeels like a perfect day.\n\nHumidity 45% · Wind 8 mph · UV Index 3\n\n[Skeleton loading while fetching]\n[\"Hmm, couldn't find that city. Try checking the spelling.\" on error]\n[Clean mobile layout with stacked cards]\n[Subtle animation on temperature display]"
+    }
+  ]}
+  expertAnalysis="Version B is shipped. The differences aren't about features — both show the same data. It's about care. Version B has: a clear headline that tells you what this is, a helpful placeholder that teaches you how to use it, a human-readable summary ('Feels like a perfect day') alongside the data, loading states so nothing feels broken, a friendly error message instead of silent failure, and a mobile-first layout. Version A has raw data, no guidance, no error handling, and breaks on mobile. The functionality is identical. The experience is completely different."
+/>
+
+---
+
+## Building a portfolio
+
+A portfolio isn't a list of everything you've built. It's a curated story about your growth and taste.
+
+### Choosing what to show
+
+Show 3-5 projects. Not 15. Curation is a signal of taste. Pick projects that:
+
+- **Show range.** A utility tool, a creative project, something with a backend. Not five to-do apps.
+- **Show growth.** Include an early project alongside a recent one. The contrast demonstrates learning.
+- **Show completion.** A polished project with error states beats an ambitious project that's half-broken.
+- **Show *you*.** Projects that solve problems you actually care about are more interesting than generic tutorials. "I built this because I needed it" is a powerful origin story.
+
+### Writing project descriptions
+
+Every portfolio project needs three things:
+
+1. **What it is.** One sentence. "A weather app that shows conditions in plain language." Not a paragraph.
+2. **Why you built it.** The motivation. "I wanted something simpler than checking three different weather apps." This makes it human.
+3. **What you learned.** The growth. "This was my first project with a real API. I learned about error handling the hard way." This shows self-awareness.
+
+Skip the tech stack list. Nobody cares that you used "React 18.2 with Next.js 14 and Tailwind CSS 3.4 and..." They care about what you made and why.
+
+### Showing growth
+
+The most compelling portfolios aren't the ones with the most impressive projects. They're the ones that show a trajectory. Early projects that are simple but complete. Later projects that are more ambitious. A visible arc from "learning" to "capable."
+
+If you've been following this curriculum, you already have that arc. Your first build, your second project, your real build — each one is more sophisticated than the last. That progression *is* the portfolio.
+
+---
+
+## Getting feedback
+
+The scariest and most valuable thing you can do is watch someone use your project.
+
+Not "hey, what do you think?" over text. Actually watch them. In person, or on a screen share. Watch where they click. Watch where they hesitate. Watch where they get confused.
+
+You will learn more from 5 minutes of watching a real person use your thing than from 5 hours of staring at the code.
+
+### What to watch for
+
+- **Where do they look first?** This tells you about visual hierarchy.
+- **Where do they click first?** This tells you about affordances (what looks clickable).
+- **Where do they hesitate?** This tells you about confusing UI.
+- **What do they say out loud?** "Oh, I thought this would..." is pure gold.
+- **What do they NOT do?** Features they ignore might as well not exist.
+
+### How to survive it
+
+It's painful to watch someone struggle with something you built. Your instinct will be to explain: "Oh, you're supposed to click *there*." Resist. If you have to explain, the design is failing. Note what confused them and fix it later.
+
+Don't ask "do you like it?" Ask "can you show me how you'd use this to [do the thing it's for]?" Then be quiet and watch.
+
+<DisconnectExercise
+  id="shipping-user-test"
+  title="The Five-Minute User Test"
+  instructions="Pick a project you've built. Send the link to someone who hasn't seen it — a friend, family member, colleague. Sit with them (in person or screen share) and say: 'I built this. Can you try it out? I won't explain anything — I just want to see how it feels to use it for the first time.' Then watch. Don't help. Don't explain. Take notes on: where they hesitated, what confused them, what they said out loud, and whether they could accomplish the main task without guidance."
+  duration={10}
+  reflectionPrompt="What did you learn from watching someone else use your project? What was the biggest gap between your expectation and their experience?"
+/>
+
+---
+
+## Iteration after launch
+
+Shipping isn't the end. It's a phase transition.
+
+Before shipping, you're working from imagination: "I think users will want X." After shipping, you're working from reality: "Users actually do Y."
+
+### What to pay attention to
+
+**Do people come back?** If someone uses your thing once and never returns, that tells you something. Maybe it's a one-time tool (fine), or maybe it's not compelling enough to return to (less fine).
+
+**What do people actually use?** If you built five features and everyone uses two of them, the other three might be clutter. Consider removing them. Subtraction is a feature.
+
+**What do people complain about?** Complaints are requests in disguise. "This is confusing" means "I want to understand this but can't." "This is slow" means "I value this enough to be frustrated by the speed."
+
+### Knowing when to stop
+
+Not every project needs to be maintained forever. Some projects are complete. Some served their purpose and can be archived. Some taught you what you needed to learn and don't need more investment.
+
+It's okay to stop. Ship it, learn from it, move on. The next project will be better because this one existed.
+
+<BuildSession
+  id="shipping-polish-session"
+  module="shipping"
+  prompt="Take an existing project and ship it properly. Choose something you've built that works but isn't polished. Add: error states, loading states, an empty state, mobile fixes, and a clear landing experience for first-time visitors. Deploy and send the link to at least one person."
+  suggestedDuration={45}
+  intentionQuestions={[
+    "Which project are you polishing, and what's missing?",
+    "What would make you proud to send the link to a stranger?"
+  ]}
+  debriefQuestions={[
+    "What did you add? What's the biggest improvement to the user experience?",
+    "Did you send the link to someone? What did they say (or do)?"
+  ]}
+/>
+
+<ReflectionPrompt
+  id="shipping-meaning"
+  prompt="What does 'shipped' mean to you personally? Is it when it's deployed? When someone uses it? When you're proud of it? When you stop thinking about it? There's no right answer — but your answer shapes how you work."
+/>
+
+<NextModule
+  href="/craft"
+  label="M7: The Craft"
+  description="Advanced patterns, multi-service architectures, and the full Grimoire."
+/>
