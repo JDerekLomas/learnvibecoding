@@ -17,26 +17,41 @@ export function NavBar({ isCorporate }: { isCorporate: boolean }) {
     return null;
   }
 
-  const links = (
+  const links = isCorporate ? (
     <>
+      <Link href="/journey" className={linkClass} onClick={() => setOpen(false)}>
+        Journey
+      </Link>
       <Link href="/quiz" className={linkClass} onClick={() => setOpen(false)}>
         Quiz
       </Link>
-      {!isCorporate && (
-        <>
-          <Link href="/skill-map" className={linkClass} onClick={() => setOpen(false)}>
-            Skill Map
-          </Link>
-          <Link href="/curriculum" className={linkClass} onClick={() => setOpen(false)}>
-            Curriculum
-          </Link>
-        </>
-      )}
       <a
         href="https://codevibing.com"
         target="_blank"
         rel="noopener noreferrer"
         className={linkClass}
+        onClick={() => setOpen(false)}
+      >
+        Community
+      </a>
+    </>
+  ) : (
+    <>
+      <Link href="/quiz" className={linkClass} onClick={() => setOpen(false)}>
+        Quiz
+      </Link>
+      <Link href="/skill-map" className={linkClass} onClick={() => setOpen(false)}>
+        Skill Map
+      </Link>
+      <Link href="/curriculum" className={linkClass} onClick={() => setOpen(false)}>
+        Curriculum
+      </Link>
+      <a
+        href="https://codevibing.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={linkClass}
+        onClick={() => setOpen(false)}
       >
         Community
       </a>
