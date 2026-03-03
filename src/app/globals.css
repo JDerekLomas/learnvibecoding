@@ -28,6 +28,64 @@ body {
   margin: 0 auto;
 }
 
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e7e5e4;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.chat-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  color: #57534e;
+  transition: background 0.15s, color 0.15s;
+}
+
+.chat-back-btn:hover {
+  background: #f5f5f4;
+  color: #1c1917;
+}
+
+.chat-header-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1c1917;
+}
+
+.chat-finish-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  background: #1c1917;
+  color: #fff;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+
+.chat-finish-btn:hover {
+  background: #44403c;
+}
+
+.chat-finish-done {
+  background: #10b981;
+}
+
+.chat-finish-done:hover {
+  background: #059669;
+}
+
 .messages {
   flex: 1;
   overflow-y: auto;

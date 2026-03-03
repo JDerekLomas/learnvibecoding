@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import DoodleBg from '@/components/quiz/DoodleBg';
 
@@ -231,7 +231,7 @@ function QuizLauncherInner() {
   const mode = searchParams.get('mode');
 
   if (mode === 'assess') {
-    return <AssessmentLauncher />;
+    redirect('/quiz-chat');
   }
 
   return <TopicSelector />;

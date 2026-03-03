@@ -2,8 +2,12 @@
 
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import { useEffect, useRef, useState, useMemo, FormEvent } from "react";
+import { useEffect, useRef, useState, useMemo, useCallback, FormEvent } from "react";
+import Link from "next/link";
 import { QuizCard } from "./QuizCard";
+import type { QuizAnswerResult } from "./QuizCard";
+import { saveQuizResult } from "@/lib/progress";
+import { reportProgress, getTeamContext } from "@/lib/team";
 
 interface QuizToolOutput {
   questionId: string;
@@ -15,6 +19,8 @@ interface QuizToolOutput {
   exhausted?: boolean;
   message?: string;
 }
+
+const MIN_QUESTIONS_FOR_FINISH = 3;
 
 export function Chat() {
   const sessionIdRef = useRef(crypto.randomUUID());
@@ -28,6 +34,8 @@ export function Chat() {
   );
   const { messages, sendMessage, status } = useChat({ transport });
   const [input, setInput] = useState("");
+  const [answerCount, setAnswerCount] = useState(0);
+  const [finished, setFinished] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -41,9 +49,28 @@ export function Chat() {
     inputRef.current?.focus();
   }, []);
 
-  const handleQuizAnswer = (result: string) => {
-    sendMessage({ text: result });
-  };
+  const handleQuizAnswer = useCallback((result: QuizAnswerResult) => {
+    sendMessage({ text: result.text });
+    setAnswerCount((c) => c + 1);
+
+    // Save to local progress (XP, skill map)
+    saveQuizResult({
+      itemId: result.questionId,
+      correct: result.correct,
+      confidence: "know", // chatbot doesn't have confidence ratings
+      timestamp: Date.now(),
+      tags: [result.topic],
+    });
+  }, [sendMessage]);
+
+  const handleFinish = useCallback(() => {
+    setFinished(true);
+    // Report journey completion for team members
+    reportProgress("assess", "completed", {
+      questionsAnswered: answerCount,
+      sessionId: sessionIdRef.current,
+    });
+  }, [answerCount]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -56,8 +83,35 @@ export function Chat() {
     sendMessage({ text });
   };
 
+  const showFinishButton = answerCount >= MIN_QUESTIONS_FOR_FINISH && !finished;
+  const hasTeam = typeof window !== "undefined" && getTeamContext() !== null;
+
   return (
     <div className="chat-container">
+      <div className="chat-header">
+        <Link href="/journey" className="chat-back-btn" aria-label="Back">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 12H5" />
+            <path d="M12 19l-7-7 7-7" />
+          </svg>
+        </Link>
+        <span className="chat-header-title">AI Quiz</span>
+        {showFinishButton ? (
+          <Link
+            href="/journey"
+            onClick={handleFinish}
+            className="chat-finish-btn"
+          >
+            Done
+          </Link>
+        ) : finished ? (
+          <Link href="/journey" className="chat-finish-btn chat-finish-done">
+            Done
+          </Link>
+        ) : (
+          <div style={{ width: 36 }} />
+        )}
+      </div>
       <div className="messages">
         {messages.length === 0 && (
           <div className="welcome">

@@ -4,6 +4,13 @@ import { useCallback, useState } from "react";
 import { AnswerOption } from "./AnswerOption";
 import { FeedbackPanel } from "./FeedbackPanel";
 
+export interface QuizAnswerResult {
+  text: string;
+  questionId: string;
+  topic: string;
+  correct: boolean;
+}
+
 interface QuizCardProps {
   questionId: string;
   topic: string;
@@ -11,7 +18,7 @@ interface QuizCardProps {
   options: [string, string, string, string];
   correctIndex: number;
   explanation: string;
-  onAnswer: (result: string) => void;
+  onAnswer: (result: QuizAnswerResult) => void;
 }
 
 function getQuestionSource(questionId: string): "bank" | "generated" {
@@ -41,12 +48,12 @@ export function QuizCard({
       const correctAnswer = options[correctIndex];
       const source = getQuestionSource(questionId);
 
+      const text = correct
+        ? `[Quiz Answer] [qid:${questionId}] [source:${source}] [topic:${topic}] Question: "${question}" \u2014 I answered [${index}] "${selectedAnswer}" \u2014 CORRECT.`
+        : `[Quiz Answer] [qid:${questionId}] [source:${source}] [topic:${topic}] Question: "${question}" \u2014 I answered [${index}] "${selectedAnswer}" \u2014 INCORRECT. The correct answer was [${correctIndex}] "${correctAnswer}".`;
+
       setTimeout(() => {
-        onAnswer(
-          correct
-            ? `[Quiz Answer] [qid:${questionId}] [source:${source}] [topic:${topic}] Question: "${question}" \u2014 I answered [${index}] "${selectedAnswer}" \u2014 CORRECT.`
-            : `[Quiz Answer] [qid:${questionId}] [source:${source}] [topic:${topic}] Question: "${question}" \u2014 I answered [${index}] "${selectedAnswer}" \u2014 INCORRECT. The correct answer was [${correctIndex}] "${correctAnswer}".`
-        );
+        onAnswer({ text, questionId, topic, correct });
       }, 2000);
     },
     [showFeedback, correctIndex, options, question, questionId, topic, onAnswer]

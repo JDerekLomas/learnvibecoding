@@ -122,13 +122,13 @@ function CorporateLanding() {
             <span className="text-stone-400">They Just Need the Right Start.</span>
           </h1>
           <p className="mt-4 text-lg font-medium text-stone-500 max-w-lg mx-auto leading-relaxed">
-            A guided learning program that takes your team from &ldquo;I&apos;ve heard of vibe coding&rdquo; to shipping real projects with AI tools. 96 assessment questions, structured modules, and a dashboard so you can track progress.
+            A guided learning program that takes your team from &ldquo;I&apos;ve heard of vibe coding&rdquo; to shipping real projects with AI tools. Discovery interviews, structured modules, hands-on quizzes, and a dashboard to track progress.
           </p>
         </div>
 
         {/* CTAs */}
         <div className="mb-8 space-y-3">
-          <Link href="/quiz?mode=assess">
+          <Link href="/quiz-chat">
             <div className="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-extrabold text-base text-center shadow-xl shadow-indigo-500/25 hover:from-indigo-600 hover:to-violet-600 transition-all duration-150 border-2 border-white/20">
               See Where You Stand
             </div>
@@ -179,7 +179,7 @@ function CorporateLanding() {
                   </svg>
                 ),
                 title: "Skills Assessment",
-                desc: "Confidence-based quiz across 11 topics — prompt engineering, debugging, security, architecture, and more.",
+                desc: "AI-powered quiz conversation that adapts to your level and teaches as it goes.",
                 color: "bg-violet-500",
               },
               {
@@ -224,7 +224,7 @@ function CorporateLanding() {
           <div className="space-y-3">
             {[
               { label: "Discover", desc: "AI-powered conversation to find what excites you", color: "bg-amber-500" },
-              { label: "Assess", desc: "Confidence-based quiz across 11 AI topics", color: "bg-violet-500" },
+              { label: "Assess", desc: "AI quiz conversation that meets you where you are", color: "bg-violet-500" },
               { label: "Learn", desc: "Structured modules on vibe coding fundamentals", color: "bg-blue-500" },
               { label: "Practice", desc: "Targeted practice to reinforce key concepts", color: "bg-emerald-500" },
               { label: "Share", desc: "Post your project to the community", color: "bg-rose-500" },
