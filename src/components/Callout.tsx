@@ -5,12 +5,17 @@ interface CalloutProps {
 }
 
 const styles = {
-  info: "border-blue-300 bg-blue-50 dark:border-blue-800 dark:bg-blue-950/30",
-  tip: "border-emerald-300 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/30",
-  warning:
-    "border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/30",
-  exercise:
-    "border-violet-300 bg-violet-50 dark:border-violet-800 dark:bg-violet-950/30",
+  info: "border-blue-200 bg-blue-50",
+  tip: "border-emerald-200 bg-emerald-50",
+  warning: "border-amber-200 bg-amber-50",
+  exercise: "border-violet-200 bg-violet-50",
+};
+
+const iconColors = {
+  info: "bg-blue-500 text-white",
+  tip: "bg-emerald-500 text-white",
+  warning: "bg-amber-500 text-white",
+  exercise: "bg-violet-500 text-white",
 };
 
 const icons = {
@@ -26,16 +31,16 @@ export default function Callout({
   children,
 }: CalloutProps) {
   return (
-    <div className={`border-l-4 rounded-r-lg p-4 my-6 ${styles[type]}`}>
+    <div className={`border-l-4 rounded-r-xl p-5 my-6 ${styles[type]}`}>
       {title && (
-        <p className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1 flex items-center gap-2">
-          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-zinc-200 dark:bg-zinc-700 text-xs font-mono">
+        <p className="font-bold text-stone-900 mb-1.5 flex items-center gap-2">
+          <span className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold ${iconColors[type]}`}>
             {icons[type]}
           </span>
           {title}
         </p>
       )}
-      <div className="text-sm text-zinc-700 dark:text-zinc-300 [&>p]:mb-2 [&>p:last-child]:mb-0">
+      <div className="text-sm text-stone-600 [&>p]:mb-2 [&>p:last-child]:mb-0">
         {children}
       </div>
     </div>

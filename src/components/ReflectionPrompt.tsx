@@ -31,24 +31,24 @@ export default function ReflectionPrompt({ id, prompt }: ReflectionPromptProps) 
   }, [id, text]);
 
   return (
-    <div className="my-6 rounded-lg border border-violet-200 dark:border-violet-800/50 overflow-hidden">
+    <div className="my-6 rounded-2xl border-2 border-violet-200 bg-violet-50/50 overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-violet-50/50 dark:hover:bg-violet-950/20 transition-colors"
+        className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-violet-50 transition-colors"
       >
-        <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-violet-100 dark:bg-violet-900/50 text-xs text-violet-600 dark:text-violet-400 shrink-0">
+        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-violet-500 text-xs font-bold text-white shrink-0">
           ?
         </span>
-        <span className="font-medium text-sm text-zinc-900 dark:text-zinc-100 flex-1">
+        <span className="font-bold text-sm text-stone-900 flex-1">
           Reflect: {prompt}
         </span>
         {hasPrevious && (
-          <span className="text-[10px] text-violet-500 dark:text-violet-400 shrink-0">
+          <span className="text-[10px] font-bold text-violet-500 bg-violet-100 px-2 py-0.5 rounded-full shrink-0">
             answered
           </span>
         )}
         <svg
-          className={`w-4 h-4 text-zinc-400 transition-transform shrink-0 ${open ? "rotate-180" : ""}`}
+          className={`w-4 h-4 text-stone-400 transition-transform shrink-0 ${open ? "rotate-180" : ""}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -58,22 +58,22 @@ export default function ReflectionPrompt({ id, prompt }: ReflectionPromptProps) 
       </button>
 
       {open && (
-        <div className="px-4 pb-4 border-t border-violet-100 dark:border-violet-800/30">
+        <div className="px-5 pb-5 border-t border-violet-200">
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Write your reflection here..."
             rows={4}
-            className="mt-3 w-full rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-violet-300 dark:focus:ring-violet-700 resize-y"
+            className="mt-4 w-full rounded-xl border-2 border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-300 resize-y"
           />
-          <div className="flex items-center justify-between mt-2">
-            <p className="text-xs text-zinc-400 dark:text-zinc-500">
+          <div className="flex items-center justify-between mt-3">
+            <p className="text-xs text-stone-400 font-medium">
               {hasPrevious ? "You can revise your response anytime." : "Saved locally in your browser."}
             </p>
             <button
               onClick={handleSave}
               disabled={!text.trim()}
-              className="px-3 py-1 text-xs font-medium rounded-md bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300 hover:bg-violet-200 dark:hover:bg-violet-800/50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="px-4 py-1.5 text-xs font-bold rounded-lg bg-violet-500 text-white hover:bg-violet-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               {saved ? "Saved" : "Save"}
             </button>
