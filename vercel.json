@@ -1,1 +1,5 @@
-{}
+{
+  "deploymentProtection": {
+    "deploymentType": "none"
+  }
+}

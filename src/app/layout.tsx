@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { headers } from "next/headers";
 import Link from "next/link";
 import "./globals.css";
+import { AudienceProvider } from "./AudienceProvider";
+import type { Audience } from "@/lib/audience";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,43 +22,65 @@ export const metadata: Metadata = {
     "A structured curriculum for building with AI — from first conversation to shipped product.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+  const audience = (headersList.get("x-audience") || "consumer") as Audience;
+  const isCorporate = audience === "corporate";
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <nav className="sticky top-0 z-50 border-b border-zinc-200 bg-stone-50/80 backdrop-blur-sm dark:border-zinc-800 dark:bg-stone-950/80">
-          <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
-            <Link
-              href="/"
-              className="text-lg font-semibold tracking-tight text-zinc-900 dark:text-zinc-100"
-            >
-              Learn Vibe Coding
-            </Link>
-            <div className="flex items-center gap-6 text-sm text-zinc-500 dark:text-zinc-400">
-              <Link href="/skill-map" className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
-                Skill Map
-              </Link>
-              <Link href="/curriculum" className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
-                Curriculum
-              </Link>
-              <a
-                href="https://codevibing.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+        <AudienceProvider audience={audience}>
+          <nav className="sticky top-0 z-50 border-b border-zinc-200 bg-stone-50/80 backdrop-blur-sm dark:border-zinc-800 dark:bg-stone-950/80">
+            <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
+              <Link
+                href="/"
+                className="text-lg font-semibold tracking-tight text-zinc-900 dark:text-zinc-100"
               >
-                Community
-              </a>
+                {isCorporate ? "AI Growth" : "Learn Vibe Coding"}
+              </Link>
+              <div className="flex items-center gap-6 text-sm text-zinc-500 dark:text-zinc-400">
+                <Link
+                  href="/quiz"
+                  className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                >
+                  Quiz
+                </Link>
+                {!isCorporate && (
+                  <>
+                    <Link
+                      href="/skill-map"
+                      className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                    >
+                      Skill Map
+                    </Link>
+                    <Link
+                      href="/curriculum"
+                      className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                    >
+                      Curriculum
+                    </Link>
+                  </>
+                )}
+                <a
+                  href="https://codevibing.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                >
+                  Community
+                </a>
+              </div>
             </div>
-          </div>
-        </nav>
-        {children}
+          </nav>
+          {children}
+        </AudienceProvider>
       </body>
     </html>
   );

@@ -1,5 +1,12 @@
 const STORAGE_KEY = "lvc-progress";
 
+export interface QuizResult {
+  itemId: string;
+  correct: boolean;
+  confidence: "think" | "know";
+  timestamp: number;
+}
+
 export interface LearnerData {
   reflections: Record<string, string>;
   projects: Array<{
@@ -43,6 +50,8 @@ export interface LearnerData {
     audience: string;
     date: string;
   }>;
+  quizResults: QuizResult[];
+  totalXP: number;
 }
 
 function empty(): LearnerData {
@@ -55,6 +64,8 @@ function empty(): LearnerData {
     buildSessions: [],
     disconnects: [],
     discoveries: [],
+    quizResults: [],
+    totalXP: 0,
   };
 }
 
@@ -145,6 +156,21 @@ export function saveDiscovery(discovery: { id: string; prompt: string; feelings:
   d.discoveries.push({ ...discovery, date: new Date().toISOString().slice(0, 10) });
   save(d);
   notifyChange();
+}
+
+export function saveQuizResult(result: QuizResult) {
+  const d = getData();
+  d.quizResults.push(result);
+  d.totalXP = (d.totalXP || 0) + getQuizXP(result);
+  save(d);
+  notifyChange();
+}
+
+function getQuizXP(result: QuizResult): number {
+  if (result.correct && result.confidence === "know") return 15;
+  if (result.correct && result.confidence === "think") return 10;
+  if (!result.correct && result.confidence === "think") return 3;
+  return 5; // confident-wrong
 }
 
 export function hasExerciseData(path: string): boolean {
