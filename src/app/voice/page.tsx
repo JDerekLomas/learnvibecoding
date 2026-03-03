@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useCallback, useRef } from 'react';
 import DoodleBg from '@/components/quiz/DoodleBg';
+import { DISCOVERY_SYSTEM_PROMPT } from '@/lib/discovery-prompt';
 
 const AGENT_ID = process.env.NEXT_PUBLIC_ELEVENLABS_AGENT_ID || '';
 
@@ -118,16 +119,18 @@ export default function VoiceAgentPage() {
       startedRef.current = true;
 
       const context = formatPrepContext(answers);
-      const sessionOptions: Parameters<typeof conversation.startSession>[0] = {
+      const prompt = context
+        ? DISCOVERY_SYSTEM_PROMPT.replace('{{user_context}}', context)
+        : DISCOVERY_SYSTEM_PROMPT.replace('{{user_context}}', 'No context provided — start fresh.');
+      await conversation.startSession({
         agentId: AGENT_ID,
         connectionType: 'webrtc' as const,
-      };
-      if (context) {
-        sessionOptions.dynamicVariables = {
-          user_context: context,
-        };
-      }
-      await conversation.startSession(sessionOptions);
+        overrides: {
+          agent: {
+            prompt: { prompt },
+          },
+        },
+      });
       setHasStarted(true);
       setStatusLog((prev) => [...prev, 'Session started']);
     } catch (err) {
