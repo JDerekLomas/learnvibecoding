@@ -26,8 +26,22 @@ export default function DesireEngine({ id = "desire-engine" }: { id?: string }) 
   const [started, setStarted] = useState(false);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [prepContext, setPrepContext] = useState<string | undefined>();
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Read prep context from sessionStorage on mount
+  useEffect(() => {
+    try {
+      const stored = sessionStorage.getItem("discovery-prep");
+      if (stored) {
+        setPrepContext(stored);
+        sessionStorage.removeItem("discovery-prep");
+      }
+    } catch {
+      // sessionStorage not available
+    }
+  }, []);
 
   const scrollToBottom = useCallback(() => {
     setTimeout(() => {
@@ -60,7 +74,7 @@ export default function DesireEngine({ id = "desire-engine" }: { id?: string }) 
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages }),
+        body: JSON.stringify({ messages: newMessages, userContext: prepContext }),
       });
 
       if (!res.ok) {
@@ -136,11 +150,15 @@ export default function DesireEngine({ id = "desire-engine" }: { id?: string }) 
 
     try {
       // Send empty conversation to get the opening message
+      const kickoff = prepContext
+        ? `[The user just clicked 'Start' to begin the discovery conversation. They already shared some context in a warm-up: "${prepContext}" — use it to skip the basics and go deeper. Send your opening message. Don't introduce yourself or explain the process. Just ask your first question.]`
+        : "[The user just clicked 'Start' to begin the discovery conversation. Send your opening message — something surprising and thought-provoking. Don't introduce yourself or explain the process. Just ask your first question.]";
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: [{ role: "user", content: "[The user just clicked 'Start' to begin the discovery conversation. Send your opening message — something surprising and thought-provoking. Don't introduce yourself or explain the process. Just ask your first question.]" }],
+          messages: [{ role: "user", content: kickoff }],
+          userContext: prepContext,
         }),
       });
 
@@ -180,7 +198,7 @@ export default function DesireEngine({ id = "desire-engine" }: { id?: string }) 
       if (accumulated) {
         // Store the hidden system kick-off + response, but only show the assistant response
         setMessages([
-          { role: "user", content: "[The user just clicked 'Start' to begin the discovery conversation. Send your opening message — something surprising and thought-provoking. Don't introduce yourself or explain the process. Just ask your first question.]" },
+          { role: "user", content: kickoff },
           { role: "assistant", content: accumulated },
         ]);
       }

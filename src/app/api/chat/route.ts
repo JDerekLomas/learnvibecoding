@@ -1,9 +1,9 @@
 import { NextRequest } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { DISCOVERY_SYSTEM_PROMPT } from "@/lib/discovery-prompt";
+import { getDiscoveryPrompt } from "@/lib/discovery-prompt";
 
 export async function POST(request: NextRequest) {
-  const { messages } = await request.json();
+  const { messages, userContext } = await request.json();
 
   if (!messages || !Array.isArray(messages)) {
     return Response.json(
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
   const stream = anthropic.messages.stream({
     model: "claude-sonnet-4-20250514",
     max_tokens: 512,
-    system: DISCOVERY_SYSTEM_PROMPT,
+    system: getDiscoveryPrompt(typeof userContext === "string" ? userContext : undefined),
     messages: messages.map((m: { role: string; content: string }) => ({
       role: m.role as "user" | "assistant",
       content: m.content,
