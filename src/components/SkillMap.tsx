@@ -9,7 +9,7 @@ import {
   type SkillStatus,
   type Skill,
 } from "@/lib/skills";
-import { onProgressChange } from "@/lib/progress";
+import { onProgressChange, getQuizStatsByTags } from "@/lib/progress";
 import { getQuizMapping, getQuizUrl } from "@/lib/quiz-mapping";
 
 // MathItemBank-style colors
@@ -132,7 +132,36 @@ function QuizBadge({ skillId, status }: { skillId: string; status: SkillStatus }
   if (!mapping) return null;
 
   const url = getQuizUrl(mapping);
-  const isComplete = status === "complete";
+  const stats = getQuizStatsByTags(mapping.quizTags);
+  const hasProgress = stats.attempted > 0;
+  const isStrong = stats.attempted >= 3 && stats.accuracy >= 0.7;
+
+  if (isStrong) {
+    return (
+      <a
+        href={url}
+        onClick={(e) => e.stopPropagation()}
+        className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-0.5 rounded-full hover:scale-110 hover:bg-emerald-200 transition-transform duration-150"
+      >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+        {Math.round(stats.accuracy * 100)}%
+      </a>
+    );
+  }
+
+  if (hasProgress) {
+    return (
+      <a
+        href={url}
+        onClick={(e) => e.stopPropagation()}
+        className="inline-flex items-center gap-1 bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-0.5 rounded-full hover:scale-110 hover:bg-indigo-200 transition-transform duration-150"
+      >
+        {stats.correct}/{stats.attempted}
+      </a>
+    );
+  }
 
   return (
     <a
@@ -140,12 +169,7 @@ function QuizBadge({ skillId, status }: { skillId: string; status: SkillStatus }
       onClick={(e) => e.stopPropagation()}
       className="inline-flex items-center gap-1 bg-violet-100 text-violet-700 text-xs font-bold px-2 py-0.5 rounded-full hover:scale-110 hover:bg-violet-200 transition-transform duration-150"
     >
-      {isComplete ? (
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
-      ) : null}
-      Quiz{!isComplete && ` (${mapping.minItems})`}
+      Quiz ({mapping.minItems})
     </a>
   );
 }

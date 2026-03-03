@@ -5,6 +5,7 @@ export interface QuizResult {
   correct: boolean;
   confidence: "think" | "know";
   timestamp: number;
+  tags?: string[];
 }
 
 export interface LearnerData {
@@ -171,6 +172,25 @@ function getQuizXP(result: QuizResult): number {
   if (result.correct && result.confidence === "think") return 10;
   if (!result.correct && result.confidence === "think") return 3;
   return 5; // confident-wrong
+}
+
+export interface QuizStats {
+  attempted: number;
+  correct: number;
+  accuracy: number;
+}
+
+export function getQuizStatsByTags(tags: string[]): QuizStats {
+  const d = getData();
+  const matching = d.quizResults.filter(
+    (r) => r.tags && r.tags.some((t) => tags.includes(t))
+  );
+  const correct = matching.filter((r) => r.correct).length;
+  return {
+    attempted: matching.length,
+    correct,
+    accuracy: matching.length > 0 ? correct / matching.length : 0,
+  };
 }
 
 export function hasExerciseData(path: string): boolean {

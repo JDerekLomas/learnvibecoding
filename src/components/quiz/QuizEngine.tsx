@@ -19,6 +19,7 @@ import {
   getXPForFeedback,
 } from './types';
 import { buildQuizOptions, shuffleArray } from './sample-questions';
+import { saveQuizResult } from '@/lib/progress';
 
 interface QuizEngineProps {
   items: QuizItem[];
@@ -104,6 +105,14 @@ export default function QuizEngine({
           phase: 'feedback' as const,
         };
         return updated;
+      });
+
+      saveQuizResult({
+        itemId: current.item.id,
+        correct: isCorrect,
+        confidence,
+        timestamp: Date.now(),
+        tags: current.item.tags,
       });
     },
     [current, currentIndex]
