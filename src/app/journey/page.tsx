@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { getTeamContext, reportProgress } from "@/lib/team";
+import { getData } from "@/lib/progress";
 import type { TeamContext, JourneyStep } from "@/lib/team";
 
 interface StepDef {
@@ -94,25 +95,78 @@ export default function JourneyPage() {
     }
   }, []);
 
+  /** Derive journey progress from localStorage for solo learners */
+  const loadSoloProgress = useCallback(() => {
+    const d = getData();
+    const p: StepProgress = {};
+
+    // Discover: completed if any discoveries saved
+    if (d.discoveries.length > 0) p.discover = "completed";
+
+    // Assess: completed if quizResults exist (any mode)
+    if (d.quizResults.length >= 5) p.assess = "completed";
+    else if (d.quizResults.length > 0) p.assess = "started";
+
+    // Learn: completed if visited 3+ curriculum pages, started if any
+    const curriculumVisits = d.visited.filter(
+      (v) => v.startsWith("/know-yourself") || v.startsWith("/workflow") || v.startsWith("/build") || v.startsWith("/debugging") || v.startsWith("/curriculum")
+    );
+    if (curriculumVisits.length >= 3) p.learn = "completed";
+    else if (curriculumVisits.length > 0) p.learn = "started";
+
+    // Practice: completed if 10+ quiz results beyond assess, started if any
+    if (d.quizResults.length >= 15) p.practice = "completed";
+    else if (d.quizResults.length >= 5) p.practice = "started";
+
+    // Share: check if any projects saved
+    if (d.projects.length > 0) p.share = "completed";
+
+    // Also check for manual completions in localStorage
+    try {
+      const manual = localStorage.getItem("lvc-journey-manual");
+      if (manual) {
+        const manualProgress = JSON.parse(manual) as StepProgress;
+        for (const [step, status] of Object.entries(manualProgress)) {
+          if (status === "completed") p[step] = "completed";
+        }
+      }
+    } catch { /* ignore */ }
+
+    setProgress(p);
+  }, []);
+
   useEffect(() => {
     const ctx = getTeamContext();
     setTeamCtx(ctx);
     if (ctx) {
       fetchProgress(ctx);
+    } else {
+      loadSoloProgress();
     }
-  }, [fetchProgress]);
+  }, [fetchProgress, loadSoloProgress]);
 
   async function handleMarkDone(step: JourneyStep) {
     setMarkingDone(step);
-    await reportProgress(step, "completed");
+    if (teamCtx) {
+      await reportProgress(step, "completed");
+    } else {
+      // Solo: persist manual completions to localStorage
+      try {
+        const raw = localStorage.getItem("lvc-journey-manual");
+        const manual = raw ? JSON.parse(raw) : {};
+        manual[step] = "completed";
+        localStorage.setItem("lvc-journey-manual", JSON.stringify(manual));
+      } catch { /* ignore */ }
+    }
     setProgress((prev) => ({ ...prev, [step]: "completed" }));
     setMarkingDone(null);
   }
 
   async function handleStepClick(step: StepDef) {
-    // Report "started" for team members
-    if (teamCtx && !progress[step.key]) {
-      reportProgress(step.key, "started");
+    if (!progress[step.key]) {
+      if (teamCtx) {
+        reportProgress(step.key, "started");
+      }
       setProgress((prev) => ({ ...prev, [step.key]: "started" }));
     }
   }
@@ -227,8 +281,8 @@ export default function JourneyPage() {
                           </Link>
                         )}
 
-                        {/* Manual "Mark done" for external steps or any step */}
-                        {teamCtx && !isCompleted && (step.external || step.key === "learn") && (
+                        {/* Manual "Mark done" for external steps or learn */}
+                        {!isCompleted && (step.external || step.key === "learn") && (
                           <button
                             onClick={() => handleMarkDone(step.key)}
                             disabled={markingDone === step.key}
