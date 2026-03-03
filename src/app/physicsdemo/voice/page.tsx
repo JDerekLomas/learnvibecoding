@@ -3,7 +3,7 @@
 import { useConversation } from '@elevenlabs/react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { PHYSICS_TUTOR_PROMPT } from '@/lib/physics-tutor-prompt';
 
 const AGENT_ID = process.env.NEXT_PUBLIC_ELEVENLABS_AGENT_ID || '';
@@ -13,6 +13,11 @@ export default function PhysicsVoicePage() {
   const [error, setError] = useState('');
   const [statusLog, setStatusLog] = useState<string[]>([]);
   const startedRef = useRef(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const conversation = useConversation({
     onConnect: () => {
@@ -46,12 +51,7 @@ export default function PhysicsVoicePage() {
 
       await conversation.startSession({
         agentId: AGENT_ID,
-        connectionType: 'webrtc' as const,
-        overrides: {
-          agent: {
-            prompt: { prompt: PHYSICS_TUTOR_PROMPT },
-          },
-        },
+        connectionType: 'websocket' as const,
       });
       setHasStarted(true);
       setStatusLog((prev) => [...prev, 'Session started']);
@@ -81,6 +81,11 @@ export default function PhysicsVoicePage() {
 
   const isConnected = conversation.status === 'connected';
   const isConnecting = conversation.status === 'connecting';
+
+  // Avoid hydration mismatch — wait for client mount
+  if (!mounted) {
+    return null;
+  }
 
   // Fallback if no agent ID
   if (!AGENT_ID) {
