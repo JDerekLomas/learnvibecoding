@@ -15,7 +15,9 @@ function QuizPlayInner() {
   const themeParam = searchParams.get('theme');
   const topicParam = searchParams.get('topic') || 'all';
   const tagsParam = searchParams.get('tags');
+  const modeParam = searchParams.get('mode');
   const themeMode: ThemeMode = themeParam === 'light' ? 'light' : 'dark';
+  const isAssess = modeParam === 'assess';
 
   const items: QuizItem[] = useMemo(() => {
     if (topicParam === 'math') return mathQuestions;
@@ -31,7 +33,14 @@ function QuizPlayInner() {
     return vibecodingQuestions;
   }, [topicParam, tagsParam]);
 
-  return <QuizEngine items={items} sessionSize={7} themeMode={themeMode} />;
+  return (
+    <QuizEngine
+      items={items}
+      sessionSize={isAssess ? 10 : 7}
+      themeMode={themeMode}
+      mode={isAssess ? 'assess' : 'practice'}
+    />
+  );
 }
 
 export default function QuizPlayPage() {

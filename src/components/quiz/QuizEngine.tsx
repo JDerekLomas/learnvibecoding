@@ -21,10 +21,13 @@ import {
 import { buildQuizOptions, shuffleArray } from './sample-questions';
 import { saveQuizResult } from '@/lib/progress';
 
+export type QuizMode = 'assess' | 'practice';
+
 interface QuizEngineProps {
   items: QuizItem[];
   sessionSize?: number;
   themeMode?: ThemeMode;
+  mode?: QuizMode;
 }
 
 type EngineState = 'playing' | 'summary';
@@ -33,6 +36,7 @@ export default function QuizEngine({
   items,
   sessionSize = 7,
   themeMode = 'dark',
+  mode = 'practice',
 }: QuizEngineProps) {
   const [engineState, setEngineState] = useState<EngineState>('playing');
   const [questions, setQuestions] = useState<QuizQuestion[]>(() =>
@@ -158,6 +162,7 @@ export default function QuizEngine({
         onPlayAgain={handlePlayAgain}
         onExit={handleExit}
         theme={theme}
+        mode={mode}
       />
     );
   }

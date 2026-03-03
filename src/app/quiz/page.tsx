@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import DoodleBg from '@/components/quiz/DoodleBg';
 
 interface TopicCard {
@@ -182,7 +184,68 @@ function TopicIcon({ topic }: { topic: string }) {
   return icons[topic] || icons.all;
 }
 
+function AssessmentLauncher() {
+  return (
+    <div className="min-h-screen bg-[#f0f0f0] relative overflow-hidden">
+      <DoodleBg src="/textures/vibecode-light-1.png" opacity={0.08} />
+
+      <div className="mx-auto max-w-md px-6 py-12 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-8 text-center"
+        >
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-500 mb-4">
+            <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-extrabold text-stone-900 mb-2">
+            Placement Assessment
+          </h1>
+          <p className="text-sm text-stone-500 mb-2">
+            10 questions across all topics. See where you stand and where to focus.
+          </p>
+          <p className="text-xs text-stone-400 mb-6">
+            Answer honestly and rate your confidence — it helps us recommend the right path.
+          </p>
+
+          <Link href="/quiz/play?mode=assess">
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-violet-500 to-indigo-500 text-white font-extrabold text-lg shadow-xl shadow-violet-500/25 hover:from-violet-600 hover:to-indigo-600 transition-all duration-150 border-2 border-white/20"
+            >
+              Start Assessment
+            </motion.button>
+          </Link>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+function QuizLauncherInner() {
+  const searchParams = useSearchParams();
+  const mode = searchParams.get('mode');
+
+  if (mode === 'assess') {
+    return <AssessmentLauncher />;
+  }
+
+  return <TopicSelector />;
+}
+
 export default function QuizLauncher() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f0f0f0]" />}>
+      <QuizLauncherInner />
+    </Suspense>
+  );
+}
+
+function TopicSelector() {
   const [selectedTopic, setSelectedTopic] = useState('all');
 
   const selected = TOPICS.find((t) => t.id === selectedTopic)!;

@@ -7,6 +7,7 @@ import DoodleBg from './DoodleBg';
 import confetti from 'canvas-confetti';
 import { useEffect } from 'react';
 import { reportProgress } from '@/lib/team';
+import type { QuizMode } from './QuizEngine';
 
 interface SessionSummaryProps {
   questions: QuizQuestion[];
@@ -14,6 +15,7 @@ interface SessionSummaryProps {
   onPlayAgain: () => void;
   onExit: () => void;
   theme: QuizTheme;
+  mode?: QuizMode;
 }
 
 export default function SessionSummary({
@@ -22,6 +24,7 @@ export default function SessionSummary({
   onPlayAgain,
   onExit,
   theme,
+  mode = 'practice',
 }: SessionSummaryProps) {
   const correct = questions.filter((q) => q.isCorrect).length;
   const total = questions.length;
@@ -32,7 +35,8 @@ export default function SessionSummary({
   const misconceptionsCleared = confidentWrong;
 
   useEffect(() => {
-    reportProgress('practice', 'completed', {
+    const step = mode === 'assess' ? 'assess' : 'practice';
+    reportProgress(step, 'completed', {
       score: correct,
       total,
       xp: totalXP,
