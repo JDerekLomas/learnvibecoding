@@ -160,7 +160,7 @@ export const LIGHT_THEME: QuizTheme = {
   pageBg: 'bg-[#f0f0f0]',
 
   doodleBg: '/textures/vibecode-light-1.png',
-  doodleOpacity: 0.15,
+  doodleOpacity: 0.08,
   doodleTile: true,
 
   badgeBg: 'bg-indigo-100',

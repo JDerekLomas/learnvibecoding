@@ -12,7 +12,7 @@ export default function SkillMapPage() {
           backgroundImage: "url(/textures/vibecode-light-1.png)",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 0.18,
+          opacity: 0.08,
         }}
       />
 

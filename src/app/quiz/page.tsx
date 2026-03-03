@@ -190,7 +190,7 @@ export default function QuizLauncher() {
 
   return (
     <div className="min-h-screen bg-[#f0f0f0] relative overflow-hidden">
-      <DoodleBg src="/textures/vibecode-light-1.png" opacity={0.18} />
+      <DoodleBg src="/textures/vibecode-light-1.png" opacity={0.08} />
 
       <div className="mx-auto max-w-2xl px-6 py-12 relative z-10">
         {/* Header */}
