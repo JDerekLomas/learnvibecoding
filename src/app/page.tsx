@@ -307,19 +307,16 @@ function ConsumerLanding() {
           <p className="mt-3 text-lg font-medium text-stone-500 max-w-md mx-auto leading-relaxed">
             A structured curriculum for building with AI — from first conversation to shipped product.
           </p>
-          <p className="mt-2 text-sm text-stone-400">
-            No prerequisites. No gatekeeping. Start where you are.
-          </p>
           <p className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-stone-400 bg-stone-100 px-3 py-1.5 rounded-full">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-            7 modules · 4 core + 3 advanced
+            ~30 minutes to your first build
           </p>
         </div>
 
         {/* Find Your Level CTA */}
         <Link href="/quiz" className="block mb-8">
           <div className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-extrabold text-base text-center shadow-xl shadow-emerald-500/25 hover:from-emerald-600 hover:to-teal-600 transition-all duration-150 border-2 border-white/20">
-            Find Your Level
+            Take the Quiz to Find Your Level
           </div>
         </Link>
 
