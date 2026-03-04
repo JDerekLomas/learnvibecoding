@@ -47,7 +47,7 @@ function getQuizStats(results: QuizResult[]) {
 
 function getChaptersRead(visited: string[]) {
   return CHAPTERS.filter((ch) =>
-    visited.some((v) => v.includes(ch.slug) && v.includes('physicsdemo/learn'))
+    visited.some((v) => v === `physics-learn-${ch.slug}`)
   );
 }
 

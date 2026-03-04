@@ -37,7 +37,6 @@ export default function ShareButton() {
       setTimeout(() => setCopied(false), 2500);
       setState('done');
     } catch (err) {
-      console.error('Failed to create session:', err);
       setState('idle');
     }
   }
