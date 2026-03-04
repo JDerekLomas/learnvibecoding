@@ -1,0 +1,101 @@
+import ReflectionPrompt from "@/components/ReflectionPrompt";
+import ProjectShowcase from "@/components/ProjectShowcase";
+import CritiqueExercise from "@/components/CritiqueExercise";
+import ConceptCallout from "@/components/ConceptCallout";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "Building a Relationship — Learn Vibe Coding",
+  description: "AI rapport, aesthetics, and developing taste.",
+};
+
+# Building a Relationship
+
+AI isn't just a tool you optimize. It's a conversation partner you develop rapport with.
+
+This isn't anthropomorphism — it's pragmatics. The more context you share, the more history you build, the better the collaboration gets. Just like with a human colleague.
+
+**What builds good AI rapport:**
+- Expressing genuine reactions: "That's not what I meant" is better than re-prompting from scratch
+- Sharing context about why you want something, not just what you want
+- Acknowledging when it gets something right: "Yes, that direction"
+- Being honest about confusion: "I'm not sure what I want here, help me think through it"
+
+**What breaks it:**
+- Treating every prompt as an isolated request
+- Being adversarial ("prove you can do this")
+- Over-specifying when you don't actually have firm requirements
+- Ignoring good work and only responding to mistakes
+
+---
+
+## Your aesthetic: what does "good" look like to you?
+
+This is the question most people skip, and it matters enormously.
+
+"Good" is not universal. A landing page for a law firm and a landing page for a children's toy look completely different — not because of different code, but because of different aesthetics.
+
+Take a moment:
+- What websites do you admire?
+- What apps feel good to use?
+- What visual style makes you think "yes, that"?
+- What words describe your aesthetic? (Clean? Bold? Warm? Minimal? Playful?)
+
+<ProjectShowcase
+  caption="Different aesthetics, all valid — what draws you in?"
+  projects={[
+    {
+      title: "Linear",
+      description: "Crisp, precise, dark-mode-first. The gold standard for developer tool design.",
+      url: "https://linear.app",
+      tags: ["minimal", "developer", "dark"]
+    },
+    {
+      title: "Notion",
+      description: "Warm, playful, approachable. Proves productivity tools don't have to feel cold.",
+      url: "https://notion.so",
+      tags: ["warm", "friendly", "clean"]
+    },
+    {
+      title: "Stripe",
+      description: "Bold gradients meet surgical precision. Technical content made beautiful.",
+      url: "https://stripe.com",
+      tags: ["bold", "polished", "technical"]
+    },
+    {
+      title: "Are.na",
+      description: "Brutalist, quiet, thoughtful. Anti-algorithm design for creative people.",
+      url: "https://are.na",
+      tags: ["brutalist", "quiet", "creative"]
+    }
+  ]}
+/>
+
+Write this down. It becomes part of your CLAUDE.md. It becomes part of every prompt you give, implicitly or explicitly.
+
+<ConceptCallout id="taste-gap" />
+
+<CritiqueExercise
+  id="know-yourself-bakery"
+  prompt="A local bakery asked AI to create their website. Here are two versions. Which one better serves a neighborhood bakery? Consider: warmth, trust, and whether you'd actually order from this site."
+  type="pick-best"
+  criteria={["Warmth", "Trust", "Would you order from it?"]}
+  items={[
+    {
+      label: "Version A",
+      content: "Sleek dark theme, geometric sans-serif font, full-width hero video, hamburger menu, animated scroll effects. Tagline: 'Artisan Baked Goods — Crafted for Excellence.' Product grid with hover effects and a minimalist checkout flow."
+    },
+    {
+      label: "Version B",
+      content: "Warm cream background, friendly serif headings, photo of the actual bakery counter with flour-dusted hands. Tagline: 'Fresh bread, every morning since 2019.' Simple list of what's available today, phone number prominent, Google Maps embed showing the location."
+    }
+  ]}
+  expertAnalysis="Version B works better for a neighborhood bakery. The warm colors, real photos, and 'what's available today' list build the trust and approachability that drives local foot traffic. Version A is technically polished — it would work great for a luxury brand or tech company — but it creates distance where a bakery needs warmth. This is the core taste skill: 'good' depends entirely on context. A design that's perfect for one audience actively hurts another."
+/>
+
+<ReflectionPrompt
+  id="know-yourself-aesthetic"
+  prompt="What does 'good' look like to you? Name 2-3 websites or apps you admire and describe what draws you to them."
+/>
+
+<ChapterNav />

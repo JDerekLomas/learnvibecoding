@@ -1,0 +1,61 @@
+import Callout from "@/components/Callout";
+import ReflectionPrompt from "@/components/ReflectionPrompt";
+import SelfAssessment from "@/components/SelfAssessment";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "Your CLAUDE.md — Learn Vibe Coding",
+  description: "Write your CLAUDE.md as a self-portrait.",
+};
+
+# Your CLAUDE.md
+
+Your CLAUDE.md file isn't a configuration file. It's a portrait of how you think and work.
+
+Start with this template and make it yours:
+
+```markdown
+# Who I Am
+
+## How I Work
+- [Your general approach: fast and iterative? Careful and methodical?]
+- [What matters most: shipping fast? Getting details right? Beautiful design?]
+
+## My Aesthetic
+- [What "good" looks like to you]
+- [Sites/apps you admire]
+- [Words that describe your style]
+
+## Preferences
+- Be concise / Be detailed (pick one)
+- Explain before doing / Just do it (pick one)
+- Suggest alternatives / Follow instructions exactly (pick one)
+
+## Technical
+- Deploy to Vercel with `vercel --prod`
+- [Your preferred tech stack, if any]
+- [Your GitHub username]
+```
+
+This isn't set-and-forget. Update it as you learn more about how you work. Every few weeks, revisit it. Your CLAUDE.md grows as you grow.
+
+<ReflectionPrompt
+  id="know-yourself-claudemd"
+  prompt="After writing your CLAUDE.md — what surprised you about articulating your own preferences?"
+/>
+
+One more thing to notice about yourself: how much clarity do you bring *before* you start typing? There's no right answer — some people think first, others think by doing.
+
+<SelfAssessment
+  id="know-yourself-clarity"
+  question="Before prompting, how clearly do you know what you want?"
+  type="slider"
+  lowLabel="I figure it out as I go"
+  highLabel="Crystal clear before I type"
+/>
+
+<Callout type="exercise" title="Write your CLAUDE.md">
+Create (or update) your `~/.claude/CLAUDE.md` file using the template above. Spend 10 minutes making it genuinely yours. This is the single most impactful thing you can do to improve your vibe coding sessions.
+</Callout>
+
+<ChapterNav />
