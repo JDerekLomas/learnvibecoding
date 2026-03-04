@@ -1,0 +1,70 @@
+import Callout from "@/components/Callout";
+import DisconnectExercise from "@/components/DisconnectExercise";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "Multi-Service Architectures — Learn Vibe Coding",
+  description: "Databases, auth, payments, file storage — and how to wire them together.",
+};
+
+# Multi-Service Architectures
+
+Up to now, you've mostly built frontend apps — React components, static pages, maybe a simple API route. Real applications often need more: databases, authentication, file storage, payments.
+
+The good news: you don't have to build any of these from scratch. The even better news: Claude knows how to wire them all together.
+
+## The common services
+
+**Database (Supabase / Prisma).** When your app needs to remember things between sessions. Supabase is the fastest to set up — it gives you a Postgres database with a REST API and real-time subscriptions out of the box. Prisma is an ORM that works with any database and gives you type-safe queries.
+
+```
+Set up Supabase for this project. I need a table for [X]
+with columns for [Y]. Show me how to read and write from
+the Next.js API routes.
+```
+
+**Auth (NextAuth / Clerk).** When users need accounts. Clerk is the fastest — drop-in components, social login, user management dashboard. NextAuth is more flexible and open-source.
+
+```
+Add Clerk authentication. Users should be able to sign in
+with Google. Show the user's name in the header when logged in.
+Protect the /dashboard route so only logged-in users can access it.
+```
+
+**Payments (Stripe).** When you want to charge money. Stripe handles everything — checkout, subscriptions, invoices. You mostly just need to create a checkout session and handle the webhook.
+
+```
+Add Stripe checkout. One product: $10/month subscription.
+Show a pricing page with a "Subscribe" button.
+Handle the webhook to update the user's subscription status in the database.
+```
+
+**File storage (S3 / Supabase Storage / Uploadthing).** When users need to upload images, documents, or other files. Uploadthing is the simplest for Next.js projects.
+
+## The integration prompt
+
+When you need multiple services, be explicit about the architecture:
+
+```
+I need this app to have:
+- Supabase for the database (users, posts, comments)
+- Clerk for authentication
+- Uploadthing for image uploads
+
+Set up the project structure first. Show me how the services
+connect to each other. Then we'll build features one at a time.
+```
+
+<Callout type="warning" title="API keys and secrets">
+Multi-service apps require API keys. Never hardcode them. Use `.env.local` for development and your deployment platform's environment variables for production. If Claude puts an API key directly in code, catch it and move it to an env variable immediately.
+</Callout>
+
+<DisconnectExercise
+  id="craft-architecture-diagram"
+  title="Architecture on Paper"
+  instructions="Think of something you want to build that requires at least 2 external services (database + auth, or database + payments, or API + storage). Before touching any code or AI, draw the architecture on paper or a whiteboard. Draw boxes for each service and arrows showing how data flows between them. Label each arrow with what data moves along it. Include the user's browser as a box. This exercise builds your ability to think in systems before asking AI to implement them."
+  duration={15}
+  reflectionPrompt="Did diagramming first change how you'd approach the build? What connections or complications did you notice on paper that you might have missed in code?"
+/>
+
+<ChapterNav />

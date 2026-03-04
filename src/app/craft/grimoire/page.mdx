@@ -1,0 +1,115 @@
+import CritiqueExercise from "@/components/CritiqueExercise";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "The Promptcraft Grimoire — Learn Vibe Coding",
+  description: "Five named patterns that advanced vibe coders reach for constantly.",
+};
+
+# The Promptcraft Grimoire
+
+You've built things. You've shipped things. You've developed a prompting signature and a sense for session management. Now it's time to go deeper.
+
+This module is about expanding your range — new patterns, new tools, new kinds of projects. The things that separate someone who can vibe code from someone who can build *anything* with vibe coding.
+
+---
+
+Named patterns are powerful because they're portable. Once you can name a technique, you can choose it deliberately instead of stumbling into it. Here are five patterns that advanced vibe coders reach for constantly.
+
+## The Scaffold
+
+> "Build me the skeleton of [X]. No styling, no data, just the structure and navigation. Every page should exist with placeholder content."
+
+You start with structure, then fill in content. This is the opposite of how most people work (starting with the homepage and building out). The Scaffold gives you a complete map of your project before you've committed to any details.
+
+**When to use it:** Large projects with multiple pages or sections. When you need to see the whole shape before investing in any one piece.
+
+**Example:**
+```
+Build a recipe sharing site. I need: homepage, recipe detail page,
+submit recipe page, user profile page, and search results page.
+Just the skeleton — nav, layout, placeholder text on each page.
+No real data, no styling beyond basic readability.
+```
+
+## The Rubber Duck
+
+> "I'm going to describe what I want. Don't build anything yet — just ask me clarifying questions until you fully understand the vision."
+
+Named after rubber duck debugging. You use Claude as a thinking partner, not a builder. The conversation surfaces assumptions you didn't know you had.
+
+**When to use it:** When your idea is fuzzy and you need to sharpen it before building. When you've tried building twice and both times it came out wrong — the problem is probably in the vision, not the execution.
+
+**Example:**
+```
+I want to build something that helps me track my reading.
+Don't build anything yet. Ask me questions about what I actually need
+and what would make this different from Goodreads.
+```
+
+## The Inversion
+
+> "Show me the worst version of [X]. Every anti-pattern, every UX mistake, every bad decision. Then we'll do the opposite."
+
+Defining what you *don't* want is sometimes easier than defining what you *do* want. The Inversion makes your preferences explicit by contrast.
+
+**When to use it:** When you can't articulate what "good" looks like but you know it when you see it. When you're stuck in a rut and everything feels generic.
+
+**Example:**
+```
+Show me the most corporate, soul-crushing version of a personal website.
+Every bad pattern: stock photos, buzzwords, "synergy", meaningless
+testimonials. I want to see everything I want to avoid.
+```
+
+## The Constraint Box
+
+> "Build [X] but with [unusual constraint]."
+
+Constraints breed creativity. Limiting the solution space forces novel approaches. This is how you break out of Claude's default patterns.
+
+**When to use it:** When Claude keeps giving you generic solutions. When you want something distinctive. When you're exploring an idea and want to see different angles.
+
+**Example:**
+```
+Build a portfolio site, but it can only use one color (plus black and white).
+No images. Typography and spacing only.
+```
+
+## The Time Machine
+
+> "Fast-forward: it's 6 months from now and this project was a huge success. What does it look like? What features matter most? What did we get right from day one?"
+
+Future-casting forces you to think about what actually matters versus what seems urgent now. It reveals your real priorities.
+
+**When to use it:** At the start of an ambitious project. When you're drowning in feature ideas and need to prioritize. When you need to distinguish "nice to have" from "essential."
+
+**Example:**
+```
+Imagine it's 6 months from now and this habit tracker has 500 daily users.
+What are the 3 features they use every day?
+What did we build in week 1 that made everything else possible?
+```
+
+<CritiqueExercise
+  id="craft-identify-patterns"
+  prompt="Read these three prompts. Each one uses a Grimoire pattern. Can you identify which pattern is being used in each?"
+  type="find-problems"
+  items={[
+    {
+      label: "Prompt 1",
+      content: "I have an idea for a collaborative playlist app. Before we build, I want you to interview me. Ask about: who's the audience, what existing tools fail at, what the core experience should feel like, and what I'd cut if I could only keep 3 features. Don't write any code until we've talked it through."
+    },
+    {
+      label: "Prompt 2",
+      content: "Create a landing page for a developer tool. Constraint: no hero section, no gradient backgrounds, no 'Get Started' buttons, no feature grid. Find a completely different way to communicate what this tool does and why it matters."
+    },
+    {
+      label: "Prompt 3",
+      content: "Set up a blog platform. Just the architecture: homepage with post list, individual post pages, an admin page for creating posts, and a tag system. Use placeholder text everywhere. No CSS beyond what's needed to navigate. I want to see the bones."
+    }
+  ]}
+  expertAnalysis="Prompt 1 is The Rubber Duck — using Claude as a thinking partner before building, surfacing assumptions through questions. Prompt 2 is The Constraint Box — the constraints ('no hero section, no gradient, no Get Started button') force Claude out of its default patterns and into novel territory. Prompt 3 is The Scaffold — building the complete skeleton first, with no styling or real content, to see the shape of the project before committing to details. These patterns can also be combined: you might Rubber Duck your vision, Scaffold the structure, then use Constraint Boxes on individual components."
+/>
+
+<ChapterNav />

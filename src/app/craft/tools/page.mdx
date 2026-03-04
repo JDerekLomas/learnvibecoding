@@ -1,0 +1,57 @@
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "Alternative Tools & MCP Servers — Learn Vibe Coding",
+  description: "The tool landscape and how MCP servers extend Claude's reach.",
+};
+
+# Alternative Tools & MCP Servers
+
+## Alternative tools
+
+Claude Code is excellent, but it's not the only game in town. Knowing the landscape makes you a better builder.
+
+**Cursor.** IDE-based AI coding. If you prefer a visual editor over the terminal, Cursor gives you Claude-level AI inside VS Code. Great for people who want to see the file tree and code side-by-side with AI chat.
+
+**opencode.** Open-source terminal AI coding tool. Similar to Claude Code but works with any model provider. Good if you want model flexibility or prefer open-source tooling.
+
+**Kimi / DeepSeek.** Alternative AI models with strong coding ability, especially for certain domains. DeepSeek is particularly good at math and algorithms. Worth trying when Claude struggles with a specific problem.
+
+**Replit Agent.** Browser-based. No local setup needed. Good for prototyping and for environments where you can't install CLI tools. The tradeoff is less control and slower iteration.
+
+**v0.** Vercel's AI UI generator. Describe a component, get a component. Excellent for design-first workflows. Pairs well with Claude Code — use v0 for the UI, Claude Code for the logic.
+
+The principle is tool-agnostic: describe what you want, iterate on the result, maintain taste. The specific tool changes. The approach doesn't.
+
+---
+
+## MCP servers
+
+Model Context Protocol (MCP) servers extend Claude's reach beyond code. They connect Claude to external services — databases, browsers, APIs, file systems — so Claude can *do* things, not just *write* things.
+
+### What MCP servers are
+
+Think of them as plugins for Claude. Without MCP servers, Claude can read files, write files, and run terminal commands. With MCP servers, Claude can query your database, read your emails, check your analytics, browse the web, interact with Figma, and more.
+
+### The ecosystem
+
+MCP servers exist for:
+- **Databases** — query Postgres, SQLite, or Supabase directly
+- **Browsers** — read web pages, take screenshots, interact with sites
+- **APIs** — GitHub, Linear, Slack, Notion, and hundreds more
+- **File systems** — Google Drive, S3, local directories
+- **Dev tools** — Sentry error tracking, Vercel deployment status, CI/CD results
+
+### Building custom MCP servers
+
+The real power is building your own. An MCP server is a small program that exposes tools to Claude. If you have an internal API or a custom workflow, you can wrap it in an MCP server and Claude can use it.
+
+```
+Help me build an MCP server that connects to my Supabase project.
+It should expose tools for querying users, creating posts,
+and checking analytics. Use the TypeScript MCP SDK.
+```
+
+This is advanced, but it's where vibe coding becomes truly powerful. You're not just building with AI — you're building AI's ability to work with your specific infrastructure.
+
+<ChapterNav />

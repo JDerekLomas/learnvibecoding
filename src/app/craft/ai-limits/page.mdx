@@ -1,0 +1,30 @@
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "When AI Breaks — Learn Vibe Coding",
+  description: "AI is not good at everything. Knowing where it fails saves you hours.",
+};
+
+# When AI Breaks
+
+AI is not good at everything. Knowing where AI fails saves you hours of frustrating debugging.
+
+## Failure modes to recognize
+
+**Complex state management.** When your app has many interconnected states that need to stay synchronized, Claude tends to create race conditions and inconsistencies. A shopping cart that tracks quantities, applies discounts, calculates tax, and syncs with a server — Claude will get 90% right and the last 10% will be subtle bugs.
+
+**Real-time systems.** WebSockets, live collaboration, multiplayer anything. Claude can set it up, but the edge cases around disconnection, reconnection, conflict resolution, and race conditions are where things fall apart.
+
+**Complex algorithms.** If you need a specific algorithm (pathfinding, scheduling optimization, conflict-free replicated data types), Claude will often give you something that looks right but fails on edge cases. Verify the logic on paper if it matters.
+
+**Long file modifications.** When Claude needs to modify a file that's hundreds of lines long, it sometimes loses track of context and makes inconsistent changes. Break large files into smaller ones.
+
+## What to do when AI fails
+
+1. **Recognize it.** If you've been going back and forth on the same issue for 15+ minutes, AI might not be the right tool for this specific problem.
+2. **Isolate it.** Extract the failing piece into its own file or function. Smaller scope = better AI output.
+3. **Simplify.** Ask for the simplest possible version that works, then add complexity incrementally.
+4. **Research.** Sometimes you need to read the docs yourself. Claude's training data has a cutoff, and libraries change.
+5. **Accept human code.** For the 5% of your project that AI can't handle, write it yourself (or learn to). That's not failure — that's craft.
+
+<ChapterNav />

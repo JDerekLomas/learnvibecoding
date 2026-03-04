@@ -1,0 +1,99 @@
+import Callout from "@/components/Callout";
+import BuildSession from "@/components/BuildSession";
+import ReflectionPrompt from "@/components/ReflectionPrompt";
+import SelfAssessment from "@/components/SelfAssessment";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "Autonomous Agents — Learn Vibe Coding",
+  description: "Agent loops, delegation, safety boundaries, and your trajectory.",
+};
+
+# Autonomous Agents
+
+The frontier of vibe coding is delegation: giving Claude multi-step tasks and letting it execute them without your involvement.
+
+## How agent loops work
+
+Instead of one prompt and one response, agent loops let Claude:
+1. Plan a sequence of steps
+2. Execute each step
+3. Evaluate the result
+4. Decide the next step
+5. Repeat until done
+
+Claude Code already works this way — when you say "add dark mode to the entire site," Claude plans the changes, modifies files one by one, and runs the build to verify. But you can push this further.
+
+## Effective delegation
+
+```
+I have 20 API route files that all need the same error handling pattern.
+Work through them one at a time. For each one:
+1. Read the current code
+2. Add try/catch with proper error responses
+3. Run the type checker to make sure it compiles
+4. Move to the next one
+```
+
+This is autonomous work. You set the pattern, Claude executes it 20 times. The key is being specific about the pattern and the verification step.
+
+## Safety boundaries
+
+Autonomous agents need guardrails:
+
+- **Always commit before delegating large changes.** If Claude breaks something, you can revert.
+- **Set clear scope.** "Fix all the API routes" is better than "fix everything." Unbounded scope leads to unbounded changes.
+- **Verify incrementally.** After every 3-5 file changes, spot-check the output. Don't let Claude modify 50 files before you look at any of them.
+- **Use hooks.** Claude Code hooks can auto-run tests or linters after changes. This catches errors without you having to watch every step.
+
+The future of vibe coding is more delegation, not less. As you build trust with your tools and develop better patterns for verification, the scope of what you can hand off grows.
+
+<BuildSession
+  id="craft-multi-service"
+  module="craft"
+  prompt="Build something that requires at least 2 external services. Ideas: a blog with Supabase + auth, a marketplace with Stripe + database, a photo gallery with file uploads + user accounts. Use the architecture diagram you drew in the disconnect exercise as your starting point."
+  suggestedDuration={60}
+  intentionQuestions={[
+    "What are you building, and which services does it need?",
+    "What's the simplest version that proves the services work together?"
+  ]}
+  debriefQuestions={[
+    "Which service was hardest to integrate? Where did AI struggle?",
+    "Did your paper architecture match the final implementation?"
+  ]}
+/>
+
+---
+
+## Your trajectory
+
+You've come a long way. From "what is vibe coding?" to building multi-service applications with named patterns and deliberate session management. Take a moment to look at the arc.
+
+<ReflectionPrompt
+  id="craft-trajectory"
+  prompt="Think back to your first build. What could you do then? What can you do now? What's the most surprising thing you've learned — not about AI or code, but about yourself as a builder?"
+/>
+
+<SelfAssessment
+  id="craft-confidence"
+  question="If someone gave you an idea for a web application right now, how confident are you that you could build and ship it?"
+  type="slider"
+  lowLabel="I'd need a lot of guidance"
+  highLabel="I could build almost anything given enough time"
+/>
+
+---
+
+## Keep building
+
+This is the last module, but it's not the end.
+
+The craft of vibe coding is a practice, not a destination. Every project teaches you something. Every session refines your instincts. The patterns in this curriculum are starting points — you'll develop your own patterns, name your own techniques, and find your own rhythm.
+
+The tools will change. New AI models, new frameworks, new services. The principles won't: describe the destination, maintain taste, ship the work, learn from the users.
+
+<Callout type="tip" title="You made it.">
+You've completed the Learn Vibe Coding curriculum. You've gone from first principles to advanced craft. You've built real things and shipped them to real people. Whatever you build next — and you will build something next — carry this with you: the best tool for building is the willingness to start. Go make something.
+</Callout>
+
+<ChapterNav />
