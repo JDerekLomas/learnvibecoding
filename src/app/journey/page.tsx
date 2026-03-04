@@ -60,7 +60,7 @@ const STEPS: StepDef[] = [
     number: 5,
     title: "Share What You Built",
     description: "Post your project to the community. Celebrate the process, not just the product.",
-    href: "https://codevibing.com",
+    href: "https://codevibing.com/feed?compose=true&text=I%20just%20completed%20the%20learning%20journey%20on%20learnvibecoding!%20Here%27s%20what%20I%20built%3A%20",
     external: true,
     color: "rose",
     iconBg: "bg-rose-500",
@@ -268,7 +268,7 @@ export default function JourneyPage() {
                                 : "bg-stone-900 text-white hover:bg-stone-800"
                             }`}
                           >
-                            {isCompleted ? "Done" : "Open"}
+                            {isCompleted ? "Done" : step.key === "share" ? "Share on CodeVibing" : "Open"}
                           </a>
                         ) : (
                           <Link
