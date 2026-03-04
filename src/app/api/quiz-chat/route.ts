@@ -15,6 +15,7 @@ export const maxDuration = 30;
 let questionCounter = 0;
 
 export async function POST(req: Request) {
+  try {
   const { messages, sessionId }: { messages: UIMessage[]; sessionId?: string } =
     await req.json();
 
@@ -190,4 +191,11 @@ Don't repeat the question or answer options in your response \u2014 the user alr
   });
 
   return result.toUIMessageStreamResponse();
+  } catch (error) {
+    console.error("quiz-chat error:", error);
+    return new Response(JSON.stringify({ error: String(error) }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 }
