@@ -13,8 +13,9 @@ interface LearnerInfo {
   name: string;
 }
 
-const modalities = [
+const allModalities = [
   {
+    id: 'read',
     label: 'Read',
     description: 'Interactive guide with thought experiments',
     href: '/physicsdemo/learn',
@@ -29,6 +30,7 @@ const modalities = [
     gradient: 'from-amber-500 to-orange-500',
   },
   {
+    id: 'quiz',
     label: 'Quiz',
     description: 'Test your intuitions (XP + confetti)',
     href: '/physicsdemo/quiz',
@@ -41,6 +43,7 @@ const modalities = [
     gradient: 'from-orange-500 to-red-500',
   },
   {
+    id: 'ask-ai',
     label: 'Ask AI',
     description: 'Socratic physics tutor',
     href: '/physicsdemo/chat',
@@ -57,6 +60,7 @@ const modalities = [
     gradient: 'from-amber-600 to-amber-500',
   },
   {
+    id: 'talk',
     label: 'Talk',
     description: 'Voice conversation about heat',
     href: '/physicsdemo/voice',
@@ -81,10 +85,16 @@ export default function SessionPage() {
   const [name, setName] = useState('');
   const [joining, setJoining] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [sessionActivities, setSessionActivities] = useState<string[] | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const syncTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const storageKey = `${SESSION_KEY_PREFIX}${code}`;
+
+  // Filter modalities based on teacher selection
+  const modalities = sessionActivities
+    ? allModalities.filter((m) => sessionActivities.includes(m.id))
+    : allModalities;
 
   // Check if already joined
   useEffect(() => {
@@ -95,16 +105,21 @@ export default function SessionPage() {
           const info = JSON.parse(stored) as LearnerInfo;
           setLearner(info);
           setState('hub');
-          return;
         } catch {
           localStorage.removeItem(storageKey);
         }
       }
-      // Verify session exists
+      // Fetch session data (for activities config and to verify it exists)
       const res = await fetch(`/api/physics-sessions/${code}`);
       if (res.ok) {
-        setState('name');
-        setTimeout(() => inputRef.current?.focus(), 200);
+        const data = await res.json();
+        if (data.progress?.activities?.length) {
+          setSessionActivities(data.progress.activities);
+        }
+        if (!localStorage.getItem(storageKey)) {
+          setState('name');
+          setTimeout(() => inputRef.current?.focus(), 200);
+        }
       } else {
         setErrorMsg('This session link is invalid or has expired.');
         setState('error');
@@ -280,7 +295,7 @@ export default function SessionPage() {
 
       {/* Modality cards */}
       <div className="grid grid-cols-2 gap-4 mb-12">
-        {modalities.map((m, i) => (
+        {allModalities.map((m, i) => (
           <motion.div
             key={m.label}
             initial={{ opacity: 0, y: 20 }}
