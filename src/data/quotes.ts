@@ -11,7 +11,7 @@ export const quotes: Quote[] = [
   {
     text: "There's a new kind of coding I call 'vibe coding', where you fully give in to the vibes, embrace exponentials, and forget that the code even exists.",
     author: "Andrej Karpathy",
-    role: "Co-founder of OpenAI",
+    role: "Founding member of OpenAI",
     source: "https://x.com/karpathy/status/1886192184808149383",
     concept: "Vibes Are Valid",
     date: "Feb 2025",
@@ -19,7 +19,7 @@ export const quotes: Quote[] = [
   {
     text: "The hottest new programming language is English.",
     author: "Andrej Karpathy",
-    role: "Co-founder of OpenAI",
+    role: "Founding member of OpenAI",
     source: "https://x.com/karpathy/status/1617979122625712128",
     concept: "Context Engineering",
     date: "Jan 2023",
@@ -27,7 +27,7 @@ export const quotes: Quote[] = [
   {
     text: "Code is suddenly free, ephemeral, malleable, discardable after single use.",
     author: "Andrej Karpathy",
-    role: "Co-founder of OpenAI",
+    role: "Founding member of OpenAI",
     source: "https://karpathy.bearblog.dev/year-in-review-2025/",
     concept: "Build to Learn",
     date: "Dec 2025",
@@ -51,7 +51,7 @@ export const quotes: Quote[] = [
   {
     text: "I would mass-vibe-code for almost everything, then bring in a professional for review, hardening, and edgecases.",
     author: "Simon Willison",
-    role: "Creator of Django",
+    role: "Co-creator of Django",
     source: "https://simonwillison.net/2025/Mar/19/vibe-coding/",
     concept: "The Taste Gap",
     date: "Mar 2025",
@@ -67,7 +67,7 @@ export const quotes: Quote[] = [
   {
     text: "Context engineering is the art of providing all the information, tools, and structure the LLM needs to plausibly solve a task.",
     author: "Andrej Karpathy",
-    role: "Co-founder of OpenAI",
+    role: "Founding member of OpenAI",
     source: "https://x.com/karpathy/status/1937208846958985698",
     concept: "Context Engineering",
     date: "Jun 2025",
@@ -115,7 +115,7 @@ export const quotes: Quote[] = [
   {
     text: "Don't look at the code. Just look at the output. Does it feel right?",
     author: "Andrej Karpathy",
-    role: "Co-founder of OpenAI",
+    role: "Founding member of OpenAI",
     source: "https://x.com/karpathy/status/1886192184808149383",
     concept: "Vibes Are Valid",
     date: "Feb 2025",
