@@ -8,7 +8,7 @@ import { useState, useCallback, useRef } from 'react';
 import DoodleBg from '@/components/quiz/DoodleBg';
 import { DISCOVERY_SYSTEM_PROMPT } from '@/lib/discovery-prompt';
 
-const AGENT_ID = process.env.NEXT_PUBLIC_ELEVENLABS_AGENT_ID || '';
+const AGENT_ID = process.env.NEXT_PUBLIC_ELEVENLABS_DISCOVERY_AGENT_ID || process.env.NEXT_PUBLIC_ELEVENLABS_AGENT_ID || '';
 
 type Phase = 'prep' | 'fork' | 'voice';
 
@@ -128,6 +128,9 @@ export default function VoiceAgentPage() {
         overrides: {
           agent: {
             prompt: { prompt },
+            firstMessage: context
+              ? "Hey! I read what you shared — I'm already getting ideas. Let me ask you something that might surprise you."
+              : "Hey! So here's what I want to know. If you woke up tomorrow and someone had built the perfect app, tool, or website — just for you — what would it do?",
           },
         },
       });
@@ -207,7 +210,7 @@ export default function VoiceAgentPage() {
                   Before we start
                 </h2>
                 <p className="text-sm font-medium text-stone-400 text-center mb-8">
-                  Quick warm-up so the conversation doesn&apos;t start cold.
+                  A few quick thoughts so we can dream bigger together.
                 </p>
 
                 <AnimatePresence mode="wait">
@@ -271,7 +274,7 @@ export default function VoiceAgentPage() {
                   How do you want to explore?
                 </h2>
                 <p className="text-sm font-medium text-stone-400 mb-8 max-w-sm mx-auto">
-                  Same sharp questions, different medium. Pick what feels right.
+                  Same creative conversation, different medium. Pick what feels right.
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto">
@@ -376,7 +379,7 @@ export default function VoiceAgentPage() {
                     ? conversation.isSpeaking
                       ? 'The AI is thinking about your answer.'
                       : 'Speak naturally — the AI is listening.'
-                    : 'Talk through what you want to build. Same sharp questions, but with your voice.'}
+                    : "Let's discover what you want to create. Talk it through — your voice, your vision."}
                 </p>
 
                 {error && (
