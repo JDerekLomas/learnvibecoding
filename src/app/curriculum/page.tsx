@@ -95,11 +95,6 @@ export default function CurriculumPage() {
                     href={mod.slug}
                     className="group flex items-center gap-3 rounded-lg border-[2.5px] border-stone-900 bg-white px-4 py-3 shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all"
                   >
-                    <span
-                      className={`text-[10px] font-bold text-white px-1.5 py-0.5 rounded ${mod.color} shrink-0`}
-                    >
-                      {mod.tag}
-                    </span>
                     <span className="font-bold text-stone-900 flex-1">
                       {mod.title}
                     </span>

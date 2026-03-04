@@ -84,11 +84,6 @@ function NavSection({
                       : "text-stone-500 hover:text-stone-900 hover:bg-white/60 border-[2.5px] border-transparent"
                 }`}
               >
-                {link.tag && (
-                  <span className={`text-[10px] font-bold text-white px-1.5 py-0.5 rounded ${link.color} shrink-0`}>
-                    {link.tag}
-                  </span>
-                )}
                 <span className="flex-1">{link.title}</span>
                 <ProgressDot state={dotStates[link.slug] || "none"} />
               </Link>

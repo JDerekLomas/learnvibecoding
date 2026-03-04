@@ -60,7 +60,7 @@ export default function ModuleNav() {
             href={prev.slug}
             className="text-xs font-black text-stone-400 hover:text-stone-900 transition-colors no-underline"
           >
-            &larr; {prev.tag}: {prev.title}
+            &larr; {prev.title}
           </Link>
         ) : (
           <span />
@@ -70,7 +70,7 @@ export default function ModuleNav() {
             href={next.slug}
             className="text-xs font-black text-stone-400 hover:text-stone-900 transition-colors no-underline"
           >
-            {next.tag}: {next.title} &rarr;
+            {next.title} &rarr;
           </Link>
         ) : (
           <Link
