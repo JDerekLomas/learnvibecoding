@@ -75,6 +75,22 @@ const modalities = [
     ),
     gradient: 'from-red-500 to-rose-500',
   },
+  {
+    label: 'MCP Quiz',
+    description: 'Quiz inside Claude Code via MCP',
+    href: '/physicsdemo/mcp-quiz',
+    icon: (
+      <svg className="w-7 h-7 text-white" viewBox="0 0 28 28" fill="none">
+        <rect x="4" y="6" width="20" height="16" rx="3" stroke="currentColor" strokeWidth={2} />
+        <path d="M4 11h20" stroke="currentColor" strokeWidth={1.5} />
+        <path d="M9 15h4" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+        <path d="M9 18h7" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" opacity={0.5} />
+        <circle cx="20" cy="16" r="2" stroke="currentColor" strokeWidth={1.5} />
+        <path d="M20 14v-1" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" />
+      </svg>
+    ),
+    gradient: 'from-cyan-500 to-blue-500',
+  },
 ];
 
 const concepts = [
@@ -110,7 +126,7 @@ export default function PhysicsDemoHub() {
         </h1>
         <p className="text-lg text-stone-500 font-medium max-w-md mx-auto">
           Why does metal feel cold? Can a blanket keep a snowman frozen?
-          Explore heat through 5 different ways to learn.
+          Explore heat through 6 different ways to learn.
         </p>
       </motion.div>
 
