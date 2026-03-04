@@ -1,0 +1,73 @@
+import ProjectShowcase from "@/components/ProjectShowcase";
+import BuildSession from "@/components/BuildSession";
+import ReflectionPrompt from "@/components/ReflectionPrompt";
+import ConceptCallout from "@/components/ConceptCallout";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "The Portfolio Effect — Learn Vibe Coding",
+  description: "Once you've built 3-5 things, something shifts.",
+};
+
+# The Portfolio Effect
+
+Once you've built 3-5 things, something shifts. You stop seeing yourself as "learning to use AI" and start seeing yourself as "someone who builds things."
+
+That shift is the point.
+
+<ConceptCallout id="layer-cake" />
+<ConceptCallout id="plan-before-code" />
+
+Each project teaches you something:
+- Project 1: "I can build things"
+- Project 2: "I can build things *I want*"
+- Project 3: "I have a style"
+- Project 4: "I can build things for other people"
+- Project 5: "I can build things that ship"
+
+<ProjectShowcase
+  caption="The portfolio effect in action — real projects, real people"
+  projects={[
+    {
+      title: "Prompt Archaeology",
+      description: "Visualized patterns from 10,497 prompts across 68 days of Claude Code usage. Data-driven self-reflection.",
+      url: "https://dereklomas.me/projects/promptarchaeology",
+      tags: ["data viz", "self-reflection", "Claude Code"]
+    },
+    {
+      title: "Learn Vibe Coding",
+      description: "This site. The curriculum you're reading right now was built entirely through vibe coding — a meta-example of the craft.",
+      url: "https://learnvibecoding.vercel.app",
+      tags: ["education", "Next.js", "meta"]
+    }
+  ]}
+/>
+
+Don't rush it. But don't stop after one project, either.
+
+---
+
+## Publish to CodeVibing
+
+When you build something you're proud of, share it on [CodeVibing](https://codevibing.com) — the community gallery for AI-generated components and projects.
+
+Publishing does three things:
+1. It forces you to think about how your project looks to others
+2. It connects you with other vibe coders who can give feedback
+3. It builds a public record of what you've made
+
+You don't need to be an expert. You just need to have built something.
+
+<BuildSession
+  id="build-real-project"
+  module="build"
+  prompt="Build something real — something you chose because you want it, not because someone told you to. Stop reading and go build. This curriculum is useless without practice."
+  suggestedDuration={45}
+/>
+
+<ReflectionPrompt
+  id="build-why"
+  prompt="Why did you choose this project? What desire or need drove it?"
+/>
+
+<ChapterNav />
