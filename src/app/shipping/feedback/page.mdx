@@ -1,0 +1,83 @@
+import DisconnectExercise from "@/components/DisconnectExercise";
+import BuildSession from "@/components/BuildSession";
+import ReflectionPrompt from "@/components/ReflectionPrompt";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "Getting Feedback & Iterating — Learn Vibe Coding",
+  description: "Watch someone use your project. It will teach you more than anything.",
+};
+
+# Getting Feedback & Iterating
+
+The scariest and most valuable thing you can do is watch someone use your project.
+
+Not "hey, what do you think?" over text. Actually watch them. In person, or on a screen share. Watch where they click. Watch where they hesitate. Watch where they get confused.
+
+You will learn more from 5 minutes of watching a real person use your thing than from 5 hours of staring at the code.
+
+## What to watch for
+
+- **Where do they look first?** This tells you about visual hierarchy.
+- **Where do they click first?** This tells you about affordances (what looks clickable).
+- **Where do they hesitate?** This tells you about confusing UI.
+- **What do they say out loud?** "Oh, I thought this would..." is pure gold.
+- **What do they NOT do?** Features they ignore might as well not exist.
+
+## How to survive it
+
+It's painful to watch someone struggle with something you built. Your instinct will be to explain: "Oh, you're supposed to click *there*." Resist. If you have to explain, the design is failing. Note what confused them and fix it later.
+
+Don't ask "do you like it?" Ask "can you show me how you'd use this to [do the thing it's for]?" Then be quiet and watch.
+
+<DisconnectExercise
+  id="shipping-user-test"
+  title="The Five-Minute User Test"
+  instructions="Pick a project you've built. Send the link to someone who hasn't seen it — a friend, family member, colleague. Sit with them (in person or screen share) and say: 'I built this. Can you try it out? I won't explain anything — I just want to see how it feels to use it for the first time.' Then watch. Don't help. Don't explain. Take notes on: where they hesitated, what confused them, what they said out loud, and whether they could accomplish the main task without guidance."
+  duration={10}
+  reflectionPrompt="What did you learn from watching someone else use your project? What was the biggest gap between your expectation and their experience?"
+/>
+
+---
+
+## Iteration after launch
+
+Shipping isn't the end. It's a phase transition.
+
+Before shipping, you're working from imagination: "I think users will want X." After shipping, you're working from reality: "Users actually do Y."
+
+### What to pay attention to
+
+**Do people come back?** If someone uses your thing once and never returns, that tells you something. Maybe it's a one-time tool (fine), or maybe it's not compelling enough to return to (less fine).
+
+**What do people actually use?** If you built five features and everyone uses two of them, the other three might be clutter. Consider removing them. Subtraction is a feature.
+
+**What do people complain about?** Complaints are requests in disguise. "This is confusing" means "I want to understand this but can't." "This is slow" means "I value this enough to be frustrated by the speed."
+
+### Knowing when to stop
+
+Not every project needs to be maintained forever. Some projects are complete. Some served their purpose and can be archived. Some taught you what you needed to learn and don't need more investment.
+
+It's okay to stop. Ship it, learn from it, move on. The next project will be better because this one existed.
+
+<BuildSession
+  id="shipping-polish-session"
+  module="shipping"
+  prompt="Take an existing project and ship it properly. Choose something you've built that works but isn't polished. Add: error states, loading states, an empty state, mobile fixes, and a clear landing experience for first-time visitors. Deploy and send the link to at least one person."
+  suggestedDuration={45}
+  intentionQuestions={[
+    "Which project are you polishing, and what's missing?",
+    "What would make you proud to send the link to a stranger?"
+  ]}
+  debriefQuestions={[
+    "What did you add? What's the biggest improvement to the user experience?",
+    "Did you send the link to someone? What did they say (or do)?"
+  ]}
+/>
+
+<ReflectionPrompt
+  id="shipping-meaning"
+  prompt="What does 'shipped' mean to you personally? Is it when it's deployed? When someone uses it? When you're proud of it? When you stop thinking about it? There's no right answer — but your answer shapes how you work."
+/>
+
+<ChapterNav />

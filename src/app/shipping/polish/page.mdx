@@ -1,0 +1,43 @@
+import CritiqueExercise from "@/components/CritiqueExercise";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "Polish as Communication — Learn Vibe Coding",
+  description: "Polish isn't just about quality. It's communication.",
+};
+
+# Polish as Communication
+
+Here's something non-obvious: polish isn't just about quality. It's communication.
+
+When someone opens your project and sees a loading spinner instead of a blank screen, they receive a message: *someone thought about me.* When there's a helpful empty state instead of a bare page, the message is: *someone cared enough to guide me.* When the layout works perfectly on mobile, the message is: *this was made for real people, not just for demo day.*
+
+Polish says "I respect your time." Lack of polish says "I didn't think about you."
+
+This matters especially for a portfolio. A hiring manager, collaborator, or potential user spends about 10 seconds on your project before deciding whether to engage further. Those 10 seconds are almost entirely about polish, not functionality.
+
+Three things they notice immediately:
+1. **Does it load fast?** A slow load is an instant close.
+2. **Does it look intentional?** Consistent spacing, readable text, clear hierarchy.
+3. **Can I figure out what this is?** A clear headline or description, not a mystery.
+
+You don't need to be a designer. You need to care enough to check.
+
+<CritiqueExercise
+  id="shipping-polish-comparison"
+  prompt="Both versions are the same weather app with the same functionality. One is built, one is shipped. Which one would you put in a portfolio?"
+  type="pick-best"
+  items={[
+    {
+      label: "Version A",
+      content: "Weather App\n\nCity: [input field] [Search]\n\nTemperature: 72°F\nHumidity: 45%\nWind: 8 mph\nCondition: Sunny\n\n[Raw JSON data dump at bottom of page]\n[No loading state — blank then sudden content]\n[Broken layout on mobile — text overflows]\n[No error message if city not found — just blank]"
+    },
+    {
+      label: "Version B",
+      content: "☀ Weather\nWhat's it like outside?\n\n[input with placeholder: 'Try \"Tokyo\" or \"Paris\"'] [Search]\n\n72°F — Sunny\nFeels like a perfect day.\n\nHumidity 45% · Wind 8 mph · UV Index 3\n\n[Skeleton loading while fetching]\n[\"Hmm, couldn't find that city. Try checking the spelling.\" on error]\n[Clean mobile layout with stacked cards]\n[Subtle animation on temperature display]"
+    }
+  ]}
+  expertAnalysis="Version B is shipped. The differences aren't about features — both show the same data. It's about care. Version B has: a clear headline that tells you what this is, a helpful placeholder that teaches you how to use it, a human-readable summary ('Feels like a perfect day') alongside the data, loading states so nothing feels broken, a friendly error message instead of silent failure, and a mobile-first layout. Version A has raw data, no guidance, no error handling, and breaks on mobile. The functionality is identical. The experience is completely different."
+/>
+
+<ChapterNav />

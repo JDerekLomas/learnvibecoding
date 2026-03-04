@@ -1,0 +1,54 @@
+import Callout from "@/components/Callout";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "Built vs. Shipped — Learn Vibe Coding",
+  description: "The last 10% of effort takes 50% of the time.",
+};
+
+# Built vs. Shipped
+
+You've built things. You have working projects on Vercel. URLs you can share. But there's a gap between "I built a thing" and "people use my thing." This module is about crossing that gap.
+
+Shipping isn't just deploying. It's the act of declaring something ready for other humans to encounter. That changes everything about how you think about your work.
+
+---
+
+A project is *built* when it works on your machine and you feel good about it.
+
+A project is *shipped* when someone else can use it without you standing over their shoulder explaining how it works.
+
+The difference is bigger than you think. Built projects have happy paths. Shipped projects handle unhappy paths. Built projects look good in the demo. Shipped projects look good at 3am on a cracked phone screen.
+
+Here's a test: send someone a link to your project right now, with no explanation. Just the URL. Can they figure out what it is and use it? If not, it's built but not shipped.
+
+## What "the last 10%" actually means
+
+Developers talk about "the last 10%" as if it's a small thing. It's not. The last 10% of effort often takes 50% of the time. Here's what's in that 10%:
+
+**Error states.** What happens when the API call fails? What happens when the user enters something unexpected? What happens when they lose their internet connection? AI-generated code almost never handles these. You have to ask for them explicitly.
+
+```
+Add error handling for all API calls.
+Show a user-friendly error message when things fail.
+Don't just console.log — show the user what happened.
+```
+
+**Loading states.** Every time data is being fetched, the user should see something — a skeleton, a spinner, a subtle shimmer. A blank screen followed by sudden content is jarring. It feels broken even when it's working.
+
+```
+Add loading states for everything that fetches data.
+Use skeleton screens instead of spinners where possible.
+```
+
+**Empty states.** What does the page look like when there's no data yet? An empty table? A blank page? These are the first thing new users see, and they're usually terrible. A good empty state explains what should be here and how to get started.
+
+**Mobile.** Open your project on your actual phone. Not Chrome DevTools with a phone frame — your actual phone. Tap things with your actual finger. Is the text readable? Can you tap the buttons without hitting the wrong one? Does it scroll smoothly?
+
+**Edge cases.** What if the user's name is 200 characters long? What if they paste an essay into a single-line input? What if they double-click the submit button? What if they hit back in the browser?
+
+<Callout type="tip" title="The polish prompt">
+After your project works, try this: "Look at this project as a first-time user who just received the link with no context. What would confuse them? What's missing? Fix everything you find." Claude is surprisingly good at this — it just needs permission to be critical.
+</Callout>
+
+<ChapterNav />
