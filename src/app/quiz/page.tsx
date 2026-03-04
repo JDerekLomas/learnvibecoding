@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useSearchParams, redirect } from 'next/navigation';
+import { useSearchParams, useRouter, redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import DoodleBg from '@/components/quiz/DoodleBg';
 
@@ -246,6 +246,7 @@ export default function QuizLauncher() {
 }
 
 function TopicSelector() {
+  const router = useRouter();
   const [selectedTopic, setSelectedTopic] = useState('all');
 
   const selected = TOPICS.find((t) => t.id === selectedTopic)!;
@@ -322,22 +323,21 @@ function TopicSelector() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <Link href={`/quiz/play?topic=${selectedTopic}${tagParam}`}>
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              className="
-                w-full py-4 rounded-2xl
-                bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-extrabold text-lg
-                shadow-xl shadow-indigo-500/25
-                hover:from-indigo-600 hover:to-violet-600
-                transition-all duration-150
-                border-2 border-white/20
-              "
-            >
-              Start Session
-            </motion.button>
-          </Link>
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => router.push(`/quiz/play?topic=${selectedTopic}${tagParam}`)}
+            className="
+              w-full py-4 rounded-2xl
+              bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-extrabold text-lg
+              shadow-xl shadow-indigo-500/25
+              hover:from-indigo-600 hover:to-violet-600
+              transition-all duration-150
+              border-2 border-white/20
+            "
+          >
+            Start Session
+          </motion.button>
         </motion.div>
 
         {/* How it works */}
