@@ -14,6 +14,11 @@ interface AudioGetters {
   getVolume?: () => number;
 }
 
+interface TranscriptEntry {
+  role: 'user' | 'agent';
+  message: string;
+}
+
 /* ── Canvas voice orb ────────────────────────────────────────── */
 
 function VoiceOrb({
@@ -268,10 +273,17 @@ export default function PhysicsVoicePage() {
   const [micMuted, setMicMuted] = useState(false);
   const startedRef = useRef(false);
   const [mounted, setMounted] = useState(false);
+  const [transcript, setTranscript] = useState<TranscriptEntry[]>([]);
+  const [showTranscript, setShowTranscript] = useState(false);
+  const transcriptEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    transcriptEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [transcript]);
 
   const conversation = useConversation({
     micMuted,
@@ -289,6 +301,9 @@ export default function PhysicsVoicePage() {
         typeof err === 'string' ? err : err.message || 'Connection error';
       setError(msg);
       setStatusLog((prev) => [...prev, `Error: ${msg}`]);
+    },
+    onMessage: (props: { message: string; role: 'user' | 'agent' }) => {
+      setTranscript((prev) => [...prev, { role: props.role, message: props.message }]);
     },
   });
 
@@ -316,6 +331,7 @@ export default function PhysicsVoicePage() {
 
     try {
       setError('');
+      setTranscript([]);
       setStatusLog((prev) => [...prev, 'Requesting mic...']);
       await navigator.mediaDevices.getUserMedia({ audio: true });
       setStatusLog((prev) => [...prev, 'Mic granted, connecting...']);
@@ -403,8 +419,10 @@ export default function PhysicsVoicePage() {
 
   /* ── Main voice UI ──────────────────────────────────────── */
 
+  const transcriptVisible = showTranscript && transcript.length > 0;
+
   return (
-    <div className="max-w-2xl mx-auto px-6 py-8">
+    <div className={`mx-auto px-6 py-8 ${transcriptVisible ? 'max-w-5xl' : 'max-w-2xl'} transition-all duration-500`}>
       {/* Back nav */}
       <Link
         href="/physicsdemo"
@@ -425,12 +443,13 @@ export default function PhysicsVoicePage() {
         Back to Hub
       </Link>
 
+      <div className={`${transcriptVisible ? 'flex flex-col lg:flex-row gap-5' : ''}`}>
       {/* Voice card — neobrutalist */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="bg-white rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] overflow-hidden"
+        className={`bg-white rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] overflow-hidden ${transcriptVisible ? 'lg:flex-1' : ''}`}
       >
         <div
           className="px-8 py-10 text-center"
@@ -503,6 +522,18 @@ export default function PhysicsVoicePage() {
                 {micMuted ? 'Unmute mic' : 'Mute mic'}
               </button>
 
+              {/* Transcript toggle */}
+              <button
+                onClick={() => setShowTranscript((s) => !s)}
+                className={`px-5 py-3 text-sm font-black rounded-lg border-[2.5px] border-stone-900 shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all cursor-pointer ${
+                  showTranscript
+                    ? 'bg-orange-100 text-orange-700'
+                    : 'bg-white text-stone-900'
+                }`}
+              >
+                {showTranscript ? 'Hide text' : 'Show text'}
+              </button>
+
               {/* End */}
               <button
                 onClick={handleEndVoice}
@@ -560,6 +591,37 @@ export default function PhysicsVoicePage() {
           </Link>
         </div>
       </motion.div>
+
+      {/* Transcript panel */}
+      {transcriptVisible && (
+        <motion.div
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="lg:w-80 bg-white rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] overflow-hidden flex flex-col"
+        >
+          <div className="px-4 py-3 border-b-[3px] border-stone-900 bg-stone-50">
+            <h3 className="text-sm font-black text-stone-900">Transcript</h3>
+          </div>
+          <div className="flex-1 overflow-y-auto max-h-[500px] px-4 py-3 space-y-3">
+            {transcript.map((entry, i) => (
+              <div key={i} className={`flex gap-2 ${entry.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div
+                  className={`max-w-[85%] px-3 py-2 rounded-lg text-sm leading-relaxed ${
+                    entry.role === 'user'
+                      ? 'bg-orange-100 text-orange-900 font-medium'
+                      : 'bg-stone-100 text-stone-800'
+                  }`}
+                >
+                  {entry.message}
+                </div>
+              </div>
+            ))}
+            <div ref={transcriptEndRef} />
+          </div>
+        </motion.div>
+      )}
+      </div>
     </div>
   );
 }
