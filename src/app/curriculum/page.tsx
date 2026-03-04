@@ -2,85 +2,128 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getData, type LearnerData } from "@/lib/progress";
+import { getData, hasExerciseData, onProgressChange, type LearnerData } from "@/lib/progress";
+import { getModulesBySection, SEQUENTIAL_PATH } from "@/data/course-modules";
 import TrajectoryView from "@/components/TrajectoryView";
-
-const modules = [
-  {
-    section: "Entry Points",
-    description: "Choose the one that matches where you are right now.",
-    items: [
-      { href: "/landscape", tag: "M0-A", title: "The AI Landscape", status: "available" as const },
-      { href: "/first-build", tag: "M0-B", title: "Your First Build", status: "available" as const },
-      { href: "/for-developers", tag: "M0-C", title: "For Developers", status: "available" as const },
-      { href: "/level-up", tag: "M0-D", title: "Level Up", status: "available" as const },
-    ],
-  },
-  {
-    section: "Shared Core",
-    description: "Everyone takes these, in order.",
-    items: [
-      { href: "/know-yourself", tag: "M1", title: "Know Yourself, Know Your Tools", status: "available" as const },
-      { href: "/workflow", tag: "M2", title: "The Vibe Coding Workflow", status: "available" as const },
-      { href: "/build", tag: "M3", title: "Build Something Real", status: "available" as const },
-      { href: "/debugging", tag: "M4", title: "When Things Break", status: "available" as const },
-    ],
-  },
-  {
-    section: "Advanced",
-    description: "Go deeper once you've built a few things.",
-    items: [
-      { href: "/sessions", tag: "M5", title: "Mastering Sessions", status: "available" as const },
-      { href: "/shipping", tag: "M6", title: "Portfolio & Shipping", status: "available" as const },
-      { href: "/craft", tag: "M7", title: "The Craft", status: "available" as const },
-    ],
-  },
-];
 
 export default function CurriculumPage() {
   const [data, setData] = useState<LearnerData | null>(null);
+  const sections = getModulesBySection();
 
   useEffect(() => {
-    setData(getData());
+    function refresh() {
+      setData(getData());
+    }
+    refresh();
+    return onProgressChange(refresh);
   }, []);
 
+  // Count completed sequential modules (core + advanced)
+  const completedCount = data
+    ? SEQUENTIAL_PATH.filter(
+        (m) => hasExerciseData(m.slug) || data.visited.includes(m.slug)
+      ).length
+    : 0;
+
+  function getModuleStatus(slug: string): "done" | "visited" | "none" {
+    if (!data) return "none";
+    if (hasExerciseData(slug)) return "done";
+    if (data.visited.includes(slug)) return "visited";
+    return "none";
+  }
+
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
-      <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-2">
-        Curriculum
-      </h1>
-      <p className="text-lg text-zinc-500 dark:text-zinc-400 mb-12">
-        The full learning path, from entry point to craft mastery.
-      </p>
+    <div className="min-h-screen bg-[#f0f0f0] relative overflow-hidden">
+      {/* Dot pattern background */}
+      <div
+        className="absolute inset-0 opacity-[0.15]"
+        style={{
+          backgroundImage: "radial-gradient(circle, #1c1917 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+        }}
+      />
+      <div className="mx-auto max-w-3xl px-6 py-16 relative z-10">
+        <h1 className="text-3xl font-black tracking-tight text-stone-900 mb-2">
+          Curriculum
+        </h1>
+        <p className="text-lg font-medium text-stone-500 mb-4">
+          The full learning path, from entry point to craft mastery.
+        </p>
 
-      {data && <TrajectoryView data={data} />}
-
-      {modules.map((section) => (
-        <div key={section.section} className="mb-12">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-1">
-            {section.section}
-          </h2>
-          <p className="text-sm text-zinc-400 dark:text-zinc-500 mb-4">
-            {section.description}
-          </p>
-          <div className="space-y-2">
-            {section.items.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="group flex items-center gap-3 rounded-lg border border-zinc-200 dark:border-zinc-800 px-4 py-3 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors"
-              >
-                <span className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 rounded px-1.5 py-0.5 shrink-0">
-                  {item.tag}
-                </span>
-                <span className="font-medium text-zinc-900 dark:text-zinc-100 group-hover:underline">
-                  {item.title}
-                </span>
-              </Link>
-            ))}
+        {/* Progress summary */}
+        {data && (
+          <div className="inline-flex items-center gap-3 rounded-lg border-[2.5px] border-stone-900 bg-white px-4 py-2 shadow-[3px_3px_0_#1c1917] mb-8">
+            <div className="flex gap-1.5">
+              {SEQUENTIAL_PATH.map((m) => {
+                const status = getModuleStatus(m.slug);
+                return (
+                  <div
+                    key={m.slug}
+                    className={`h-3 w-3 rounded-sm border-[1.5px] border-stone-900 ${
+                      status === "done"
+                        ? "bg-emerald-400"
+                        : status === "visited"
+                        ? "bg-[#E07A5F]"
+                        : "bg-white"
+                    }`}
+                  />
+                );
+              })}
+            </div>
+            <span className="text-sm font-black text-stone-900">
+              {completedCount} of {SEQUENTIAL_PATH.length} modules
+            </span>
           </div>
-        </div>
-      ))}
+        )}
+
+        {data && <TrajectoryView data={data} />}
+
+        {sections.map((section) => (
+          <div key={section.title} className="mb-12">
+            <h2 className="text-xs font-black uppercase tracking-wider text-stone-400 mb-1">
+              {section.title}
+            </h2>
+            <p className="text-sm font-medium text-stone-400 mb-4">
+              {section.description}
+            </p>
+            <div className="space-y-2">
+              {section.modules.map((mod) => {
+                const status = getModuleStatus(mod.slug);
+                return (
+                  <Link
+                    key={mod.slug}
+                    href={mod.slug}
+                    className="group flex items-center gap-3 rounded-lg border-[2.5px] border-stone-900 bg-white px-4 py-3 shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all"
+                  >
+                    <span
+                      className={`text-[10px] font-bold text-white px-1.5 py-0.5 rounded ${mod.color} shrink-0`}
+                    >
+                      {mod.tag}
+                    </span>
+                    <span className="font-bold text-stone-900 flex-1">
+                      {mod.title}
+                    </span>
+                    {status === "done" && (
+                      <span className="h-5 w-5 rounded-md border-[1.5px] border-stone-900 bg-emerald-400 flex items-center justify-center shrink-0">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      </span>
+                    )}
+                    {status === "visited" && (
+                      <span className="h-5 w-5 rounded-md border-[1.5px] border-stone-900 bg-[#E07A5F] flex items-center justify-center shrink-0">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

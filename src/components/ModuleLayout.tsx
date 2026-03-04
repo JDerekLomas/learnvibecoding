@@ -4,34 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getData, markVisited, hasExerciseData, onProgressChange } from "@/lib/progress";
-import DoodleBg from "@/components/quiz/DoodleBg";
-
-interface ModuleLink {
-  href: string;
-  label: string;
-  tag?: string;
-  color: string;
-}
-
-const entryPoints: ModuleLink[] = [
-  { href: "/landscape", label: "The AI Landscape", tag: "M0-A", color: "bg-violet-500" },
-  { href: "/first-build", label: "Your First Build", tag: "M0-B", color: "bg-amber-500" },
-  { href: "/for-developers", label: "For Developers", tag: "M0-C", color: "bg-blue-500" },
-  { href: "/level-up", label: "Level Up", tag: "M0-D", color: "bg-emerald-500" },
-];
-
-const sharedCore: ModuleLink[] = [
-  { href: "/know-yourself", label: "Know Yourself", tag: "M1", color: "bg-amber-500" },
-  { href: "/workflow", label: "The Workflow", tag: "M2", color: "bg-blue-500" },
-  { href: "/build", label: "Build Something", tag: "M3", color: "bg-emerald-500" },
-  { href: "/debugging", label: "When Things Break", tag: "M4", color: "bg-red-500" },
-];
-
-const advanced: ModuleLink[] = [
-  { href: "/sessions", label: "Mastering Sessions", tag: "M5", color: "bg-indigo-500" },
-  { href: "/shipping", label: "Portfolio & Shipping", tag: "M6", color: "bg-teal-500" },
-  { href: "/craft", label: "The Craft", tag: "M7", color: "bg-purple-500" },
-];
+import { MODULES, type CourseModule } from "@/data/course-modules";
 
 type DotState = "none" | "visited" | "done";
 
@@ -39,8 +12,8 @@ function ProgressDot({ state }: { state: DotState }) {
   if (state === "none") return null;
   return (
     <span
-      className={`inline-block w-2 h-2 rounded-full shrink-0 ${
-        state === "done" ? "bg-emerald-500" : "bg-stone-300"
+      className={`inline-block w-2.5 h-2.5 rounded-sm border-[1.5px] border-stone-900 shrink-0 ${
+        state === "done" ? "bg-emerald-400" : "bg-stone-200"
       }`}
     />
   );
@@ -53,26 +26,26 @@ function NavSection({
   dotStates,
 }: {
   title: string;
-  links: ModuleLink[];
+  links: CourseModule[];
   currentPath: string;
   dotStates: Record<string, DotState>;
 }) {
   return (
     <div className="mb-5">
-      <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-stone-400">
+      <h3 className="mb-2 text-xs font-black uppercase tracking-wider text-stone-400">
         {title}
       </h3>
       <ul className="space-y-1">
         {links.map((link) => {
-          const isActive = currentPath === link.href;
+          const isActive = currentPath === link.slug;
           return (
-            <li key={link.href}>
+            <li key={link.slug}>
               <Link
-                href={link.href}
-                className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm transition-all ${
+                href={link.slug}
+                className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-all ${
                   isActive
-                    ? "bg-white border-2 border-stone-200 shadow-sm font-bold text-stone-900"
-                    : "text-stone-500 hover:text-stone-900 hover:bg-white/60 border-2 border-transparent"
+                    ? "bg-white border-[2.5px] border-stone-900 shadow-[2px_2px_0_#1c1917] font-bold text-stone-900"
+                    : "text-stone-500 hover:text-stone-900 hover:bg-white/60 border-[2.5px] border-transparent"
                 }`}
               >
                 {link.tag && (
@@ -80,8 +53,8 @@ function NavSection({
                     {link.tag}
                   </span>
                 )}
-                <span className="flex-1">{link.label}</span>
-                <ProgressDot state={dotStates[link.href] || "none"} />
+                <span className="flex-1">{link.title}</span>
+                <ProgressDot state={dotStates[link.slug] || "none"} />
               </Link>
             </li>
           );
@@ -99,20 +72,23 @@ export default function ModuleLayout({
   const pathname = usePathname();
   const [dotStates, setDotStates] = useState<Record<string, DotState>>({});
 
+  const entryPoints = MODULES.filter((m) => m.section === "entry");
+  const core = MODULES.filter((m) => m.section === "core");
+  const advanced = MODULES.filter((m) => m.section === "advanced");
+
   useEffect(() => {
     markVisited(pathname);
 
     function refreshDots() {
       const d = getData();
-      const allLinks = [...entryPoints, ...sharedCore, ...advanced];
       const states: Record<string, DotState> = {};
-      for (const link of allLinks) {
-        if (hasExerciseData(link.href)) {
-          states[link.href] = "done";
-        } else if (d.visited.includes(link.href)) {
-          states[link.href] = "visited";
+      for (const mod of MODULES) {
+        if (hasExerciseData(mod.slug)) {
+          states[mod.slug] = "done";
+        } else if (d.visited.includes(mod.slug)) {
+          states[mod.slug] = "visited";
         } else {
-          states[link.href] = "none";
+          states[mod.slug] = "none";
         }
       }
       setDotStates(states);
@@ -124,7 +100,14 @@ export default function ModuleLayout({
 
   return (
     <div className="min-h-screen bg-[#f0f0f0] relative overflow-hidden">
-      <DoodleBg src="/textures/vibecode-light-1.png" opacity={0.08} />
+      {/* Dot pattern background */}
+      <div
+        className="absolute inset-0 opacity-[0.15]"
+        style={{
+          backgroundImage: "radial-gradient(circle, #1c1917 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+        }}
+      />
       <div className="mx-auto max-w-5xl px-6 py-12 lg:flex lg:gap-10 relative z-10">
         <aside className="hidden lg:block lg:w-56 lg:shrink-0">
           <div className="sticky top-24">
@@ -136,7 +119,7 @@ export default function ModuleLayout({
             />
             <NavSection
               title="Core"
-              links={sharedCore}
+              links={core}
               currentPath={pathname}
               dotStates={dotStates}
             />
@@ -149,7 +132,7 @@ export default function ModuleLayout({
           </div>
         </aside>
         <main className="min-w-0 max-w-3xl flex-1">
-          <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 px-8 py-10">
+          <div className="bg-white rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] px-8 py-10">
             {children}
           </div>
         </main>
