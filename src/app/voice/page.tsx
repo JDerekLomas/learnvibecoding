@@ -305,6 +305,7 @@ export default function VoiceAgentPage() {
   const [statusLog, setStatusLog] = useState<string[]>([]);
   const startedRef = useRef(false);
   const [transcript, setTranscript] = useState<TranscriptEntry[]>([]);
+  const [showTranscript, setShowTranscript] = useState(false);
   const transcriptEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -443,10 +444,10 @@ export default function VoiceAgentPage() {
 
   if (!mounted) return null;
 
-  const showTranscript = phase === 'voice' && transcript.length > 0;
+  const transcriptVisible = phase === 'voice' && showTranscript && transcript.length > 0;
 
   return (
-    <div className={`mx-auto px-6 py-8 ${showTranscript ? 'max-w-5xl' : 'max-w-2xl'} transition-all duration-500`}>
+    <div className={`mx-auto px-6 py-8 ${transcriptVisible ? 'max-w-5xl' : 'max-w-2xl'} transition-all duration-500`}>
       {/* Back nav */}
       <Link
         href="/"
@@ -467,13 +468,13 @@ export default function VoiceAgentPage() {
         Back
       </Link>
 
-      <div className={`${showTranscript ? 'flex flex-col lg:flex-row gap-5' : ''}`}>
+      <div className={`${transcriptVisible ? 'flex flex-col lg:flex-row gap-5' : ''}`}>
       {/* Main card — neobrutalist */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className={`bg-white rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] overflow-hidden ${showTranscript ? 'lg:flex-1' : ''}`}
+        className={`bg-white rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] overflow-hidden ${transcriptVisible ? 'lg:flex-1' : ''}`}
       >
         <AnimatePresence mode="wait">
           {/* ── PREP PHASE ── */}
@@ -669,6 +670,18 @@ export default function VoiceAgentPage() {
                     {micMuted ? 'Unmute mic' : 'Mute mic'}
                   </button>
 
+                  {/* Transcript toggle */}
+                  <button
+                    onClick={() => setShowTranscript((s) => !s)}
+                    className={`px-5 py-3 text-sm font-black rounded-lg border-[2.5px] border-stone-900 shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all cursor-pointer ${
+                      showTranscript
+                        ? 'bg-violet-100 text-violet-700'
+                        : 'bg-white text-stone-900'
+                    }`}
+                  >
+                    {showTranscript ? 'Hide text' : 'Show text'}
+                  </button>
+
                   {/* End */}
                   <button
                     onClick={handleEndVoice}
@@ -732,7 +745,7 @@ export default function VoiceAgentPage() {
       </motion.div>
 
       {/* Transcript panel */}
-      {showTranscript && (
+      {transcriptVisible && (
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
