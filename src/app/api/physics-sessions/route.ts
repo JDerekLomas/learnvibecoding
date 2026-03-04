@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { rateLimit, getClientIP } from "@/lib/rate-limit";
 
 function generateCode(): string {
-  const chars = "abcdefghijkmnpqrstuvwxyz23456789"; // no 0/o/1/l ambiguity
+  const chars = "abcdefghijkmnpqrstuvwxyz23456789";
   let code = "";
   for (let i = 0; i < 8; i++) {
     code += chars[Math.floor(Math.random() * chars.length)];
@@ -25,14 +25,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { displayName, progress } = await request.json();
-
-    if (!progress || typeof progress !== "object") {
-      return NextResponse.json(
-        { error: "Progress data required" },
-        { status: 400 }
-      );
-    }
+    const { displayName } = await request.json();
 
     // Generate unique short code
     let code = generateCode();
@@ -52,8 +45,8 @@ export async function POST(request: Request) {
       .from("physics_sessions")
       .insert({
         short_code: code,
-        display_name: displayName?.trim()?.slice(0, 50) || null,
-        progress,
+        display_name: displayName?.trim()?.slice(0, 100) || null,
+        progress: {},
       })
       .select("short_code")
       .single();

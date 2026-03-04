@@ -1,5 +1,4 @@
 const STORAGE_KEY = "lvc-progress";
-const SHARE_CODE_KEY = "lvc-share-code";
 
 export interface QuizResult {
   itemId: string;
@@ -192,51 +191,6 @@ export function getQuizStatsByTags(tags: string[]): QuizStats {
     correct,
     accuracy: matching.length > 0 ? correct / matching.length : 0,
   };
-}
-
-/* ── Sharing ─────────────────────────────────────────────── */
-
-export function getShareCode(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem(SHARE_CODE_KEY);
-}
-
-export async function shareProgress(displayName?: string): Promise<string> {
-  const existingCode = getShareCode();
-  const data = getData();
-
-  if (existingCode) {
-    // Sync to existing session
-    await fetch(`/api/physics-sessions/${existingCode}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ progress: data, displayName }),
-    });
-    return existingCode;
-  }
-
-  // Create new session
-  const res = await fetch("/api/physics-sessions", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ progress: data, displayName }),
-  });
-  const { code, error } = await res.json();
-  if (error) throw new Error(error);
-
-  localStorage.setItem(SHARE_CODE_KEY, code);
-  return code;
-}
-
-export async function syncProgress(): Promise<void> {
-  const code = getShareCode();
-  if (!code) return;
-  const data = getData();
-  await fetch(`/api/physics-sessions/${code}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ progress: data }),
-  }).catch(() => {}); // silent fail
 }
 
 export function hasExerciseData(path: string): boolean {
