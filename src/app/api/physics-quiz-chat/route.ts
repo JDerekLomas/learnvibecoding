@@ -19,19 +19,10 @@ let questionCounter = 0;
 
 export async function POST(req: Request) {
   try {
-  const bodyText = await req.text();
-  let parsed;
-  try {
-    parsed = JSON.parse(bodyText);
-  } catch (e) {
-    console.error("JSON parse error. Body length:", bodyText.length, "Body preview:", bodyText.substring(0, 200));
-    console.error("Char at position 85:", bodyText.charCodeAt(85), JSON.stringify(bodyText.substring(80, 95)));
-    return new Response(JSON.stringify({ error: "Bad request body", detail: String(e), preview: bodyText.substring(75, 100) }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-  const { messages, sessionId }: { messages: UIMessage[]; sessionId?: string } = parsed;
+  // Next.js 16 proxy escapes special chars in request bodies — unescape them
+  const bodyText = (await req.text()).replace(/\\!/g, "!");
+  const { messages, sessionId }: { messages: UIMessage[]; sessionId?: string } =
+    JSON.parse(bodyText);
 
   // Extract already-shown question IDs from conversation history
   const shownIds: string[] = [];

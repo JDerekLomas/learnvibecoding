@@ -16,8 +16,10 @@ let questionCounter = 0;
 
 export async function POST(req: Request) {
   try {
+  // Next.js 16 proxy escapes special chars in request bodies — unescape them
+  const bodyText = (await req.text()).replace(/\\!/g, "!");
   const { messages, sessionId }: { messages: UIMessage[]; sessionId?: string } =
-    await req.json();
+    JSON.parse(bodyText);
 
   // Extract already-shown question IDs from conversation history
   const shownIds: string[] = [];
