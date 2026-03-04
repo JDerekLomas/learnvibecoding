@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import ShareButton from '@/components/physics/ShareButton';
+import ShareButton from '@/components/physics/ShareButton'; // kept for backwards compat
 
 const modalities = [
   {
@@ -163,16 +163,27 @@ export default function PhysicsDemoHub() {
         </ul>
       </motion.div>
 
-      {/* Teacher session button */}
+      {/* Teacher session link */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.7 }}
         className="mt-6 flex flex-col items-center gap-1.5"
       >
-        <ShareButton />
+        <Link
+          href="/physicsdemo/teachers"
+          className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold rounded-lg border-[2.5px] border-stone-900 bg-white shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all active:translate-x-[3px] active:translate-y-[3px] active:shadow-none text-stone-800 no-underline"
+        >
+          <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="8" cy="5" r="3" />
+            <path d="M2 14c0-3 2.5-5 6-5s6 2 6 5" />
+            <line x1="12" y1="2" x2="12" y2="6" />
+            <line x1="10" y1="4" x2="14" y2="4" />
+          </svg>
+          Teachers: set up a class session
+        </Link>
         <p className="text-[11px] text-stone-400 font-medium">
-          Track student progress as they explore these activities
+          Pick activities, share a link, and track student progress live
         </p>
       </motion.div>
 

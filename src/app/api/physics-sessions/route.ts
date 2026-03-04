@@ -25,7 +25,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { displayName } = await request.json();
+    const { displayName, activities } = await request.json();
 
     // Generate unique short code
     let code = generateCode();
@@ -41,12 +41,18 @@ export async function POST(request: Request) {
       attempts++;
     }
 
+    // Validate activities if provided
+    const validActivities = ['read', 'quiz', 'ai-quiz', 'ask-ai', 'talk'];
+    const selectedActivities = Array.isArray(activities)
+      ? activities.filter((a: string) => validActivities.includes(a))
+      : null;
+
     const { data, error } = await supabase
       .from("physics_sessions")
       .insert({
         short_code: code,
         display_name: displayName?.trim()?.slice(0, 100) || null,
-        progress: {},
+        progress: selectedActivities ? { activities: selectedActivities } : {},
       })
       .select("short_code")
       .single();

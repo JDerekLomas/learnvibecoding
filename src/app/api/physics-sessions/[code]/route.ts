@@ -11,7 +11,7 @@ export async function GET(
 
   const { data: session, error: sessionError } = await supabase
     .from("physics_sessions")
-    .select("short_code, display_name, created_at")
+    .select("short_code, display_name, created_at, progress")
     .eq("short_code", code)
     .single();
 
