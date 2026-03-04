@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: "/claude-code", changeFrequency: "monthly" as const, priority: 0.7 },
     { url: "/concepts", changeFrequency: "monthly" as const, priority: 0.6 },
     // Curriculum modules
+    { url: "/for-your-role", changeFrequency: "monthly" as const, priority: 0.8 },
     { url: "/know-yourself", changeFrequency: "monthly" as const, priority: 0.7 },
     { url: "/landscape", changeFrequency: "monthly" as const, priority: 0.7 },
     { url: "/workflow", changeFrequency: "monthly" as const, priority: 0.7 },

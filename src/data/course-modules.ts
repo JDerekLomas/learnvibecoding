@@ -14,6 +14,7 @@ export interface CourseModule {
 
 export const MODULES: CourseModule[] = [
   // Entry points (no chapters — compact single pages)
+  { slug: "/for-your-role", tag: "M0-R", title: "AI for Your Role", section: "entry", color: "bg-rose-500" },
   { slug: "/landscape", tag: "M0-A", title: "The AI Landscape", section: "entry", color: "bg-violet-500" },
   { slug: "/first-build", tag: "M0-B", title: "Your First Build", section: "entry", color: "bg-amber-500" },
   { slug: "/for-developers", tag: "M0-C", title: "For Developers", section: "entry", color: "bg-blue-500" },

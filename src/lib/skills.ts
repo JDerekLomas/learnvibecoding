@@ -28,6 +28,14 @@ export const SKILL_UNITS: SkillUnit[] = [
     color: "violet",
     skills: [
       {
+        id: "for-your-role",
+        title: "AI for Your Role",
+        subtitle: "Use AI in your job",
+        href: "/for-your-role",
+        unit: "entry",
+        prerequisites: [],
+      },
+      {
         id: "landscape",
         title: "The AI Landscape",
         subtitle: "New to AI",
@@ -73,7 +81,7 @@ export const SKILL_UNITS: SkillUnit[] = [
         subtitle: "Intent, aesthetics, CLAUDE.md",
         href: "/know-yourself",
         unit: "core-1",
-        prerequisites: ["/landscape", "/first-build", "/for-developers", "/level-up"],
+        prerequisites: ["/for-your-role", "/landscape", "/first-build", "/for-developers", "/level-up"],
       },
     ],
   },
@@ -163,7 +171,7 @@ export const SKILL_UNITS: SkillUnit[] = [
  * For entry prerequisites, at least ONE entry module must be complete
  * (not all of them — they're alternative starting points).
  */
-const ENTRY_PATHS = ["/landscape", "/first-build", "/for-developers", "/level-up"];
+const ENTRY_PATHS = ["/for-your-role", "/landscape", "/first-build", "/for-developers", "/level-up"];
 
 export function getSkillStatuses(): Record<string, SkillStatus> {
   const data = getData();
