@@ -72,6 +72,30 @@ const coreModules = [
   },
 ];
 
+const advancedModules = [
+  {
+    href: "/sessions",
+    step: 5,
+    title: "Mastering Sessions",
+    description: "Session hygiene, prompt archaeology, your prompting signature.",
+    color: "bg-violet-500",
+  },
+  {
+    href: "/shipping",
+    step: 6,
+    title: "Portfolio & Shipping",
+    description: "The gap between 'built' and 'shipped' — and how to close it.",
+    color: "bg-indigo-500",
+  },
+  {
+    href: "/craft",
+    step: 7,
+    title: "The Craft",
+    description: "Advanced patterns, multi-service architectures, naming your own moves.",
+    color: "bg-stone-700",
+  },
+];
+
 export default async function Home() {
   const headersList = await headers();
   const audience = (headersList.get("x-audience") || "consumer") as Audience;
@@ -439,6 +463,34 @@ function ConsumerLanding() {
           </div>
           <div className="space-y-3">
             {coreModules.map((mod) => (
+              <Link key={mod.href} href={mod.href}>
+                <div className="w-full rounded-2xl border-2 border-stone-200 bg-white p-5 flex items-center gap-4 shadow-sm hover:shadow-lg hover:border-stone-300 transition-all duration-200">
+                  <div className={`flex-shrink-0 w-10 h-10 rounded-xl ${mod.color} flex items-center justify-center`}>
+                    <span className="text-white text-sm font-bold">{mod.step}</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-base font-extrabold leading-tight text-stone-900">
+                      {mod.title}
+                    </p>
+                    <p className="text-sm font-medium mt-0.5 text-stone-500">
+                      {mod.description}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Advanced modules */}
+        <div className="mb-8">
+          <div className="bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 px-6 py-5 mb-3">
+            <h2 className="text-xs font-bold text-stone-400 uppercase tracking-wider text-center">
+              Advanced
+            </h2>
+          </div>
+          <div className="space-y-3">
+            {advancedModules.map((mod) => (
               <Link key={mod.href} href={mod.href}>
                 <div className="w-full rounded-2xl border-2 border-stone-200 bg-white p-5 flex items-center gap-4 shadow-sm hover:shadow-lg hover:border-stone-300 transition-all duration-200">
                   <div className={`flex-shrink-0 w-10 h-10 rounded-xl ${mod.color} flex items-center justify-center`}>
