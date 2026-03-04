@@ -2,6 +2,7 @@ import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  assetPrefix: 'https://learnvibecoding.vercel.app',
   reactCompiler: true,
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   images: {

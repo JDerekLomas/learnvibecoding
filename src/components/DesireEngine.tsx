@@ -19,7 +19,7 @@ function BotAvatar() {
   );
 }
 
-export default function DesireEngine({ id = "desire-engine", audience = "consumer" }: { id?: string; audience?: "consumer" | "corporate" }) {
+export default function DesireEngine({ id = "desire-engine", audience = "consumer" }: { id?: string; audience?: "consumer" | "corporate" | "community" }) {
   const isCorporate = audience === "corporate";
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");

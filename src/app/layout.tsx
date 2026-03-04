@@ -51,6 +51,31 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   }
 
+  if (audience === "community") {
+    return {
+      metadataBase: new URL("https://codevibing.com"),
+      title: {
+        default: "Learn | codevibing",
+        template: "%s | codevibing",
+      },
+      description:
+        "Learn to build with AI — structured curriculum, quizzes, and community.",
+      openGraph: {
+        title: "Learn | codevibing",
+        description:
+          "Learn to build with AI — structured curriculum, quizzes, and community.",
+        siteName: "codevibing",
+        type: "website",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: "Learn | codevibing",
+        description:
+          "Build with AI. No prerequisites. No gatekeeping.",
+      },
+    };
+  }
+
   return {
     ...base,
     title: {
@@ -82,7 +107,6 @@ export default async function RootLayout({
 }>) {
   const headersList = await headers();
   const audience = (headersList.get("x-audience") || "consumer") as Audience;
-  const isCorporate = audience === "corporate";
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -90,7 +114,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AudienceProvider audience={audience}>
-          <NavBar isCorporate={isCorporate} />
+          <NavBar audience={audience} />
           {children}
         </AudienceProvider>
         <InputWidget allowedHosts={["localhost", "vercel.app"]} />

@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from 'react';
 
-export type Audience = 'corporate' | 'consumer';
+export type Audience = 'corporate' | 'consumer' | 'community';
 
 export const AudienceContext = createContext<Audience>('consumer');
 

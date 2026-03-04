@@ -29,14 +29,12 @@ function UserMenu({ username, onDisconnect, mobile }: { username: string; onDisc
     return (
       <>
         <div className="px-3 py-1.5 text-sm font-semibold text-emerald-600">@{username}</div>
-        <a
-          href={`https://codevibing.com/u/${username}`}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          href={`/u/${username}`}
           className="px-3 py-1.5 rounded-lg text-sm font-medium text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors pl-6"
         >
           Profile
-        </a>
+        </Link>
         <Link
           href="/connect"
           className="px-3 py-1.5 rounded-lg text-sm font-medium text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors pl-6"
@@ -63,15 +61,13 @@ function UserMenu({ username, onDisconnect, mobile }: { username: string; onDisc
       </button>
       {menuOpen && (
         <div className="absolute right-0 mt-1 w-48 bg-white rounded-xl border border-stone-200 shadow-lg py-1 z-50">
-          <a
-            href={`https://codevibing.com/u/${username}`}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href={`/u/${username}`}
             className="block px-4 py-2.5 text-sm font-medium text-stone-700 hover:bg-stone-50 transition-colors"
             onClick={() => setMenuOpen(false)}
           >
             Profile
-          </a>
+          </Link>
           <Link
             href="/connect"
             className="block px-4 py-2.5 text-sm font-medium text-stone-700 hover:bg-stone-50 transition-colors"
@@ -92,7 +88,7 @@ function UserMenu({ username, onDisconnect, mobile }: { username: string; onDisc
   );
 }
 
-export function NavBar({ isCorporate }: { isCorporate: boolean }) {
+export function NavBar({ audience }: { audience: 'corporate' | 'consumer' | 'community' }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [teamSlug, setTeamSlug] = useState<string | null>(null);
@@ -114,6 +110,26 @@ export function NavBar({ isCorporate }: { isCorporate: boolean }) {
     setCvUsername(null);
     setOpen(false);
   }
+
+  const communityLinks = (mobile?: boolean) => (
+    <>
+      <Link href="/feed" className={linkClass} onClick={() => setOpen(false)}>
+        Feed
+      </Link>
+      <Link href="/c" className={linkClass} onClick={() => setOpen(false)}>
+        Topics
+      </Link>
+      <Link href="/curriculum" className={linkClass} onClick={() => setOpen(false)}>
+        Learn
+      </Link>
+      <Link href="/quiz" className={linkClass} onClick={() => setOpen(false)}>
+        Practice
+      </Link>
+      {cvUsername && (
+        <UserMenu username={cvUsername} onDisconnect={handleDisconnect} mobile={mobile} />
+      )}
+    </>
+  );
 
   const consumerLinks = (mobile?: boolean) => (
     <>
@@ -170,7 +186,7 @@ export function NavBar({ isCorporate }: { isCorporate: boolean }) {
     </>
   );
 
-  const renderLinks = isCorporate ? corporateLinks : consumerLinks;
+  const renderLinks = audience === 'corporate' ? corporateLinks : audience === 'community' ? communityLinks : consumerLinks;
 
   return (
     <nav className="sticky top-0 z-50 border-b-2 border-stone-200 bg-white/80 backdrop-blur-sm">
@@ -180,7 +196,7 @@ export function NavBar({ isCorporate }: { isCorporate: boolean }) {
           className="text-lg font-extrabold tracking-tight text-stone-900"
           onClick={() => setOpen(false)}
         >
-          {isCorporate ? 'AI Growth Net' : 'Learn Vibe Coding'}
+          {audience === 'corporate' ? 'AI Growth Net' : audience === 'community' ? 'codevibing' : 'Learn Vibe Coding'}
         </Link>
 
         {/* Desktop links */}
