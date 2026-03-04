@@ -4,6 +4,7 @@ import ReflectionPrompt from "@/components/ReflectionPrompt";
 import ProjectShowcase from "@/components/ProjectShowcase";
 import BuildSession from "@/components/BuildSession";
 import ConceptCallout from "@/components/ConceptCallout";
+import CompletionExplorer from "@/components/CompletionExplorer";
 
 export const metadata = {
   title: "The Vibe Coding Workflow — Learn Vibe Coding",
@@ -147,6 +148,22 @@ Fresh start. Use when switching tasks or when the context has become confused. B
 Big, multi-part prompts waste context. "Add dark mode, fix the mobile nav, update the footer, and change the font" is four tasks crammed into one. Do them sequentially — each one builds on the last.
 
 <ConceptCallout id="one-task-one-session" />
+
+---
+
+## Under the hood: completion vs. chat
+
+Before you build more, it helps to *feel* what's actually happening when you talk to an AI.
+
+Every language model starts as a **completion engine** — it predicts what text comes next, like autocomplete on steroids. That's it. No understanding, no intent, no helpfulness. Just: "given this text so far, what word is statistically likely to follow?"
+
+The AI you're talking to in Claude Code went through additional training (RLHF) that taught it to *interpret* your text as a request and respond like an assistant. That's a learned behavior, not a fundamental capability.
+
+Try it yourself. Type the same text into both models and watch the difference:
+
+<CompletionExplorer id="workflow-completion-explorer" />
+
+This difference is the foundation of everything in vibe coding. When you write a prompt, you're talking to the instruction-tuned layer — the part that *wants* to help. The better you communicate your intent, the better it can leverage the raw prediction engine underneath.
 
 ---
 
