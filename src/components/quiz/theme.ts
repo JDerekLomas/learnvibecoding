@@ -1,7 +1,7 @@
 // Quiz visual theme system
 // Two modes: "dark" (Kahoot-style) and "light" (Duolingo-style)
 
-export type ThemeMode = 'dark' | 'light';
+export type ThemeMode = 'dark' | 'light' | 'neobrutalist';
 
 export interface QuizTheme {
   mode: ThemeMode;
@@ -216,6 +216,76 @@ export const LIGHT_THEME: QuizTheme = {
   btnSecondaryText: 'text-stone-600',
 };
 
+// Neobrutalist answer label colors (bold, high-contrast with thick borders)
+const NEOBRUTALIST_ANSWER_COLORS = [
+  { bg: 'bg-[#E07A5F]', text: 'text-white', border: 'border-stone-900' },
+  { bg: 'bg-amber-500', text: 'text-white', border: 'border-stone-900' },
+  { bg: 'bg-emerald-500', text: 'text-white', border: 'border-stone-900' },
+  { bg: 'bg-violet-500', text: 'text-white', border: 'border-stone-900' },
+];
+
+export const NEOBRUTALIST_THEME: QuizTheme = {
+  mode: 'neobrutalist' as ThemeMode,
+
+  pageBg: 'bg-[#f5f0eb]',
+
+  doodleBg: '',
+  doodleOpacity: 0,
+  doodleTile: false,
+
+  badgeBg: 'bg-white',
+  badgeText: 'text-stone-500',
+
+  questionText: 'text-stone-900',
+  questionSubtext: 'text-stone-400',
+
+  cardBg: 'bg-white',
+  cardBorder: 'border-stone-900',
+  cardHoverBg: 'hover:translate-x-[2px] hover:translate-y-[2px]',
+  cardText: 'text-stone-800',
+  cardShadow: 'shadow-[3px_3px_0_#1c1917]',
+
+  answerColors: NEOBRUTALIST_ANSWER_COLORS,
+
+  selectedBg: 'bg-amber-50',
+  selectedBorder: 'border-stone-900',
+  selectedText: 'text-stone-900',
+  selectedRing: 'ring-[#E07A5F]/40',
+
+  progressTrackBg: 'bg-stone-200',
+  progressFillColor: '#E07A5F',
+
+  xpBg: 'bg-amber-50',
+  xpText: 'text-amber-700',
+  xpLabel: 'text-amber-500',
+
+  closeBtnText: 'text-stone-400',
+  closeBtnHover: 'hover:text-stone-900 hover:bg-stone-100',
+
+  thinkBg: 'bg-white',
+  thinkBorder: 'border-stone-900',
+  thinkText: 'text-stone-700',
+  knowBg: 'bg-[#E07A5F]',
+  knowBorder: 'border-stone-900',
+  knowText: 'text-white',
+
+  summaryBg: 'bg-[#f5f0eb]',
+  scoreBg: 'bg-white',
+  scoreBorder: 'border-stone-900',
+  scoreText: 'text-[#E07A5F]',
+  scoreLabel: 'text-stone-400',
+  cardCorrectBg: 'bg-emerald-50',
+  cardCorrectBorder: 'border-stone-900',
+  cardWrongBg: 'bg-red-50',
+  cardWrongBorder: 'border-stone-900',
+  btnPrimaryBg: 'bg-[#E07A5F] hover:bg-[#c9684f]',
+  btnPrimaryText: 'text-white',
+  btnSecondaryBg: 'bg-white',
+  btnSecondaryBorder: 'border-stone-900',
+  btnSecondaryText: 'text-stone-700',
+};
+
 export function getThemeByMode(mode: ThemeMode): QuizTheme {
+  if (mode === 'neobrutalist') return NEOBRUTALIST_THEME;
   return mode === 'dark' ? DARK_THEME : LIGHT_THEME;
 }

@@ -16,11 +16,22 @@ export default function LearnIndex() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-extrabold text-stone-900 mb-1">
+      {/* Back nav */}
+      <Link
+        href="/physicsdemo"
+        className="inline-flex items-center gap-1.5 text-sm font-bold text-stone-400 hover:text-stone-900 transition-colors no-underline mb-5 w-fit"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        Back to Hub
+      </Link>
+
+      <div className="bg-[#FFF8F0] rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] px-6 py-5 mb-6">
+        <h1 className="text-2xl font-black text-stone-900 mb-1">
           Heat &amp; Thermal Energy
         </h1>
-        <p className="text-sm text-stone-500">
+        <p className="text-sm font-medium text-stone-500">
           Everything around you is vibrating. Heat is the story of that motion:
           how it starts, how it spreads, and why it matters.
         </p>
@@ -33,9 +44,9 @@ export default function LearnIndex() {
             <Link
               key={ch.slug}
               href={`/physicsdemo/learn/${ch.slug}`}
-              className="flex items-center gap-4 p-3 -mx-3 rounded-xl hover:bg-stone-50 transition-colors no-underline group"
+              className="flex items-center gap-4 p-3 rounded-xl border-[2.5px] border-stone-900 bg-white shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all no-underline group"
             >
-              <div className="relative w-20 h-14 rounded-lg overflow-hidden shrink-0 border border-stone-200">
+              <div className="relative w-20 h-14 rounded-lg overflow-hidden shrink-0 border-[2px] border-stone-900">
                 <Image
                   src={ch.heroImage}
                   alt={ch.heroAlt}
@@ -45,30 +56,21 @@ export default function LearnIndex() {
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-stone-900 group-hover:text-amber-700 transition-colors">
+                <p className="text-sm font-black text-stone-900">
                   {i + 1}. {ch.title}
                 </p>
-                <p className="text-xs text-stone-400 mt-0.5 truncate">
+                <p className="text-xs font-bold text-stone-400 mt-0.5 truncate">
                   {ch.subtitle}
                 </p>
               </div>
               {done ? (
-                <span className="shrink-0 h-6 w-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
+                <span className="shrink-0 h-7 w-7 rounded-lg border-[2px] border-stone-900 bg-emerald-400 text-white flex items-center justify-center shadow-[2px_2px_0_#1c1917]">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </span>
               ) : (
-                <span className="shrink-0 h-6 w-6 rounded-full border-2 border-stone-200" />
+                <span className="shrink-0 h-7 w-7 rounded-lg border-[2.5px] border-stone-300 bg-white" />
               )}
             </Link>
           );

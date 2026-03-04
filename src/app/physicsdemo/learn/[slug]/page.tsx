@@ -38,14 +38,14 @@ function CompletionOverlay({
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.8, opacity: 0 }}
         transition={{ type: "spring", damping: 15, stiffness: 300 }}
-        className="bg-white rounded-3xl p-8 shadow-2xl text-center max-w-xs mx-4"
+        className="bg-[#FFF8F0] rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] p-8 text-center max-w-xs mx-4"
       >
         {/* Animated checkmark */}
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.15, type: "spring", damping: 10, stiffness: 200 }}
-          className="mx-auto mb-4 h-16 w-16 rounded-full bg-emerald-100 flex items-center justify-center"
+          className="mx-auto mb-4 h-16 w-16 rounded-xl border-[3px] border-stone-900 bg-emerald-400 flex items-center justify-center shadow-[3px_3px_0_#1c1917]"
         >
           <motion.svg
             width="32"
@@ -56,7 +56,7 @@ function CompletionOverlay({
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-emerald-600"
+            className="text-white"
           >
             <motion.polyline
               points="20 6 9 17 4 12"
@@ -71,7 +71,7 @@ function CompletionOverlay({
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="text-lg font-extrabold text-stone-900"
+          className="text-lg font-black text-stone-900"
         >
           Chapter complete!
         </motion.p>
@@ -79,7 +79,7 @@ function CompletionOverlay({
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55 }}
-          className="text-sm text-stone-400 mt-1"
+          className="text-sm font-bold text-stone-400 mt-1"
         >
           {chapterNum} of {total} done
         </motion.p>
@@ -101,8 +101,8 @@ function CompletionOverlay({
                   ? { delay: 0.8, type: "spring", damping: 10 }
                   : {}
               }
-              className={`h-2.5 w-2.5 rounded-full ${
-                i < chapterNum ? "bg-amber-500" : "bg-stone-200"
+              className={`h-3 w-3 rounded-sm border-[2px] border-stone-900 ${
+                i < chapterNum ? "bg-[#E07A5F]" : "bg-white"
               }`}
             />
           ))}
@@ -136,10 +136,10 @@ export default function ChapterPage() {
   if (!chapter) {
     return (
       <div className="text-center py-12">
-        <p className="text-stone-500">Chapter not found.</p>
+        <p className="text-stone-500 font-bold">Chapter not found.</p>
         <Link
           href="/physicsdemo/learn"
-          className="text-amber-600 underline mt-2 inline-block"
+          className="text-[#E07A5F] font-black underline mt-2 inline-block"
         >
           Back to chapters
         </Link>
@@ -164,8 +164,19 @@ export default function ChapterPage() {
         )}
       </AnimatePresence>
 
+      {/* Back nav */}
+      <Link
+        href="/physicsdemo/learn"
+        className="inline-flex items-center gap-1.5 text-sm font-bold text-stone-400 hover:text-stone-900 transition-colors no-underline mb-5 w-fit"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        Back to Chapters
+      </Link>
+
       {/* Hero image */}
-      <div className="relative w-full h-48 sm:h-56 -mt-6 sm:-mt-8 -mx-6 sm:-mx-8 mb-6 overflow-hidden rounded-t-2xl">
+      <div className="relative w-full h-48 sm:h-56 mb-6 overflow-hidden rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917]">
         <Image
           src={chapter.heroImage}
           alt={chapter.heroAlt}
@@ -174,28 +185,30 @@ export default function ChapterPage() {
           sizes="(max-width: 672px) 100vw, 672px"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-        <div className="absolute bottom-4 left-6 right-6">
-          <p className="text-xs font-bold uppercase tracking-wider text-white/70 mb-1">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+        <div className="absolute bottom-4 left-5 right-5">
+          <p className="text-xs font-black uppercase tracking-wider text-white/80 mb-1">
             Chapter {index + 1} of {chapters.length}
           </p>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-white drop-shadow-sm">
+          <h1 className="text-xl sm:text-2xl font-black text-white drop-shadow-sm">
             {chapter.title}
           </h1>
         </div>
       </div>
 
       {/* Chapter content */}
-      <div className="prose prose-stone prose-sm max-w-none [&>p]:mb-4 [&>p]:leading-relaxed [&>ul]:mb-4 [&>ul]:leading-relaxed">
-        {chapter.content}
+      <div className="bg-white rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] px-6 py-6">
+        <div className="prose prose-stone prose-sm max-w-none [&>p]:mb-4 [&>p]:leading-relaxed [&>ul]:mb-4 [&>ul]:leading-relaxed">
+          {chapter.content}
+        </div>
       </div>
 
       {/* Complete & Continue */}
-      <div className="mt-8 pt-6 border-t border-stone-200">
+      <div className="mt-6">
         <button
           onClick={handleComplete}
           disabled={completing}
-          className="w-full py-3 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 disabled:bg-amber-300 text-white font-bold text-sm transition-colors shadow-sm"
+          className="w-full py-3 px-6 rounded-lg border-[2.5px] border-stone-900 bg-[#E07A5F] text-white font-black text-sm shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[3px_3px_0_#1c1917]"
         >
           {next ? "Complete & Continue" : "Complete & Back to Chapters"}
         </button>
@@ -206,7 +219,7 @@ export default function ChapterPage() {
         {prev ? (
           <Link
             href={`/physicsdemo/learn/${prev.slug}`}
-            className="text-xs font-semibold text-stone-400 hover:text-stone-600 transition-colors no-underline"
+            className="text-xs font-black text-stone-400 hover:text-stone-900 transition-colors no-underline"
           >
             &larr; {prev.title}
           </Link>
@@ -216,14 +229,14 @@ export default function ChapterPage() {
         {next ? (
           <Link
             href={`/physicsdemo/learn/${next.slug}`}
-            className="text-xs font-semibold text-stone-400 hover:text-stone-600 transition-colors no-underline"
+            className="text-xs font-black text-stone-400 hover:text-stone-900 transition-colors no-underline"
           >
             {next.title} &rarr;
           </Link>
         ) : (
           <Link
             href="/physicsdemo/learn"
-            className="text-xs font-semibold text-stone-400 hover:text-stone-600 transition-colors no-underline"
+            className="text-xs font-black text-stone-400 hover:text-stone-900 transition-colors no-underline"
           >
             All chapters &rarr;
           </Link>
