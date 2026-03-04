@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Heat & Thermal Energy — Physics Demo',
   description:
-    'Learn about heat, temperature, and thermal energy through reading, quizzes, AI chat, and voice — an experiment in multi-modal learning.',
+    'Learn about heat, temperature, and thermal energy through reading, quizzes, AI quiz chat, tutoring, and voice — an experiment in multi-modal learning.',
 };
 
 export default function PhysicsDemoLayout({

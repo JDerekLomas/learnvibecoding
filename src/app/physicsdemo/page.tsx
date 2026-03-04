@@ -38,6 +38,21 @@ const modalities = [
     hoverShadow: 'hover:shadow-orange-200/40',
   },
   {
+    label: 'AI Quiz',
+    description: 'Chat-powered quiz with instant feedback',
+    href: '/physicsdemo/quiz-chat',
+    icon: (
+      /* Chat bubble with checkmark */
+      <svg className="w-7 h-7 text-white" viewBox="0 0 28 28" fill="none">
+        <path d="M5 8a3 3 0 013-3h12a3 3 0 013 3v8a3 3 0 01-3 3H11l-4 3v-3H8a3 3 0 01-3-3V8z" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M10 12l2.5 2.5L18 9" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+    gradient: 'from-violet-500 to-purple-500',
+    hoverBorder: 'hover:border-violet-400',
+    hoverShadow: 'hover:shadow-violet-200/40',
+  },
+  {
     label: 'Ask AI',
     description: 'Socratic physics tutor',
     href: '/physicsdemo/chat',
@@ -104,7 +119,7 @@ export default function PhysicsDemoHub() {
         </h1>
         <p className="text-lg text-stone-500 max-w-md mx-auto">
           Why does metal feel cold? Can a blanket keep a snowman frozen?
-          Explore heat through 4 different ways to learn.
+          Explore heat through 5 different ways to learn.
         </p>
       </motion.div>
 

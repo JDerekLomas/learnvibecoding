@@ -20,17 +20,42 @@ interface QuizToolOutput {
   message?: string;
 }
 
+interface ChatConfig {
+  apiEndpoint?: string;
+  backHref?: string;
+  headerTitle?: string;
+  welcomeTitle?: string;
+  welcomeDescription?: string;
+  suggestions?: { label: string; prompt: string }[];
+  journeyStep?: string;
+}
+
+const DEFAULT_CONFIG: Required<ChatConfig> = {
+  apiEndpoint: "/api/quiz-chat",
+  backHref: "/journey",
+  headerTitle: "AI Quiz",
+  welcomeTitle: "Vibecoding Quiz",
+  welcomeDescription: "Test your vibecoding knowledge with interactive quiz cards.",
+  suggestions: [
+    { label: "Quiz me on vibecoding!", prompt: "Quiz me on vibecoding!" },
+    { label: "Working with Claude", prompt: "Quiz me on working with Claude" },
+    { label: "Shipping projects", prompt: "Quiz me on shipping projects" },
+  ],
+  journeyStep: "assess",
+};
+
 const MIN_QUESTIONS_FOR_FINISH = 3;
 
-export function Chat() {
+export function Chat({ config }: { config?: ChatConfig } = {}) {
+  const cfg = { ...DEFAULT_CONFIG, ...config };
   const sessionIdRef = useRef(crypto.randomUUID());
   const transport = useMemo(
     () =>
       new DefaultChatTransport({
-        api: "/api/quiz-chat",
+        api: cfg.apiEndpoint,
         body: { sessionId: sessionIdRef.current },
       }),
-    []
+    [cfg.apiEndpoint]
   );
   const { messages, sendMessage, status } = useChat({ transport });
   const [input, setInput] = useState("");
@@ -66,11 +91,11 @@ export function Chat() {
   const handleFinish = useCallback(() => {
     setFinished(true);
     // Report journey completion for team members
-    reportProgress("assess", "completed", {
+    reportProgress(cfg.journeyStep as "assess", "completed", {
       questionsAnswered: answerCount,
       sessionId: sessionIdRef.current,
     });
-  }, [answerCount]);
+  }, [answerCount, cfg.journeyStep]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -89,23 +114,23 @@ export function Chat() {
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <Link href="/journey" className="chat-back-btn" aria-label="Back">
+        <Link href={cfg.backHref} className="chat-back-btn" aria-label="Back">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5" />
             <path d="M12 19l-7-7 7-7" />
           </svg>
         </Link>
-        <span className="chat-header-title">AI Quiz</span>
+        <span className="chat-header-title">{cfg.headerTitle}</span>
         {showFinishButton ? (
           <Link
-            href="/journey"
+            href={cfg.backHref}
             onClick={handleFinish}
             className="chat-finish-btn"
           >
             Done
           </Link>
         ) : finished ? (
-          <Link href="/journey" className="chat-finish-btn chat-finish-done">
+          <Link href={cfg.backHref} className="chat-finish-btn chat-finish-done">
             Done
           </Link>
         ) : (
@@ -115,26 +140,14 @@ export function Chat() {
       <div className="messages">
         {messages.length === 0 && (
           <div className="welcome">
-            <h1>Vibecoding Quiz</h1>
-            <p>Test your vibecoding knowledge with interactive quiz cards.</p>
+            <h1>{cfg.welcomeTitle}</h1>
+            <p>{cfg.welcomeDescription}</p>
             <div className="suggestions">
-              <button onClick={() => handleSuggestion("Quiz me on vibecoding!")}>
-                Quiz me on vibecoding!
-              </button>
-              <button
-                onClick={() =>
-                  handleSuggestion("Quiz me on working with Claude")
-                }
-              >
-                Working with Claude
-              </button>
-              <button
-                onClick={() =>
-                  handleSuggestion("Quiz me on shipping projects")
-                }
-              >
-                Shipping projects
-              </button>
+              {cfg.suggestions.map((s, i) => (
+                <button key={i} onClick={() => handleSuggestion(s.prompt)}>
+                  {s.label}
+                </button>
+              ))}
             </div>
           </div>
         )}
