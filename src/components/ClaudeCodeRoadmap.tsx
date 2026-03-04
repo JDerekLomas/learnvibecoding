@@ -8,14 +8,14 @@ import ClaudeCodeDetail from "./ClaudeCodeDetail";
 
 const STORAGE_KEY = "claude-code-mastery";
 
-const THEME_COLORS: Record<string, { gradient: string; dot: string }> = {
-  violet: { gradient: "from-violet-500 to-indigo-600", dot: "bg-violet-500" },
-  amber: { gradient: "from-amber-500 to-orange-500", dot: "bg-amber-500" },
-  blue: { gradient: "from-blue-500 to-indigo-500", dot: "bg-blue-500" },
-  emerald: { gradient: "from-emerald-500 to-teal-500", dot: "bg-emerald-500" },
-  cyan: { gradient: "from-cyan-500 to-sky-500", dot: "bg-cyan-500" },
-  rose: { gradient: "from-rose-500 to-pink-500", dot: "bg-rose-500" },
-  red: { gradient: "from-red-500 to-rose-500", dot: "bg-red-500" },
+const THEME_COLORS: Record<string, { gradient: string; dot: string; bg: string }> = {
+  violet: { gradient: "from-violet-500 to-indigo-600", dot: "bg-violet-500", bg: "bg-violet-50/60" },
+  amber: { gradient: "from-amber-500 to-orange-500", dot: "bg-amber-500", bg: "bg-amber-50/60" },
+  blue: { gradient: "from-blue-500 to-indigo-500", dot: "bg-blue-500", bg: "bg-blue-50/60" },
+  emerald: { gradient: "from-emerald-500 to-teal-500", dot: "bg-emerald-500", bg: "bg-emerald-50/60" },
+  cyan: { gradient: "from-cyan-500 to-sky-500", dot: "bg-cyan-500", bg: "bg-cyan-50/60" },
+  rose: { gradient: "from-rose-500 to-pink-500", dot: "bg-rose-500", bg: "bg-rose-50/60" },
+  red: { gradient: "from-red-500 to-rose-500", dot: "bg-red-500", bg: "bg-red-50/60" },
 };
 
 const svgProps = { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
@@ -190,25 +190,27 @@ export default function ClaudeCodeRoadmap() {
             {/* Connector into nodes */}
             <Connector color={section.color} />
 
-            {/* Zigzag skill tree nodes */}
-            <div className="flex flex-col items-center gap-0 max-w-[500px] mx-auto">
-              {sectionTopics.map((topic, i) => {
-                const idx = globalIndex++;
-                const pos = positions[i % positions.length];
+            {/* Zigzag skill tree nodes with section tint */}
+            <div className={`${colors.bg} rounded-lg border border-stone-200 py-4 px-3 max-w-[520px] mx-auto`}>
+              <div className="flex flex-col items-center gap-0">
+                {sectionTopics.map((topic, i) => {
+                  const idx = globalIndex++;
+                  const pos = positions[i % positions.length];
 
-                return (
-                  <div key={topic.id} className="flex flex-col items-center w-full">
-                    {i > 0 && <Connector color={section.color} />}
-                    <ClaudeCodeCard
-                      topic={topic}
-                      mastered={mastered.has(topic.id)}
-                      index={idx}
-                      position={pos}
-                      onClick={() => setSelected(topic)}
-                    />
-                  </div>
-                );
-              })}
+                  return (
+                    <div key={topic.id} className="flex flex-col items-center w-full">
+                      {i > 0 && <Connector color={section.color} />}
+                      <ClaudeCodeCard
+                        topic={topic}
+                        mastered={mastered.has(topic.id)}
+                        index={idx}
+                        position={pos}
+                        onClick={() => setSelected(topic)}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         );
