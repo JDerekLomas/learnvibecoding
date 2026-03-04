@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useSearchParams, useRouter, redirect } from 'next/navigation';
@@ -247,10 +246,6 @@ export default function QuizLauncher() {
 
 function TopicSelector() {
   const router = useRouter();
-  const [selectedTopic, setSelectedTopic] = useState('all');
-
-  const selected = TOPICS.find((t) => t.id === selectedTopic)!;
-  const tagParam = selected.tags.length > 0 ? `&tags=${selected.tags.join(',')}` : '';
 
   return (
     <div className="min-h-screen bg-[#f0f0f0] relative overflow-hidden">
@@ -275,8 +270,8 @@ function TopicSelector() {
         {/* Topic cards */}
         <div className="space-y-3 mb-8">
           {TOPICS.map((topic, i) => {
-            const isSelected = selectedTopic === topic.id;
             const colors = TOPIC_COLORS[topic.color];
+            const tagParam = topic.tags.length > 0 ? `&tags=${topic.tags.join(',')}` : '';
 
             return (
               <motion.button
@@ -286,14 +281,11 @@ function TopicSelector() {
                 transition={{ delay: i * 0.06, duration: 0.4, ease: 'easeOut' }}
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setSelectedTopic(topic.id)}
+                onClick={() => router.push(`/quiz/play?topic=${topic.id}${tagParam}`)}
                 className={`
                   w-full rounded-2xl border-2 p-5 flex items-center gap-4
                   transition-shadow duration-200 text-left cursor-pointer
-                  ${isSelected
-                    ? `bg-white ${colors.selectedBorder} shadow-lg ${colors.selectedShadow}`
-                    : 'bg-white border-stone-200 shadow-sm hover:shadow-md hover:border-stone-300'
-                  }
+                  bg-white border-stone-200 shadow-sm hover:shadow-md hover:border-stone-300
                 `}
               >
                 <div className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-white ${colors.iconBg}`}>
@@ -316,29 +308,6 @@ function TopicSelector() {
             );
           })}
         </div>
-
-        {/* Start button */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => router.push(`/quiz/play?topic=${selectedTopic}${tagParam}`)}
-            className="
-              w-full py-4 rounded-2xl
-              bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-extrabold text-lg
-              shadow-xl shadow-indigo-500/25
-              hover:from-indigo-600 hover:to-violet-600
-              transition-all duration-150
-              border-2 border-white/20
-            "
-          >
-            Start Session
-          </motion.button>
-        </motion.div>
 
         {/* How it works */}
         <motion.div
