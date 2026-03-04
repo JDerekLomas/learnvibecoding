@@ -242,8 +242,8 @@ export const NEOBRUTALIST_THEME: QuizTheme = {
 
   pageBg: 'bg-[#f5f0eb]',
 
-  doodleBg: '/textures/notebook.png',
-  doodleOpacity: 0.15,
+  doodleBg: '/textures/school.png',
+  doodleOpacity: 0.6,
   doodleTile: true,
 
   badgeBg: 'bg-white',
