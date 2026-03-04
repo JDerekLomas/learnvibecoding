@@ -11,6 +11,11 @@ const AGENT_ID = process.env.NEXT_PUBLIC_ELEVENLABS_DISCOVERY_AGENT_ID || proces
 
 type Phase = 'prep' | 'fork' | 'voice';
 
+interface TranscriptEntry {
+  role: 'user' | 'agent';
+  message: string;
+}
+
 const PREP_QUESTIONS = [
   "What's something you've been wanting to build or fix lately?",
   'Who would use it? Just you, friends, strangers?',
@@ -299,10 +304,17 @@ export default function VoiceAgentPage() {
   const [error, setError] = useState('');
   const [statusLog, setStatusLog] = useState<string[]>([]);
   const startedRef = useRef(false);
+  const [transcript, setTranscript] = useState<TranscriptEntry[]>([]);
+  const transcriptEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Auto-scroll transcript
+  useEffect(() => {
+    transcriptEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [transcript]);
 
   const conversation = useConversation({
     micMuted,
@@ -319,6 +331,9 @@ export default function VoiceAgentPage() {
       const msg = typeof err === 'string' ? err : err.message || 'Connection error';
       setError(msg);
       setStatusLog((prev) => [...prev, `Error: ${msg}`]);
+    },
+    onMessage: (props: { message: string; role: 'user' | 'agent' }) => {
+      setTranscript((prev) => [...prev, { role: props.role, message: props.message }]);
     },
   });
 
@@ -375,6 +390,7 @@ export default function VoiceAgentPage() {
 
     try {
       setError('');
+      setTranscript([]);
       setStatusLog((prev) => [...prev, 'Requesting mic...']);
       await navigator.mediaDevices.getUserMedia({ audio: true });
       setStatusLog((prev) => [...prev, 'Mic granted, connecting...']);
@@ -427,8 +443,10 @@ export default function VoiceAgentPage() {
 
   if (!mounted) return null;
 
+  const showTranscript = phase === 'voice' && transcript.length > 0;
+
   return (
-    <div className="max-w-2xl mx-auto px-6 py-8">
+    <div className={`mx-auto px-6 py-8 ${showTranscript ? 'max-w-5xl' : 'max-w-2xl'} transition-all duration-500`}>
       {/* Back nav */}
       <Link
         href="/"
@@ -449,12 +467,13 @@ export default function VoiceAgentPage() {
         Back
       </Link>
 
+      <div className={`${showTranscript ? 'flex flex-col lg:flex-row gap-5' : ''}`}>
       {/* Main card — neobrutalist */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="bg-white rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] overflow-hidden"
+        className={`bg-white rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] overflow-hidden ${showTranscript ? 'lg:flex-1' : ''}`}
       >
         <AnimatePresence mode="wait">
           {/* ── PREP PHASE ── */}
@@ -711,6 +730,37 @@ export default function VoiceAgentPage() {
           </div>
         )}
       </motion.div>
+
+      {/* Transcript panel */}
+      {showTranscript && (
+        <motion.div
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="lg:w-80 bg-white rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] overflow-hidden flex flex-col"
+        >
+          <div className="px-4 py-3 border-b-[3px] border-stone-900 bg-stone-50">
+            <h3 className="text-sm font-black text-stone-900">Transcript</h3>
+          </div>
+          <div className="flex-1 overflow-y-auto max-h-[500px] px-4 py-3 space-y-3">
+            {transcript.map((entry, i) => (
+              <div key={i} className={`flex gap-2 ${entry.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div
+                  className={`max-w-[85%] px-3 py-2 rounded-lg text-sm leading-relaxed ${
+                    entry.role === 'user'
+                      ? 'bg-violet-100 text-violet-900 font-medium'
+                      : 'bg-stone-100 text-stone-800'
+                  }`}
+                >
+                  {entry.message}
+                </div>
+              </div>
+            ))}
+            <div ref={transcriptEndRef} />
+          </div>
+        </motion.div>
+      )}
+      </div>
     </div>
   );
 }
