@@ -1761,6 +1761,424 @@ export const vibecodingQuestions: QuizItem[] = [
       'Rollback is the fastest way to stop user impact. Vercel, Netlify, and most platforms keep previous deployments and let you revert in seconds. Then you can calmly fix the bug and redeploy. Taking the site down is worse than rolling back. Fixing forward is slower. Cache clearing doesn\'t fix server-side bugs.',
     misconceptions: ['Trying to fix forward under pressure instead of rolling back first'],
   },
+  // ── Claude Code Power Features (2026) ──
+  {
+    id: 'vc_tool_5',
+    domain: 'vibe-coding',
+    tags: ['tooling'],
+    difficulty: 'developing',
+    title: 'Claude Code Hooks',
+    question: 'You want to automatically run your linter every time Claude Code edits a file. Which hook event should you use?',
+    correctAnswer: 'PostToolUse — it fires after the edit so your linter checks the changed file',
+    distractors: [
+      'PreToolUse — it fires before the edit so you can check the code first',
+      'Notification — it fires whenever Claude sends a message',
+      'Stop — it fires when Claude finishes the entire task',
+    ],
+    explanation:
+      'PostToolUse fires after a tool runs successfully — the file has already been changed, so your linter can check the new code. PreToolUse fires before the action and is used for blocking/approving operations (like a security gate). The two hooks have fundamentally different purposes: Pre = gatekeeper, Post = reactor.',
+    misconceptions: ['Confusing PreToolUse (gatekeeper) with PostToolUse (reactor)'],
+  },
+  {
+    id: 'vc_tool_6',
+    domain: 'vibe-coding',
+    tags: ['tooling'],
+    difficulty: 'proficient',
+    title: 'Hook Security Gates',
+    question: 'Your team wants to prevent Claude Code from ever running destructive shell commands like `rm -rf`. Which approach actually enforces this?',
+    correctAnswer: 'A PreToolUse hook on Bash that checks the command and exits with code 1 to block it',
+    distractors: [
+      'A PostToolUse hook that reverts any destructive commands after they run',
+      'A CLAUDE.md instruction that says "never run rm -rf"',
+      'A Notification hook that alerts the team when a dangerous command runs',
+    ],
+    explanation:
+      'PreToolUse hooks can block tool execution (exit code 1 = deny). This is the only way to programmatically prevent actions. PostToolUse fires after — too late. CLAUDE.md instructions are advisory, not enforced. Notification hooks just alert. If you need a hard guarantee, hooks are the mechanism.',
+    misconceptions: ['Thinking CLAUDE.md instructions are enforced rather than advisory'],
+  },
+  {
+    id: 'vc_tool_7',
+    domain: 'vibe-coding',
+    tags: ['tooling'],
+    difficulty: 'proficient',
+    title: 'Multi-Agent Teams',
+    question: 'You\'re refactoring a large codebase — updating the API, frontend components, and tests simultaneously. What\'s the best Claude Code approach?',
+    correctAnswer: 'Spawn a team with agents in separate worktrees — one for API, one for frontend, one for tests — coordinating through a shared task list',
+    distractors: [
+      'Do each part sequentially in one conversation to maintain full context',
+      'Open three separate Claude Code sessions and manually copy changes between them',
+      'Use /compact after each section to fit everything in one context window',
+    ],
+    explanation:
+      'Claude Code multi-agent teams let agents work in parallel in isolated worktrees (separate branches) with a shared task list for coordination. Each agent gets its own context window, preventing conflicts. This is faster than sequential work and avoids the manual coordination headaches of separate sessions.',
+    misconceptions: ['Thinking everything must happen in a single sequential conversation'],
+  },
+  {
+    id: 'vc_tool_8',
+    domain: 'vibe-coding',
+    tags: ['tooling'],
+    difficulty: 'developing',
+    title: 'Subagent Context Isolation',
+    question: 'You ask Claude Code to investigate a bug, but it reads 30+ files and your context window is filling up fast. What should you have done differently?',
+    correctAnswer: 'Delegate the investigation to a subagent — it explores in its own context window and reports back a summary',
+    distractors: [
+      'Run /compact after every 5 files to keep the context small',
+      'Tell Claude to only read 3 files at a time',
+      'Start a new session and paste the bug description again',
+    ],
+    explanation:
+      'Subagents get their own context window. They can explore dozens of files without filling your main conversation. When done, they return a concise summary. This is the primary strategy for keeping your main context clean during research-heavy tasks — delegate the exploration, keep the results.',
+    misconceptions: ['Not knowing about subagent context isolation'],
+  },
+  // ── CLAUDE.md & Skills ──
+  {
+    id: 'vc_prompt_5',
+    domain: 'vibe-coding',
+    tags: ['prompt-engineering'],
+    difficulty: 'developing',
+    title: 'CLAUDE.md Hierarchy',
+    question: 'Your team has shared coding standards, but you personally prefer different formatting. Where should each instruction go?',
+    correctAnswer: 'Team standards in CLAUDE.md (checked into git), personal preferences in CLAUDE.local.md (gitignored)',
+    distractors: [
+      'Both in CLAUDE.md — it handles conflicts automatically',
+      'Team standards in package.json, personal preferences in .env',
+      'Team standards in CLAUDE.md, personal preferences in ~/.claude/settings.json',
+    ],
+    explanation:
+      'CLAUDE.md is version-controlled and shared with the team — perfect for project conventions. CLAUDE.local.md is gitignored and overrides CLAUDE.md for personal preferences. This mirrors how .env and .env.local work. Settings.json controls Claude Code behavior (permissions, model), not coding style instructions.',
+    misconceptions: ['Not knowing about the .local.md override pattern'],
+  },
+  {
+    id: 'vc_prompt_6',
+    domain: 'vibe-coding',
+    tags: ['prompt-engineering'],
+    difficulty: 'proficient',
+    title: 'Custom Skills',
+    question: 'You find yourself repeating the same complex deployment process every time. What\'s the best way to teach Claude Code your workflow?',
+    correctAnswer: 'Create a skill in .claude/skills/ with a SKILL.md that describes when to trigger and the step-by-step process',
+    distractors: [
+      'Add all the deployment steps to CLAUDE.md so Claude always knows them',
+      'Create a bash script and tell Claude to run it',
+      'Save the conversation and load it next time with /resume',
+    ],
+    explanation:
+      'Skills in .claude/skills/ are loaded on-demand based on their description — they don\'t bloat every conversation like CLAUDE.md would. The SKILL.md frontmatter specifies when the skill should activate automatically. A bash script handles simple commands but can\'t handle the nuanced decision-making a skill provides.',
+    misconceptions: ['Putting everything in CLAUDE.md instead of using skills for specialized workflows'],
+  },
+  // ── Context Management ──
+  {
+    id: 'vc_tool_9',
+    domain: 'vibe-coding',
+    tags: ['tooling'],
+    difficulty: 'developing',
+    title: 'Context Window Management',
+    question: 'You\'re deep into a coding session and Claude\'s responses are getting slower and less focused. The context indicator shows 75% full. What should you do?',
+    correctAnswer: 'Run /compact to summarize the conversation while preserving key decisions, modified files, and current task state',
+    distractors: [
+      'Start a completely new session and re-explain everything from scratch',
+      'Keep going — Claude handles long contexts just as well',
+      'Delete old messages manually to free up space',
+    ],
+    explanation:
+      '/compact summarizes the conversation, typically reducing context by 60-70% while preserving critical information: what files were changed, what was decided, and what\'s still in progress. Starting fresh loses all context. Ignoring the problem causes degraded performance. You can\'t manually delete messages.',
+    misconceptions: ['Thinking you need to start over when context gets long'],
+  },
+  {
+    id: 'vc_tool_10',
+    domain: 'vibe-coding',
+    tags: ['tooling'],
+    difficulty: 'proficient',
+    title: 'Session Handoffs',
+    question: 'You need to stop working on a complex feature but want another dev (or future you) to continue seamlessly with Claude Code. What\'s the best practice?',
+    correctAnswer: 'Save a handoff document to .claude/handoffs/ describing what was done, current state, and next steps',
+    distractors: [
+      'Leave the terminal open so they can scroll up and read your conversation',
+      'Write a detailed commit message explaining everything',
+      'Trust that CLAUDE.md has enough context for anyone to continue',
+    ],
+    explanation:
+      'Handoff documents capture session-specific context — what was accomplished, where things stand, and what comes next. Terminal history is ephemeral and won\'t survive a new session. Commit messages describe what changed in code, not the broader task state. CLAUDE.md has project-level instructions, not session-level context.',
+    misconceptions: ['Thinking project-level docs capture session-level state'],
+  },
+  // ── Model Selection (2026) ──
+  {
+    id: 'vc_aitool_9',
+    domain: 'vibe-coding',
+    tags: ['ai-tool-selection'],
+    difficulty: 'developing',
+    title: 'Opus vs Sonnet in 2026',
+    question: 'Claude Sonnet 4.6 scores within 1-2% of Opus 4.6 on most coding benchmarks but costs 40% less. When should you still choose Opus?',
+    correctAnswer: 'Complex multi-step reasoning, multi-agent coordination, or tasks requiring deep architectural thinking',
+    distractors: [
+      'Always — Opus is strictly better at everything',
+      'Never — Sonnet 4.6 matches Opus on all tasks',
+      'Only for non-coding tasks like writing and analysis',
+    ],
+    explanation:
+      'Sonnet 4.6 is near-Opus quality for straightforward coding. But Opus 4.6 significantly outperforms on complex reasoning and multi-agent coordination. Sonnet is the daily driver for 90%+ of tasks; reach for Opus when the problem is genuinely hard or requires coordinating multiple agents.',
+    misconceptions: ['Thinking more expensive always means better for every task'],
+  },
+  {
+    id: 'vc_aitool_10',
+    domain: 'vibe-coding',
+    tags: ['ai-tool-selection'],
+    difficulty: 'beginning',
+    title: 'Scaffolding vs CLI Tools',
+    question: 'You want to go from zero to a working prototype with a polished UI as fast as possible. No complex backend logic. Which approach fits best?',
+    correctAnswer: 'v0 or Lovable — they generate complete, polished UIs from a description and deploy instantly',
+    distractors: [
+      'Claude Code — it\'s the most powerful AI coding tool',
+      'VS Code with Copilot — it\'s the industry standard',
+      'Write it by hand — AI tools produce low-quality prototypes',
+    ],
+    explanation:
+      'v0 (Vercel) and Lovable excel at rapid UI prototyping — describe what you want and get a deployable React app in minutes. Claude Code is more powerful for complex projects with existing codebases, but has a higher learning curve. Match the tool to the task: scaffolding tools for quick prototypes, Claude Code for deep work.',
+    misconceptions: ['Always reaching for the most powerful tool when a simpler one is faster'],
+  },
+  {
+    id: 'vc_aitool_11',
+    domain: 'vibe-coding',
+    tags: ['ai-tool-selection'],
+    difficulty: 'developing',
+    title: 'Claude Code\'s Superpower',
+    question: 'Which scenario is Claude Code (CLI) best suited for compared to browser-based tools like v0 or Bolt?',
+    correctAnswer: 'Working on an existing codebase with 50+ files where you need to understand and modify the project structure',
+    distractors: [
+      'Building a simple landing page from scratch',
+      'Generating a single React component to paste into your project',
+      'Creating a quick demo to show a client',
+    ],
+    explanation:
+      'Claude Code\'s superpower is working with existing codebases — it can read files, understand project structure, run tests, and make targeted changes across many files. Browser-based tools are better for greenfield projects and quick prototypes. Claude Code shines when you need deep understanding of what\'s already there.',
+    misconceptions: ['Using browser-based tools for complex existing codebases, or Claude Code for simple prototypes'],
+  },
+  // ── MCP (Model Context Protocol) ──
+  {
+    id: 'vc_tool_11',
+    domain: 'vibe-coding',
+    tags: ['tooling'],
+    difficulty: 'developing',
+    title: 'Why MCP Exists',
+    question: 'The MCP ecosystem has 1,800+ servers. What fundamental problem does Model Context Protocol solve?',
+    correctAnswer: 'The N×M integration problem — instead of every AI app building custom connectors for every service, each side implements the protocol once',
+    distractors: [
+      'It makes AI models run faster by caching responses locally',
+      'It provides a standard way to fine-tune models on private data',
+      'It encrypts communication between AI models and databases',
+    ],
+    explanation:
+      'Without MCP, 10 AI apps connecting to 10 services requires 100 custom integrations. With MCP, each AI app implements one client and each service implements one server — 20 implementations total. Originally created by Anthropic in 2024, it\'s now adopted by OpenAI, Google, and most AI tooling companies.',
+    misconceptions: ['Thinking MCP is about model performance rather than tool integration'],
+  },
+  {
+    id: 'vc_tool_12',
+    domain: 'vibe-coding',
+    tags: ['tooling'],
+    difficulty: 'proficient',
+    title: 'MCP Resources vs Tools',
+    question: 'In MCP, what\'s the difference between a Resource and a Tool?',
+    correctAnswer: 'Resources are read-only data retrieval with no side effects; Tools can perform actions that change state',
+    distractors: [
+      'Resources are for local files; Tools are for remote APIs',
+      'Resources are faster; Tools are more powerful',
+      'Resources run in the browser; Tools run on the server',
+    ],
+    explanation:
+      'MCP distinguishes between Resources (safe, read-only data access) and Tools (actions that can modify state). This separation lets AI hosts make smarter decisions about what to auto-approve vs what needs user confirmation. Reading a database = Resource. Inserting a row = Tool.',
+    misconceptions: ['Thinking the distinction is about location or performance rather than side effects'],
+  },
+  // ── Supabase & Security ──
+  {
+    id: 'vc_sec_9',
+    domain: 'vibe-coding',
+    tags: ['security'],
+    difficulty: 'developing',
+    title: 'Supabase RLS Trap',
+    question: 'You create a new Supabase table and start storing user data. A week later, you discover anyone can read all records through the API. What went wrong?',
+    correctAnswer: 'New tables have Row Level Security disabled by default — you forgot to enable it and add access policies',
+    distractors: [
+      'Your Supabase project is on the free tier which doesn\'t support security',
+      'You used the anon key instead of the service_role key',
+      'The table needs to be moved to a "private" schema',
+    ],
+    explanation:
+      'This is the #1 Supabase security mistake. New tables have RLS off by default, meaning anyone with the API URL and anon key can read/write everything. You must enable RLS AND create policies defining who can do what. Just enabling RLS without policies blocks everyone (returns empty results) — you need both steps.',
+    misconceptions: ['Thinking RLS is enabled by default on new tables'],
+  },
+  {
+    id: 'vc_sec_10',
+    domain: 'vibe-coding',
+    tags: ['security'],
+    difficulty: 'proficient',
+    title: 'Supabase Key Management',
+    question: 'Your Supabase project has two keys: anon and service_role. Where should each be used?',
+    correctAnswer: 'anon key in the frontend (it respects RLS policies); service_role key only in server-side code (it bypasses ALL security)',
+    distractors: [
+      'anon key for read operations, service_role for write operations',
+      'anon key for development, service_role for production',
+      'Either key works — they just have different rate limits',
+    ],
+    explanation:
+      'The anon key is safe to expose in frontend code because RLS policies control what it can access. The service_role key bypasses ALL security policies — it\'s "god mode" and must never appear in client-side code. If someone finds it in your JavaScript bundle, they get unrestricted access to your entire database.',
+    misconceptions: ['Thinking service_role is just the "production" key or has better rate limits'],
+  },
+  // ── Next.js 16 ──
+  {
+    id: 'vc_web_5',
+    domain: 'vibe-coding',
+    tags: ['nextjs'],
+    difficulty: 'developing',
+    title: 'Next.js 16 Caching',
+    question: 'In Next.js 14, data was cached by default and developers struggled with stale data. What changed in Next.js 16?',
+    correctAnswer: 'Caching is now opt-in — nothing is cached unless you explicitly add "use cache" to a page, component, or function',
+    distractors: [
+      'Next.js 16 removed caching entirely',
+      'You need to add revalidate: 0 to every fetch call to disable caching',
+      'Caching works the same but has better defaults',
+    ],
+    explanation:
+      'Next.js 16 flipped the default: everything is dynamic (uncached) unless you opt in with the "use cache" directive. This fixed the biggest complaint about Next.js 14 — surprising stale data. If you see stale data in Next.js 16, look for a "use cache" directive and either remove it or set a shorter revalidation.',
+    misconceptions: ['Assuming Next.js caching behavior is the same across versions'],
+  },
+  {
+    id: 'vc_web_6',
+    domain: 'vibe-coding',
+    tags: ['nextjs', 'server-components'],
+    difficulty: 'proficient',
+    title: 'Server Components for Data',
+    question: 'You need to fetch data from your database and display it. In Next.js App Router, what\'s the simplest approach?',
+    correctAnswer: 'Fetch directly in a Server Component (the default) — it runs on the server and can access the database without exposing credentials',
+    distractors: [
+      'Create an API route at /api/data and fetch from it in a Client Component',
+      'Use a useEffect hook to fetch data after the page loads',
+      'Add "use client" and use a data fetching library like SWR',
+    ],
+    explanation:
+      'Server Components are the default in App Router and run only on the server. They can directly query databases, read files, and use secrets without exposing anything to the browser — no API route needed. Client Components ("use client") are for interactivity (useState, onClick). Creating API routes just to fetch data in your own app is unnecessary overhead.',
+    misconceptions: ['Creating API routes for data your own Server Components could fetch directly'],
+  },
+  // ── Vercel AI SDK ──
+  {
+    id: 'vc_arch_5',
+    domain: 'vibe-coding',
+    tags: ['architecture'],
+    difficulty: 'developing',
+    title: 'Streaming AI Responses',
+    question: 'You\'re building a chat UI where AI responses appear word-by-word. Using the Vercel AI SDK, which pattern accomplishes this?',
+    correctAnswer: 'streamText() on the server paired with useChat() on the client',
+    distractors: [
+      'generateText() with a setTimeout to reveal words gradually',
+      'fetch() with response.json() and a CSS typing animation',
+      'generateObject() with a streaming option set to true',
+    ],
+    explanation:
+      'The Vercel AI SDK\'s streamText() sends tokens as they\'re generated from the model, and useChat() is a React hook that manages the streaming state on the client. This gives real streaming. generateText() waits for the full response before returning — faking it with animations is a poor substitute for actual token streaming.',
+    misconceptions: ['Faking streaming with animations over a completed response'],
+  },
+  // ── Common Beginner Mistakes ──
+  {
+    id: 'vc_debug_5',
+    domain: 'vibe-coding',
+    tags: ['debugging'],
+    difficulty: 'beginning',
+    title: 'The Hard-Coded Data Trap',
+    question: 'You built an app with AI and it looks great — the product list shows 10 items. But when you add products to the database, nothing changes on the site. What likely happened?',
+    correctAnswer: 'The AI hard-coded the product data directly in the component instead of fetching it from the database',
+    distractors: [
+      'The database needs to be restarted to pick up new records',
+      'You need to redeploy the app every time data changes',
+      'The browser is caching the old page and needs a hard refresh',
+    ],
+    explanation:
+      'This is one of the most common vibe coding traps. AI tools often generate impressive-looking UIs with hard-coded data arrays right in the component — it looks functional but isn\'t connected to anything real. Always verify that displayed data comes from actual API calls or database queries, not const arrays in the source.',
+    misconceptions: ['Assuming an app that displays data is actually connected to a live data source'],
+  },
+  {
+    id: 'vc_sec_11',
+    domain: 'vibe-coding',
+    tags: ['security'],
+    difficulty: 'beginning',
+    title: 'AI Code Security Review',
+    question: 'Studies show AI-generated code has 2-3x higher rates of security vulnerabilities. What\'s the best defense?',
+    correctAnswer: 'Review AI-generated code before shipping — especially authentication, database queries, and user input handling',
+    distractors: [
+      'Use a more expensive AI model — they produce more secure code',
+      'Add a disclaimer that your app was built with AI',
+      'Only use AI for frontend code since it can\'t cause security issues there',
+    ],
+    explanation:
+      'AI generates plausible-looking code that may contain SQL injection, XSS, missing auth checks, or exposed secrets. The most critical areas to review: anything touching user input, authentication flows, database queries, and secret management. Frontend code can absolutely have security issues (XSS, exposed API keys in bundles).',
+    misconceptions: ['Thinking frontend code is inherently safe from security vulnerabilities'],
+  },
+  // ── Vibe Coding Philosophy ──
+  {
+    id: 'vc_prompt_7',
+    domain: 'vibe-coding',
+    tags: ['prompt-engineering'],
+    difficulty: 'developing',
+    title: 'Planning Before Prompting',
+    question: 'You want to build a full-stack app with auth, a dashboard, and real-time updates. What should you do BEFORE your first prompt?',
+    correctAnswer: 'Write a brief plan — what features you need, what the user flow looks like, and what technologies to use',
+    distractors: [
+      'Just start prompting and iterate — planning slows you down',
+      'Ask the AI to plan the entire architecture and follow it exactly',
+      'Find a tutorial for a similar app and follow it step by step',
+    ],
+    explanation:
+      'Even in vibe coding, 10 minutes of planning saves hours of rework. A brief plan (not a 50-page spec) clarifies what you\'re building so your prompts have direction. Without it, you end up with a Frankenstein of disconnected features. The plan doesn\'t need to be perfect — just enough to give your session coherence.',
+    misconceptions: ['Thinking planning and vibe coding are opposites'],
+  },
+  {
+    id: 'vc_prompt_8',
+    domain: 'vibe-coding',
+    tags: ['prompt-engineering'],
+    difficulty: 'beginning',
+    title: 'Origin of Vibe Coding',
+    question: 'Who coined the term "vibe coding" and what does it mean?',
+    correctAnswer: 'Andrej Karpathy in 2025 — describing what you want to an AI and focusing on the outcome, not the implementation',
+    distractors: [
+      'Sam Altman in 2024 — using ChatGPT to write code by copying and pasting',
+      'A TikTok trend where developers code while listening to lo-fi music',
+      'A consulting firm\'s methodology for enterprise AI adoption',
+    ],
+    explanation:
+      'Andrej Karpathy (OpenAI co-founder, ex-Tesla AI lead) coined "vibe coding" in February 2025: "fully give in to the vibes, embrace exponentials, and forget that the code even exists." It became Collins Dictionary\'s Word of the Year 2025. The core idea: describe what you want, not how to build it.',
+    misconceptions: ['Thinking vibe coding is just copy-pasting AI output or using ChatGPT'],
+  },
+  {
+    id: 'vc_prompt_9',
+    domain: 'vibe-coding',
+    tags: ['prompt-engineering'],
+    difficulty: 'proficient',
+    title: 'Strategic Ambiguity',
+    question: 'You\'re prompting Claude Code to build a dashboard. Which prompt produces the best results?',
+    correctAnswer: '"Build a team analytics dashboard. Think Linear meets Notion — clean, data-dense, no wasted space. The metrics a startup CEO checks every morning."',
+    distractors: [
+      '"Create a dashboard with 4 cards in a 2x2 grid. Card 1: revenue (line chart, blue). Card 2: users (big number). Card 3: table, 5 rows. Card 4: pie chart."',
+      '"Make a dashboard"',
+      '"Build the best dashboard possible using the latest best practices and modern design patterns"',
+    ],
+    explanation:
+      'Strategic ambiguity gives Claude a clear destination (what and why) while letting it bring its competence to the how. Reference apps paint a taste target. Over-specifying layout limits the AI\'s judgment. Under-specifying gives nothing to work with. Vague superlatives ("best possible") are empty calories — they sound specific but contain no information.',
+    misconceptions: ['Confusing strategic ambiguity with vagueness — good prompts are specific about goals, not implementation'],
+  },
+  {
+    id: 'vc_ship_9',
+    domain: 'vibe-coding',
+    tags: ['shipping-deploy'],
+    difficulty: 'beginning',
+    title: 'Commit Before Deploy',
+    question: 'Your app works locally. You deploy to Vercel and it works there too. But your teammate pulls from git and gets errors. What happened?',
+    correctAnswer: 'You deployed from local files but didn\'t commit and push — Vercel has your code but git doesn\'t',
+    distractors: [
+      'Your teammate needs to run npm install first',
+      'Vercel uses a different Node.js version than your machine',
+      'You need to add your teammate as a Vercel collaborator',
+    ],
+    explanation:
+      'When you deploy with `vercel --prod` locally, Vercel deploys whatever is on disk — even uncommitted changes. Your teammate only has what\'s in git. Always commit and push before (or immediately after) deploying so git and production stay in sync. Otherwise you get "works on Vercel but nobody can reproduce it."',
+    misconceptions: ['Thinking a successful deploy means the code is in version control'],
+  },
 ];
 
 // ── Combined & utility functions ─────────────────────────────────────

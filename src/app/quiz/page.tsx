@@ -21,7 +21,7 @@ const TOPICS: TopicCard[] = [
     label: 'Mixed Practice',
     description: 'All vibe coding topics',
     tags: [],
-    count: 96,
+    count: 120,
     color: 'violet',
   },
   {
@@ -29,7 +29,7 @@ const TOPICS: TopicCard[] = [
     label: 'Prompt Engineering',
     description: 'Write prompts that get great code',
     tags: ['prompt-engineering'],
-    count: 12,
+    count: 18,
     color: 'amber',
   },
   {
@@ -37,15 +37,15 @@ const TOPICS: TopicCard[] = [
     label: 'Reading AI Code',
     description: 'Spot bugs, understand output',
     tags: ['reading-code'],
-    count: 12,
+    count: 13,
     color: 'blue',
   },
   {
     id: 'tooling',
     label: 'Dev Tooling',
-    description: 'Git, npm, terminals, deployment',
+    description: 'Claude Code, hooks, MCP, git, terminals',
     tags: ['tooling'],
-    count: 12,
+    count: 21,
     color: 'emerald',
   },
   {
@@ -53,7 +53,7 @@ const TOPICS: TopicCard[] = [
     label: 'Web Fundamentals',
     description: 'React, Next.js, Tailwind, APIs',
     tags: ['react', 'nextjs', 'tailwind', 'deployment', 'css', 'server-components', 'responsive', 'api', 'forms', 'performance'],
-    count: 10,
+    count: 12,
     color: 'red',
   },
   {
@@ -61,7 +61,7 @@ const TOPICS: TopicCard[] = [
     label: 'Debugging with AI',
     description: 'Fix errors, read logs, ship faster',
     tags: ['debugging'],
-    count: 10,
+    count: 12,
     color: 'indigo',
   },
   {
@@ -69,7 +69,7 @@ const TOPICS: TopicCard[] = [
     label: 'Testing & Quality',
     description: 'Unit tests, CI/CD, and code quality',
     tags: ['testing'],
-    count: 8,
+    count: 9,
     color: 'cyan',
   },
   {
@@ -77,7 +77,7 @@ const TOPICS: TopicCard[] = [
     label: 'Security',
     description: 'XSS, auth, secrets, and safe coding',
     tags: ['security'],
-    count: 8,
+    count: 13,
     color: 'rose',
   },
   {
@@ -85,7 +85,7 @@ const TOPICS: TopicCard[] = [
     label: 'AI Tool Selection',
     description: 'Pick the right AI tool for the job',
     tags: ['ai-tool-selection'],
-    count: 8,
+    count: 12,
     color: 'purple',
   },
   {
@@ -93,7 +93,7 @@ const TOPICS: TopicCard[] = [
     label: 'Architecture',
     description: 'Components, state, APIs, databases',
     tags: ['architecture'],
-    count: 8,
+    count: 10,
     color: 'orange',
   },
   {
@@ -101,7 +101,7 @@ const TOPICS: TopicCard[] = [
     label: 'Shipping & Deploy',
     description: 'DNS, previews, monitoring, rollbacks',
     tags: ['shipping-deploy'],
-    count: 8,
+    count: 10,
     color: 'teal',
   },
 ];
