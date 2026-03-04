@@ -165,6 +165,22 @@ export const SKILL_UNITS: SkillUnit[] = [
       },
     ],
   },
+  {
+    id: "enlightenment",
+    title: "Enlightenment",
+    description: "You were the vibe all along",
+    color: "amber",
+    skills: [
+      {
+        id: "enlightenment",
+        title: "Enlightenment",
+        subtitle: "Beyond tools, beyond technique",
+        href: "/enlightenment",
+        unit: "enlightenment",
+        prerequisites: ["/sessions", "/shipping", "/craft"],
+      },
+    ],
+  },
 ];
 
 /**
@@ -194,21 +210,7 @@ export function getSkillStatuses(): Record<string, SkillStatus> {
   return statuses;
 }
 
-function isUnlocked(skill: Skill, currentStatuses: Record<string, SkillStatus>): boolean {
-  if (skill.prerequisites.length === 0) return true;
-
-  // Entry prerequisites: any ONE entry module complete unlocks core
-  const isEntryGate = skill.prerequisites.every((p) => ENTRY_PATHS.includes(p));
-  if (isEntryGate) {
-    return ENTRY_PATHS.some((path) => {
-      const id = path.replace(/^\//, "");
-      return currentStatuses[id] === "complete" || currentStatuses[id] === "active";
-    });
-  }
-
-  // Normal prerequisites: all must be complete or active
-  return skill.prerequisites.every((path) => {
-    const id = path.replace(/^\//, "");
-    return currentStatuses[id] === "complete" || currentStatuses[id] === "active";
-  });
+function isUnlocked(_skill: Skill, _currentStatuses: Record<string, SkillStatus>): boolean {
+  // Everything is open — no gates
+  return true;
 }
