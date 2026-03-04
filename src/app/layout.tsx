@@ -85,10 +85,7 @@ export default async function RootLayout({
   const isCorporate = audience === "corporate";
 
   return (
-    <html lang="en">
-      <head>
-        <link rel="preload" href="/textures/vibecode-light-1.png" as="image" />
-      </head>
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
