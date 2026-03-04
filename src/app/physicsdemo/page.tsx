@@ -163,14 +163,17 @@ export default function PhysicsDemoHub() {
         </ul>
       </motion.div>
 
-      {/* Share button */}
+      {/* Teacher session button */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.7 }}
-        className="mt-6 flex justify-center"
+        className="mt-6 flex flex-col items-center gap-1.5"
       >
         <ShareButton />
+        <p className="text-[11px] text-stone-400 font-medium">
+          Track student progress as they explore these activities
+        </p>
       </motion.div>
 
       {/* Footer note */}

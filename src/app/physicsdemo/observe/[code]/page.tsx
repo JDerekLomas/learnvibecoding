@@ -331,11 +331,14 @@ export default function ObservePage() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold uppercase tracking-wider mb-2">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-              Observer View
+              Teacher Dashboard
             </div>
             <h1 className="text-2xl font-black text-stone-900">
               {session.display_name || 'Heat & Thermal Energy'}
             </h1>
+            <p className="text-xs text-stone-400 mt-1">
+              This page auto-refreshes. Keep it open while students work.
+            </p>
           </div>
           <button
             onClick={handleCopyLink}
@@ -370,19 +373,45 @@ export default function ObservePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="bg-white rounded-xl border-[3px] border-stone-900 shadow-[4px_4px_0_#1c1917] p-8 text-center"
+          className="bg-white rounded-xl border-[3px] border-stone-900 shadow-[4px_4px_0_#1c1917] p-6"
         >
-          <p className="text-lg font-black text-stone-900 mb-2">
-            No learners yet
+          <p className="text-lg font-black text-stone-900 mb-1">
+            Waiting for learners to join
           </p>
-          <p className="text-sm text-stone-500 mb-4">
-            Share the learner link — they&apos;ll enter their name and start exploring.
+          <p className="text-sm text-stone-500 mb-5">
+            Send the learner link to your students. Here&apos;s what happens:
           </p>
+
+          {/* Step-by-step guide */}
+          <div className="space-y-3 mb-6">
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-50 border-2 border-amber-200">
+              <span className="shrink-0 w-6 h-6 rounded-full bg-[#E07A5F] text-white text-xs font-black flex items-center justify-center mt-0.5">1</span>
+              <div>
+                <p className="text-sm font-black text-stone-800">Share the link</p>
+                <p className="text-xs text-stone-500">Copy it below and send it via chat, email, or project it on screen.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-stone-50 border-2 border-stone-200">
+              <span className="shrink-0 w-6 h-6 rounded-full bg-stone-300 text-white text-xs font-black flex items-center justify-center mt-0.5">2</span>
+              <div>
+                <p className="text-sm font-black text-stone-800">Students open it and enter their name</p>
+                <p className="text-xs text-stone-500">They&apos;ll see the same physics activities — Read, Quiz, Ask AI, Talk.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-stone-50 border-2 border-stone-200">
+              <span className="shrink-0 w-6 h-6 rounded-full bg-stone-300 text-white text-xs font-black flex items-center justify-center mt-0.5">3</span>
+              <div>
+                <p className="text-sm font-black text-stone-800">Watch their progress here</p>
+                <p className="text-xs text-stone-500">This page updates every 15 seconds. You&apos;ll see chapters read, quiz scores, and who&apos;s active.</p>
+              </div>
+            </div>
+          </div>
+
           <button
             onClick={handleCopyLink}
-            className="px-5 py-2.5 text-sm font-black rounded-lg border-[2.5px] border-stone-900 bg-[#E07A5F] text-white shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all"
+            className="w-full px-5 py-3 text-sm font-black rounded-lg border-[2.5px] border-stone-900 bg-[#E07A5F] text-white shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all"
           >
-            {copied ? 'Copied!' : 'Copy learner link'}
+            {copied ? 'Copied to clipboard!' : 'Copy learner link'}
           </button>
         </motion.div>
       ) : (
