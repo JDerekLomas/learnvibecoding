@@ -1,0 +1,71 @@
+import ConceptCallout from "@/components/ConceptCallout";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "Common Failures and Fixes — Learn Vibe Coding",
+  description: "The five most common failure modes and how to fix each one.",
+};
+
+# Common Failures and Fixes
+
+## Context is full
+
+**Symptoms:** Claude gives increasingly vague responses, repeats itself, or seems to forget what you were working on.
+
+**Fix:** Use `/compact` to summarize the conversation and free space. If it's too far gone, use `/clear` and start a new session with the key context: "I'm working on X. Here's where I am. The problem is Y."
+
+<ConceptCallout id="context-rot" />
+<ConceptCallout id="fresh-eyes" />
+
+## Claude is going in circles
+
+**Symptoms:** Claude fixes one thing, breaks another, fixes that, breaks the first thing again.
+
+**Fix:** This usually means the problem is structural, not surface-level. Stop iterating and restate the goal:
+
+```
+Let's step back. The core goal is [X].
+The current approach of [Y] isn't working.
+What's a different way to achieve this?
+```
+
+<ConceptCallout id="sycophancy-trap" />
+
+## Wrong direction entirely
+
+**Symptoms:** Claude built something competent but it's not what you wanted at all.
+
+**Fix:** This is a vision problem, not a code problem. Don't try to fix it — describe what you actually want:
+
+```
+This isn't what I had in mind. I want something more like [X].
+Specifically: [concrete detail about what "right" looks like].
+```
+
+Showing an example (a screenshot, a URL, a sketch) is 10x more effective than describing in words.
+
+## Deploy fails
+
+**Symptoms:** `vercel --prod` gives an error.
+
+**Fix:** Common causes:
+- **Type errors** — run `npx tsc --noEmit` locally first to catch these
+- **Build errors** — ask Claude: "The deploy failed with this error: [paste error]. Fix it."
+- **Missing environment variables** — check if the project needs API keys configured in Vercel
+- **Package version conflicts** — ask Claude to resolve dependency issues
+
+Most deploy failures have clear error messages. Copy the error, paste it to Claude, and let Claude fix it.
+
+## Mobile is broken
+
+**Symptoms:** Looks great on desktop, disaster on phone.
+
+**Fix:** Open the deployed URL on your actual phone (not just browser devtools). Then tell Claude exactly what you see:
+
+```
+On mobile: the nav menu overlaps the content,
+the text is too small to read, and the images
+overflow the screen.
+```
+
+<ChapterNav />

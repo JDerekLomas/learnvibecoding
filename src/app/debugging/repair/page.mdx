@@ -1,0 +1,47 @@
+import Callout from "@/components/Callout";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "Repair Patterns — Learn Vibe Coding",
+  description: "Named patterns for getting unstuck: Soft Reset, Show-Don't-Tell, and more.",
+};
+
+# Repair Patterns
+
+These are named patterns for getting unstuck. Think of them as tools in a toolkit.
+
+## The Soft Reset
+> "Let's step back. The core goal is [X]."
+
+When you've gone down a wrong path. You're not starting over — you're recalibrating. Restate the destination, not the failed route.
+
+## Show-Don't-Tell
+> "Here's an example of what I mean: [link/screenshot/paste]"
+
+When descriptions aren't landing. Visual references bypass the ambiguity of language.
+
+## The Constraint Addition
+> "Same thing, but [single constraint]."
+
+When the output is close but not right. Add one constraint at a time. "Same layout, but darker." "Same functionality, but simpler UI." Don't stack multiple changes.
+
+## The Role Shift
+> "Look at this as a [user / designer / critic / someone who's never seen this before]."
+
+When you need a fresh perspective. Ask Claude to evaluate from a different viewpoint.
+
+## The Nuclear Option
+Close the session. Open a new one. Start fresh with the lessons learned.
+
+```
+I'm starting over on [project]. Previously I tried [approach]
+and it didn't work because [reason]. This time I want to [new approach].
+```
+
+Starting over with knowledge is not the same as starting over with nothing.
+
+<Callout type="warning" title="When to stop">
+If you've been stuck on the same issue for more than 30 minutes, stop. Either the problem is harder than you think (break it into smaller pieces) or you're approaching it wrong (try a completely different approach). Persistence is a virtue, but so is knowing when to change tactics.
+</Callout>
+
+<ChapterNav />
