@@ -62,20 +62,11 @@ export function NavBar({ isCorporate }: { isCorporate: boolean }) {
     </>
   ) : (
     <>
-      <Link href="/concepts" className={linkClass} onClick={() => setOpen(false)}>
-        Concepts
-      </Link>
-      <Link href="/claude-code" className={linkClass} onClick={() => setOpen(false)}>
-        Claude Code
+      <Link href="/curriculum" className={linkClass} onClick={() => setOpen(false)}>
+        Learn
       </Link>
       <Link href="/quiz" className={linkClass} onClick={() => setOpen(false)}>
-        Quiz
-      </Link>
-      <Link href="/skill-map" className={linkClass} onClick={() => setOpen(false)}>
-        Skill Map
-      </Link>
-      <Link href="/curriculum" className={linkClass} onClick={() => setOpen(false)}>
-        Curriculum
+        Practice
       </Link>
       <a
         href="https://codevibing.com"
@@ -86,13 +77,9 @@ export function NavBar({ isCorporate }: { isCorporate: boolean }) {
       >
         Community
       </a>
-      {cvUsername ? (
+      {cvUsername && (
         <Link href="/connect" className="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 transition-colors" onClick={() => setOpen(false)}>
           @{cvUsername}
-        </Link>
-      ) : (
-        <Link href="/connect" className={linkClass} onClick={() => setOpen(false)}>
-          Connect
         </Link>
       )}
     </>

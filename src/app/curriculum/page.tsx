@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getData, hasExerciseData, onProgressChange, type LearnerData } from "@/lib/progress";
 import { getModulesBySection, SEQUENTIAL_PATH } from "@/data/course-modules";
 import TrajectoryView from "@/components/TrajectoryView";
+import SkillMap from "@/components/SkillMap";
 import Footer from "@/components/Footer";
 
 export default function CurriculumPage() {
@@ -50,6 +51,11 @@ export default function CurriculumPage() {
         <p className="text-lg font-medium text-stone-500 mb-4">
           The full learning path, from entry point to craft mastery.
         </p>
+
+        {/* Visual skill map overview */}
+        <div className="mb-10">
+          <SkillMap />
+        </div>
 
         {/* Progress summary */}
         {data && (
