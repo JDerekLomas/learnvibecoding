@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AI Growth Net — Strategy & Development",
-  description: "Advisory draft — product vision, competitive landscape, and development roadmap.",
+  title: "AI Growth Net — Business Opportunity",
+  description:
+    "AI upskilling for organizations — market opportunity, product, and projections.",
   robots: { index: false, follow: false },
 };
 
@@ -24,14 +25,17 @@ export default function StrategyPage() {
         {/* ── Header ── */}
         <div className="text-center mb-8 bg-white rounded-2xl border-3 border-stone-300 shadow-lg shadow-stone-200/60 px-8 py-10">
           <p className="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-3">
-            Advisory Draft — March 2026
+            Advisor Briefing — March 2026
           </p>
           <h1 className="text-3xl font-extrabold tracking-tight text-stone-900 sm:text-4xl">
             AI Growth Net
-            <br />
-            <span className="text-stone-400">Strategy &amp; Development</span>
           </h1>
+          <p className="mt-2 text-lg font-medium text-stone-400">
+            The opportunity in AI upskilling
+          </p>
           <p className="mt-4 text-sm text-stone-500">
+            Derek Lomas, PhD — TU Delft
+            <br />
             <a
               href="mailto:derek@codevibing.com"
               className="text-indigo-600 underline underline-offset-4 decoration-indigo-300 hover:decoration-indigo-500 transition-colors"
@@ -41,52 +45,68 @@ export default function StrategyPage() {
           </p>
         </div>
 
-        {/* ── Executive Summary ── */}
-        <Card label="Executive Summary">
+        {/* ── The Opportunity ── */}
+        <Card label="The Opportunity">
+          <p className="text-sm text-stone-600 leading-relaxed mb-5">
+            Every organization needs to upskill its people on AI. The corporate
+            training market is{" "}
+            <strong className="text-stone-900">$400B globally</strong>, and the
+            AI-specific segment is projected to reach{" "}
+            <strong className="text-stone-900">$10.4B by 2033</strong> (25%
+            CAGR). Over 80% of enterprises will deploy GenAI applications by
+            2026 — but most employees don&apos;t know how to use them. The #1
+            barrier to AI adoption isn&apos;t technology, it&apos;s skills.
+          </p>
+          <div className="grid grid-cols-3 gap-3 mb-5">
+            <StatCard value="$400B" label="Corporate training market" />
+            <StatCard value="25%" label="CAGR, AI training segment" />
+            <StatCard value="80%" label="Enterprises deploying GenAI by 2026" />
+          </div>
           <p className="text-sm text-stone-600 leading-relaxed">
-            AI Growth Net is a self-serve AI upskilling platform for organizations. Where
-            competitors charge $750–$28,000 per seat and require months of procurement, we
-            let a CEO create a team in 60 seconds, try the AI assessment themselves, and
-            watch their people progress through a 5-step journey — for free during early
-            access. The platform is AI-native: assessments adapt in real time, discovery
-            interviews find personally relevant projects, and the curriculum teaches
-            building <em>with</em> AI, not <em>about</em> AI. With backing from TU Delft,
-            there is a path to becoming the first university-backed program combining AI
-            capability building with human-centered design research.
+            Current solutions are either too expensive ($750–$28K/seat), too
+            slow (months of procurement), or too generic (Coursera completion
+            rates: 3–5%). There is no product that lets a CEO try an AI
+            assessment in 60 seconds, enroll their team, and watch real
+            capability develop — until now.
           </p>
         </Card>
 
-        {/* ── What Exists Today ── */}
-        <Card label="What Exists Today">
-          <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-3">
-            Live Product
+        {/* ── What We're Building ── */}
+        <Card label="What We're Building">
+          <p className="text-sm text-stone-600 leading-relaxed mb-5">
+            AI Growth Net is a self-serve AI upskilling platform for
+            organizations. The core product is a 5-step journey — Discover,
+            Assess, Learn, Practice, Ship — where every participant ends with a
+            working AI project, not a certificate. The platform is AI-native:
+            assessments adapt in real time, discovery interviews find personally
+            relevant projects, and the curriculum teaches building{" "}
+            <em>with</em> AI.
           </p>
-          <div className="space-y-3 mb-6">
+
+          <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-3">
+            Live Product — Try It
+          </p>
+          <div className="space-y-2.5 mb-5">
             {[
               {
                 href: "https://ai-growth.net",
                 title: "ai-growth.net",
-                desc: "Corporate landing — team creation CTA, interactive demo question",
+                desc: "Corporate landing + interactive demo",
               },
               {
                 href: "https://ai-growth.net/quiz-chat",
                 title: "/quiz-chat",
-                desc: "AI assessment chatbot — adaptive, confidence-based, 96 items across 11 topics",
+                desc: "AI assessment — 96 items, 11 topics, adaptive",
               },
               {
                 href: "https://ai-growth.net/journey",
                 title: "/journey",
-                desc: "5-step guided experience: Discover → Assess → Learn → Practice → Ship",
+                desc: "5-step guided experience",
               },
               {
                 href: "https://ai-growth.net/teams/create",
-                title: "/teams/create → /dashboard",
-                desc: "Team management — invite link, real-time progress grid, manager controls",
-              },
-              {
-                href: "https://learnvibecoding.vercel.app",
-                title: "learnvibecoding.vercel.app",
-                desc: "Consumer curriculum — skill map, 7 modules, interactive exercises",
+                title: "/teams/create",
+                desc: "Create a team, get a dashboard in 60 seconds",
               },
             ].map((item) => (
               <div key={item.href} className="flex items-start gap-3">
@@ -100,111 +120,25 @@ export default function StrategyPage() {
                   >
                     {item.title}
                   </a>
-                  <p className="text-sm text-stone-500">{item.desc}</p>
+                  <span className="text-sm text-stone-500">
+                    {" "}
+                    — {item.desc}
+                  </span>
                 </div>
               </div>
             ))}
           </div>
 
           <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-3">
-            Tech Stack
+            Key Differentiators
           </p>
-          <p className="text-sm text-stone-600 leading-relaxed mb-4">
-            Next.js 16, React 19, Tailwind 4, Supabase (teams &amp; progress),
-            Gemini (quiz chat), Claude (discovery interview), ElevenLabs (voice),
-            Vercel (hosting &amp; edge middleware for audience routing).
-          </p>
-
-          <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-3">
-            Current Status
-          </p>
-          <p className="text-sm text-stone-600 leading-relaxed">
-            Pre-launch. Core product functional. No paid users yet. Seeking
-            advisors and early enterprise pilots.
-          </p>
-        </Card>
-
-        {/* ── Competitive Landscape ── */}
-        <Card label="Competitive Landscape">
-          {/* 2×2 matrix */}
-          <div className="mb-6 rounded-xl border-2 border-stone-200 overflow-hidden">
-            <div className="grid grid-cols-2">
-              <div className="p-4 border-b-2 border-r-2 border-stone-200 bg-stone-50">
-                <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">
-                  Expensive + Sales-Led
-                </p>
-                <p className="text-xs font-bold text-stone-700">Berkeley Haas</p>
-                <p className="text-xs text-stone-400">$6,500–$28K</p>
-              </div>
-              <div className="p-4 border-b-2 border-stone-200 bg-stone-50">
-                <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">
-                  Expensive + Self-Serve
-                </p>
-                <p className="text-xs font-bold text-stone-700">SectionAI</p>
-                <p className="text-xs text-stone-400">$750/seat</p>
-              </div>
-              <div className="p-4 border-r-2 border-stone-200 bg-indigo-50">
-                <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider mb-1">
-                  Free + Self-Serve ← Us
-                </p>
-                <p className="text-xs font-bold text-indigo-700">AI Growth Net</p>
-                <p className="text-xs text-indigo-400">Free (early access)</p>
-              </div>
-              <div className="p-4 bg-stone-50">
-                <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">
-                  Free/Low + Sales-Led
-                </p>
-                <p className="text-xs font-bold text-stone-700">Multiverse</p>
-                <p className="text-xs text-stone-400">Levy-funded (UK)</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <CompetitorCard
-              name="SectionAI"
-              color="border-l-amber-500"
-              detail="Closest competitor. Their ProfAI platform offers enterprise AI training with instructor-led cohorts. $750/seat with bulk discounts. Strong content but slow enrollment cycle — requires procurement. Weakness: no self-serve path; a CEO can't try it in 60 seconds."
-            />
-            <CompetitorCard
-              name="Multiverse"
-              color="border-l-violet-500"
-              detail="Best-designed product in the space. Levy-funded apprenticeship model (free for UK employers). Beautiful UX, strong community. Weakness: UK-only, tied to apprenticeship levy structure. Not transferable to other markets."
-            />
-            <CompetitorCard
-              name="Berkeley Haas Executive Education"
-              color="border-l-blue-500"
-              detail="Prestige positioning — 'Leading AI-Driven Innovation' program. $6,500–$28K price point attracts senior leaders. Multi-week, instructor-led. Weakness: glacial pace, extreme price, zero personalization. Teaches about AI, not building with AI."
-            />
-            <CompetitorCard
-              name="Generic LMS / Coursera / LinkedIn Learning"
-              color="border-l-stone-400"
-              detail="Massive libraries of AI courses, but completion rates are abysmal (3–5%). No team accountability, no adaptive assessment, no project-based outcome. Weakness: content dumps without capability building. Checking the box, not changing behavior."
-            />
-          </div>
-        </Card>
-
-        {/* ── Differentiation ── */}
-        <Card label="Differentiation">
-          <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-3">
-            The 5-Step Journey as IP
-          </p>
-          <p className="text-sm text-stone-600 leading-relaxed mb-5">
-            Our core methodology — Discover → Assess → Learn → Practice → Ship — is
-            the structural IP. Each step is AI-powered and adaptive. The journey
-            produces a real, shipped artifact, not a certificate of completion.
-          </p>
-
-          <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-3">
-            What No One Else Does
-          </p>
-          <div className="space-y-2 mb-5">
+          <div className="space-y-2">
             {[
-              "Instant self-serve: CEO creates a team in 60 seconds, no procurement",
-              "CEO-tries-first: the decision-maker experiences the product before buying",
-              "AI-native assessment: adapts in real time, not a static pre/post test",
+              "Self-serve: CEO creates a team in 60 seconds, no procurement",
+              "CEO-tries-first: decision-maker experiences the product before buying",
+              "AI-native assessment: adapts to each person in real time",
+              "Outcome-based: every participant ships a real project",
               "Speed: hours to first value, not months of onboarding",
-              "Outcome-based: every participant ships a working project",
             ].map((item) => (
               <div key={item} className="flex items-start gap-2">
                 <div className="flex-shrink-0 w-1 h-1 rounded-full bg-indigo-500 mt-2" />
@@ -212,168 +146,431 @@ export default function StrategyPage() {
               </div>
             ))}
           </div>
+        </Card>
+
+        {/* ── Business Model & Revenue Projections ── */}
+        <Card label="Business Model">
+          <p className="text-sm text-stone-600 leading-relaxed mb-5">
+            Freemium with enterprise tiers. Free for small teams (up to 5
+            people). Paid tiers unlock team management, analytics, certificates,
+            and enterprise features. Revenue scales with seats.
+          </p>
+
+          <div className="rounded-xl border-2 border-stone-200 overflow-hidden mb-5">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="bg-stone-50 border-b-2 border-stone-200">
+                  <th className="text-left p-3 font-bold text-stone-500 uppercase tracking-wider">
+                    Tier
+                  </th>
+                  <th className="text-left p-3 font-bold text-stone-500 uppercase tracking-wider">
+                    Price
+                  </th>
+                  <th className="text-left p-3 font-bold text-stone-500 uppercase tracking-wider">
+                    Includes
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="text-stone-600">
+                <tr className="border-b border-stone-100">
+                  <td className="p-3 font-bold text-stone-900">Free</td>
+                  <td className="p-3">$0</td>
+                  <td className="p-3">
+                    5 seats, assessment, curriculum, basic dashboard
+                  </td>
+                </tr>
+                <tr className="border-b border-stone-100">
+                  <td className="p-3 font-bold text-stone-900">Team</td>
+                  <td className="p-3">$29/seat/mo</td>
+                  <td className="p-3">
+                    Unlimited seats, manager reports, certificates, priority
+                    support
+                  </td>
+                </tr>
+                <tr>
+                  <td className="p-3 font-bold text-stone-900">Enterprise</td>
+                  <td className="p-3">Custom</td>
+                  <td className="p-3">
+                    SSO, LMS integration, custom branding, dedicated CSM,
+                    invoicing
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-3">
-            TU Delft Angle
+            Revenue Scenarios (Year 1–3)
           </p>
-          <p className="text-sm text-stone-600 leading-relaxed">
-            AI + human-centered design is a unique academic lens. TU Delft provides
-            research credibility, access to the European innovation ecosystem, and a
-            potential path to university-backed certification. No competitor has this
-            combination of AI-native product <em>and</em> design research backing.
+          <div className="rounded-xl border-2 border-stone-200 overflow-hidden mb-5">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="bg-stone-50 border-b-2 border-stone-200">
+                  <th className="text-left p-3 font-bold text-stone-500 uppercase tracking-wider">
+                    Scenario
+                  </th>
+                  <th className="text-right p-3 font-bold text-stone-500 uppercase tracking-wider">
+                    Year 1
+                  </th>
+                  <th className="text-right p-3 font-bold text-stone-500 uppercase tracking-wider">
+                    Year 2
+                  </th>
+                  <th className="text-right p-3 font-bold text-stone-500 uppercase tracking-wider">
+                    Year 3
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="text-stone-600">
+                <tr className="border-b border-stone-100">
+                  <td className="p-3">
+                    <span className="font-bold text-stone-900">
+                      Conservative
+                    </span>
+                    <br />
+                    <span className="text-stone-400">
+                      20 teams, 15 seats avg
+                    </span>
+                  </td>
+                  <td className="p-3 text-right font-mono">$104K</td>
+                  <td className="p-3 text-right font-mono">$313K</td>
+                  <td className="p-3 text-right font-mono">$626K</td>
+                </tr>
+                <tr className="border-b border-stone-100">
+                  <td className="p-3">
+                    <span className="font-bold text-stone-900">Base</span>
+                    <br />
+                    <span className="text-stone-400">
+                      50 teams, 20 seats avg
+                    </span>
+                  </td>
+                  <td className="p-3 text-right font-mono">$348K</td>
+                  <td className="p-3 text-right font-mono">$1.0M</td>
+                  <td className="p-3 text-right font-mono">$2.1M</td>
+                </tr>
+                <tr>
+                  <td className="p-3">
+                    <span className="font-bold text-stone-900">
+                      Aggressive
+                    </span>
+                    <br />
+                    <span className="text-stone-400">
+                      100 teams, 30 seats avg + enterprise
+                    </span>
+                  </td>
+                  <td className="p-3 text-right font-mono">$1.0M</td>
+                  <td className="p-3 text-right font-mono">$3.5M</td>
+                  <td className="p-3 text-right font-mono">$8.7M</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-stone-400 leading-relaxed">
+            Conservative assumes organic growth only. Base assumes light
+            marketing + partnerships. Aggressive assumes enterprise sales motion
+            + 2–3 large contracts ($50K+ each). All scenarios assume $29/seat/mo
+            with 3x YoY growth on team tier.
           </p>
         </Card>
 
-        {/* ── Go-to-Market Options ── */}
-        <Card label="Go-to-Market Options">
-          <div className="space-y-4">
-            <GTMOption
-              number={1}
-              title="Self-Serve Only"
-              subtitle="Product-led growth"
-              pros={[
-                "Zero sales cost — scales with product quality",
-                "Fast iteration cycle — ship and measure",
-                "Lower barrier to entry — viral potential",
-                "Current model, already built",
-              ]}
-              cons={[
-                "Hard to reach enterprise buyers who expect sales contact",
-                "Free users may never convert to paid",
-                "No relationship-building with decision-makers",
-                "Revenue ceiling without enterprise contracts",
-              ]}
-            />
-            <GTMOption
-              number={2}
-              title="Enterprise Sales"
-              subtitle="Dedicated sales, custom pricing"
-              pros={[
-                "Higher ACV ($10K–$100K+ per contract)",
-                "Relationship with decision-maker drives expansion",
-                "Feedback loop with real enterprise needs",
-                "Credibility signal: 'used by X company'",
-              ]}
-              cons={[
-                "Requires building a sales team or hiring reps",
-                "Long sales cycles (3–12 months)",
-                "Custom work / feature requests from large clients",
-                "Takes focus away from product development",
-              ]}
-            />
-            <GTMOption
-              number={3}
-              title="Hybrid"
-              subtitle="Self-serve + sales-assisted"
-              pros={[
-                "Self-serve for small teams (<20), sales for enterprise",
-                "CEO tries it free → sales follows up when team grows",
-                "Product-qualified leads reduce sales effort",
-                "Best of both worlds if executed well",
-              ]}
-              cons={[
-                "Complexity: two motions to manage simultaneously",
-                "Risk of neither being done well",
-                "Need to define the handoff point (when does self-serve → sales?)",
-                "Still requires sales investment, just less",
-              ]}
-            />
+        {/* ── Unit Economics ── */}
+        <Card label="Unit Economics">
+          <div className="grid grid-cols-2 gap-4 mb-5">
+            <div className="rounded-xl bg-stone-50 border-2 border-stone-200 p-4 text-center">
+              <p className="text-2xl font-extrabold text-stone-900">~$0</p>
+              <p className="text-xs text-stone-500 mt-1">
+                Customer acquisition (self-serve)
+              </p>
+            </div>
+            <div className="rounded-xl bg-stone-50 border-2 border-stone-200 p-4 text-center">
+              <p className="text-2xl font-extrabold text-stone-900">$29</p>
+              <p className="text-xs text-stone-500 mt-1">
+                Revenue per seat/mo
+              </p>
+            </div>
+            <div className="rounded-xl bg-stone-50 border-2 border-stone-200 p-4 text-center">
+              <p className="text-2xl font-extrabold text-stone-900">~$2</p>
+              <p className="text-xs text-stone-500 mt-1">
+                Marginal cost per seat/mo
+              </p>
+            </div>
+            <div className="rounded-xl bg-stone-50 border-2 border-stone-200 p-4 text-center">
+              <p className="text-2xl font-extrabold text-stone-900">93%</p>
+              <p className="text-xs text-stone-500 mt-1">Gross margin</p>
+            </div>
+          </div>
+          <p className="text-sm text-stone-600 leading-relaxed">
+            Infrastructure is serverless (Vercel + Supabase). AI API costs
+            (Gemini, Claude) are the primary variable expense at ~$0.02–0.05 per
+            assessment interaction. No instructors, no physical materials.
+            Software margins from day one.
+          </p>
+        </Card>
+
+        {/* ── Competitive Landscape ── */}
+        <Card label="Competitive Landscape">
+          <div className="mb-6 rounded-xl border-2 border-stone-200 overflow-hidden">
+            <div className="grid grid-cols-2">
+              <div className="p-4 border-b-2 border-r-2 border-stone-200 bg-stone-50">
+                <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">
+                  High Price + Sales-Led
+                </p>
+                <p className="text-xs font-bold text-stone-700">
+                  Berkeley Haas
+                </p>
+                <p className="text-xs text-stone-400">$6,500–$28K/person</p>
+              </div>
+              <div className="p-4 border-b-2 border-stone-200 bg-stone-50">
+                <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">
+                  High Price + Platform
+                </p>
+                <p className="text-xs font-bold text-stone-700">SectionAI</p>
+                <p className="text-xs text-stone-400">$750/seat</p>
+              </div>
+              <div className="p-4 border-r-2 border-stone-200 bg-indigo-50">
+                <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider mb-1">
+                  Freemium + Self-Serve
+                </p>
+                <p className="text-xs font-bold text-indigo-700">
+                  AI Growth Net
+                </p>
+                <p className="text-xs text-indigo-400">$0–$29/seat</p>
+              </div>
+              <div className="p-4 bg-stone-50">
+                <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">
+                  Government-Funded
+                </p>
+                <p className="text-xs font-bold text-stone-700">Multiverse</p>
+                <p className="text-xs text-stone-400">Levy-funded (UK only)</p>
+              </div>
+            </div>
           </div>
 
-          <div className="mt-5 p-4 rounded-xl bg-indigo-50 border-2 border-indigo-200">
+          <div className="space-y-4">
+            <CompetitorCard
+              name="SectionAI ($750/seat)"
+              color="border-l-amber-500"
+              detail="Closest competitor. Instructor-led cohorts, strong content. But slow enrollment, requires procurement. A CEO can't try it themselves. We're 25x cheaper and instant."
+            />
+            <CompetitorCard
+              name="Multiverse (UK, levy-funded)"
+              color="border-l-violet-500"
+              detail="Best UX in the space. But UK-only, tied to apprenticeship levy. Not transferable to other markets. We're global from day one."
+            />
+            <CompetitorCard
+              name="Berkeley Haas ($6.5K–$28K)"
+              color="border-l-blue-500"
+              detail="Prestige play for senior leaders. Multi-week, instructor-led. Teaches about AI, not building with AI. We deliver hands-on capability at 1% of the cost."
+            />
+            <CompetitorCard
+              name="Coursera / LinkedIn Learning"
+              color="border-l-stone-400"
+              detail="Massive libraries, 3–5% completion rates. No team accountability, no adaptive assessment, no real outcome. We focus on capability, not content."
+            />
+          </div>
+        </Card>
+
+        {/* ── TU Delft & Credibility ── */}
+        <Card label="Academic Foundation">
+          <p className="text-sm text-stone-600 leading-relaxed mb-4">
+            AI Growth Net is developed by{" "}
+            <strong className="text-stone-900">Derek Lomas, PhD</strong>,
+            faculty at{" "}
+            <strong className="text-stone-900">TU Delft</strong> (Delft
+            University of Technology, #2 in Europe for engineering). Published
+            researcher on AI-assisted learning, prompt design, and computational
+            wellbeing. Previously built{" "}
+            <a
+              href="https://sourcelibrary.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-indigo-600 underline underline-offset-4 decoration-indigo-300 hover:decoration-indigo-500 transition-colors"
+            >
+              Source Library
+            </a>{" "}
+            (1,900+ AI-translated historical texts) and the{" "}
+            <a
+              href="https://codevibing.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-indigo-600 underline underline-offset-4 decoration-indigo-300 hover:decoration-indigo-500 transition-colors"
+            >
+              CodeVibing
+            </a>{" "}
+            community.
+          </p>
+          <p className="text-sm text-stone-600 leading-relaxed">
+            The TU Delft connection opens three paths: (1) university-backed
+            certification that carries weight in enterprise sales, (2) research
+            partnerships that validate learning outcomes, and (3) access to the
+            European innovation and L&amp;D ecosystem. No competitor has the
+            combination of an AI-native product <em>and</em> human-centered
+            design research backing.
+          </p>
+        </Card>
+
+        {/* ── Go-to-Market ── */}
+        <Card label="Go-to-Market">
+          <p className="text-sm text-stone-600 leading-relaxed mb-5">
+            Phase 1 is product-led growth: free tier drives adoption, CEO tries
+            it first, team grows organically. Phase 2 adds a lightweight
+            enterprise motion where product-qualified leads (teams &gt;20 seats)
+            get outreach from a sales contact for enterprise tier conversion.
+          </p>
+
+          <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-3">
+            Growth Channels
+          </p>
+          <div className="space-y-3 mb-5">
+            {[
+              {
+                title: "CEO-tries-first loop",
+                desc: "CEO takes assessment → enrolls team → dashboard creates accountability → team grows. Zero friction entry.",
+              },
+              {
+                title: "Content marketing & thought leadership",
+                desc: "AI upskilling research, TU Delft credibility, LinkedIn/newsletter. Positions Derek as the expert voice.",
+              },
+              {
+                title: "Partnership channel",
+                desc: "Consulting firms, accelerators, and L&D platforms that need an AI upskilling component but don't want to build one.",
+              },
+              {
+                title: "Enterprise outbound (Phase 2)",
+                desc: "Target L&D leaders at mid-market companies (500–5,000 employees). Product demo is the product itself — no slideware.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-indigo-400 mt-2" />
+                <div>
+                  <p className="text-sm font-bold text-stone-900">
+                    {item.title}
+                  </p>
+                  <p className="text-sm text-stone-500">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="p-4 rounded-xl bg-indigo-50 border-2 border-indigo-200">
             <p className="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-2">
-              Open Question
+              Key Insight
             </p>
             <p className="text-sm text-indigo-800">
-              What&apos;s the right entry point? The product is built for self-serve, but
-              enterprise buyers may need a human touchpoint to commit budget. Is
-              the CEO-tries-first model sufficient, or do we need outbound sales?
+              The product <em>is</em> the sales demo. Every prospect interaction
+              starts with &quot;try the assessment yourself&quot; — not a
+              slideshow. This is the self-serve wedge that no competitor offers.
             </p>
           </div>
         </Card>
 
         {/* ── Development Roadmap ── */}
-        <Card label="Development Roadmap">
+        <Card label="Roadmap">
           <div className="space-y-6">
             <RoadmapPhase
-              phase="Phase 1"
-              timing="Now"
+              phase="Now"
+              timing="Shipped"
               color="bg-emerald-500"
               items={[
-                "Core product: assessment, curriculum, team dashboard",
-                "AI discovery interview (text + voice)",
-                "Audience routing (ai-growth.net → corporate, learnvibecoding → consumer)",
-                "Team creation, invite links, progress tracking",
-                "96-item adaptive quiz across 11 topics",
+                "AI assessment chatbot (96 items, 11 topics, adaptive)",
+                "5-step journey: Discover → Assess → Learn → Practice → Ship",
+                "Team creation, invite links, real-time dashboard",
+                "Voice-based AI discovery interview (ElevenLabs)",
+                "Dual-audience routing (ai-growth.net + learnvibecoding)",
               ]}
             />
             <RoadmapPhase
-              phase="Phase 2"
+              phase="Q2 2026"
               timing="Next"
               color="bg-amber-500"
               items={[
-                "Certificate system — completion certificates for individuals and teams",
-                "Manager reports — exportable progress summaries, skill gap analysis",
-                "Assessment scoring — quantified results with benchmarking",
-                "Onboarding flow — guided first-time experience for managers",
-                "Content expansion — advanced modules, industry-specific tracks",
+                "Completion certificates (individual + team)",
+                "Manager reports — exportable, skill gap analysis",
+                "Assessment scoring with benchmarking",
+                "Stripe integration — Team tier billing",
+                "First 10 paying teams (target: $8.7K MRR)",
               ]}
             />
             <RoadmapPhase
-              phase="Phase 3"
-              timing="Later"
+              phase="Q3–Q4 2026"
+              timing="Scale"
               color="bg-violet-500"
               items={[
-                "Enterprise features: SSO, LMS integration (SCORM/xAPI), custom branding",
-                "Research partnerships — TU Delft collaboration, published outcomes",
-                "API access — integrate assessment into existing HR/L&D workflows",
-                "Multi-language support — Dutch, German, French",
-                "Community features — cross-team leaderboards, peer learning",
+                "Enterprise tier: SSO, LMS integration (SCORM/xAPI), custom branding",
+                "Partner API — white-label for consulting firms",
+                "Multi-language (Dutch, German, French)",
+                "TU Delft research publication on learning outcomes",
+                "First enterprise contract ($50K+ ACV)",
               ]}
             />
           </div>
         </Card>
 
-        {/* ── Open Questions ── */}
-        <Card label="Open Questions for Advisors">
-          <div className="space-y-5">
+        {/* ── The Ask ── */}
+        <div className="bg-gradient-to-r from-indigo-500 to-violet-500 rounded-2xl p-6 mb-8 border-3 border-white/20 shadow-xl shadow-indigo-500/15">
+          <p className="text-white/80 text-xs font-bold uppercase tracking-wider mb-3 text-center">
+            What I&apos;m Looking For
+          </p>
+          <div className="space-y-3">
             {[
               {
-                q: "Enterprise sales: build an internal sales team, partner with a reseller/consulting firm, or stay self-serve?",
-                context:
-                  "Current product is fully self-serve. Enterprise buyers in L&D typically expect a sales contact, demo, and procurement process. But building sales is expensive and changes company DNA.",
+                title: "Advisory input",
+                desc: "Strategic guidance on GTM, pricing, and enterprise sales — especially from people who've sold to L&D teams.",
               },
               {
-                q: "Pricing: what triggers payment? Team size, features, certification, or time?",
-                context:
-                  "Currently free during early access. Need a pricing model that doesn't kill the self-serve motion. Freemium (free for small teams, paid for enterprise features like SSO/reports) is the default assumption.",
+                title: "Introductions",
+                desc: "Warm intros to L&D leaders, HR heads, or CEOs at companies (500–5,000 employees) who need AI upskilling.",
               },
               {
-                q: "TU Delft: formal university program, spin-off, or independent company with research partnership?",
+                title: "Pilot partners",
+                desc: "3–5 organizations willing to run a paid pilot ($5K–$15K, 3 months). Product is live and ready.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-white/60 mt-2" />
+                <div>
+                  <p className="text-sm font-bold text-white">{item.title}</p>
+                  <p className="text-sm text-white/70">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Open Questions ── */}
+        <Card label="Open Questions">
+          <div className="space-y-4">
+            {[
+              {
+                q: "Enterprise sales: hire a sales rep, partner with a consulting firm, or stay self-serve longer?",
                 context:
-                  "Each path has different implications for speed, credibility, IP ownership, and funding. A formal program provides credibility but limits agility. Independence preserves speed but requires building credibility from scratch.",
+                  "Product is self-serve. Enterprise L&D expects a sales contact. Building sales is expensive but may be necessary for $50K+ contracts.",
               },
               {
-                q: "Target market: CEO upskilling, L&D teams, or individual professionals?",
+                q: "Pricing validation: is $29/seat/mo the right anchor? Should enterprise be usage-based, per-seat, or flat-fee?",
                 context:
-                  "The product currently speaks to CEOs ('10x your organization'). L&D teams are the actual budget holders in larger companies. Individual professionals are the easiest to reach but hardest to monetize.",
+                  "SectionAI charges $750/seat. We're 25x cheaper. Is that an advantage or does it signal 'not serious'?",
               },
               {
-                q: "Geography: start with Netherlands/EU or go global from day one?",
+                q: "TU Delft: formal spin-off, research partnership, or fully independent?",
                 context:
-                  "TU Delft gives a European anchor. EU has strong L&D budgets and AI regulation driving upskilling demand. But the product is in English and the competitive landscape is global.",
+                  "University backing adds credibility. But spin-off processes are slow and IP can get complicated.",
               },
               {
-                q: "Certification: proprietary badge, university-backed certificate, or integration with existing credentialing systems?",
+                q: "Target buyer: CEOs directly, L&D/HR teams, or consulting partners who resell?",
                 context:
-                  "University-backed carries weight in enterprise sales. Proprietary is faster to ship. Integration with LinkedIn/Credly increases visibility but adds complexity.",
+                  "Currently targeting CEOs. L&D teams hold the budget. Consultants have the relationships.",
+              },
+              {
+                q: "Geography: start Netherlands/EU or go global immediately?",
+                context:
+                  "TU Delft gives EU anchor. EU AI regulation is driving upskilling demand. Product is English-only currently.",
               },
             ].map((item, i) => (
               <div key={i}>
                 <p className="text-sm font-bold text-stone-900">
                   {i + 1}. {item.q}
                 </p>
-                <p className="text-sm text-stone-500 mt-1">{item.context}</p>
+                <p className="text-xs text-stone-500 mt-1">{item.context}</p>
               </div>
             ))}
           </div>
@@ -382,12 +579,20 @@ export default function StrategyPage() {
         {/* ── Footer ── */}
         <div className="text-center mt-4 mb-8">
           <p className="text-sm text-stone-500">
-            Feedback welcome —{" "}
             <a
               href="mailto:derek@codevibing.com"
               className="text-indigo-600 underline underline-offset-4 decoration-indigo-300 hover:decoration-indigo-500 transition-colors"
             >
               derek@codevibing.com
+            </a>
+            {" · "}
+            <a
+              href="https://ai-growth.net"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-indigo-600 underline underline-offset-4 decoration-indigo-300 hover:decoration-indigo-500 transition-colors"
+            >
+              ai-growth.net
             </a>
           </p>
           <p className="text-xs text-stone-400 mt-2">March 2026</p>
@@ -397,7 +602,7 @@ export default function StrategyPage() {
   );
 }
 
-/* ── Reusable sub-components ── */
+/* ── Sub-components ── */
 
 function Card({
   label,
@@ -416,6 +621,15 @@ function Card({
   );
 }
 
+function StatCard({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="rounded-xl bg-stone-50 border-2 border-stone-200 p-3 text-center">
+      <p className="text-xl font-extrabold text-stone-900">{value}</p>
+      <p className="text-[10px] text-stone-500 mt-1 leading-tight">{label}</p>
+    </div>
+  );
+}
+
 function CompetitorCard({
   name,
   color,
@@ -428,63 +642,7 @@ function CompetitorCard({
   return (
     <div className={`border-l-4 ${color} pl-4 py-1`}>
       <p className="text-sm font-bold text-stone-900">{name}</p>
-      <p className="text-sm text-stone-500 mt-1">{detail}</p>
-    </div>
-  );
-}
-
-function GTMOption({
-  number,
-  title,
-  subtitle,
-  pros,
-  cons,
-}: {
-  number: number;
-  title: string;
-  subtitle: string;
-  pros: string[];
-  cons: string[];
-}) {
-  return (
-    <div className="rounded-xl border-2 border-stone-200 p-4">
-      <div className="flex items-center gap-3 mb-3">
-        <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white text-xs font-bold">
-          {number}
-        </div>
-        <div>
-          <p className="text-sm font-bold text-stone-900">{title}</p>
-          <p className="text-xs text-stone-400">{subtitle}</p>
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-1.5">
-            Pros
-          </p>
-          <ul className="space-y-1">
-            {pros.map((p) => (
-              <li key={p} className="text-xs text-stone-600 flex items-start gap-1.5">
-                <span className="text-emerald-500 mt-0.5 flex-shrink-0">+</span>
-                {p}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <p className="text-[10px] font-bold text-red-500 uppercase tracking-wider mb-1.5">
-            Cons
-          </p>
-          <ul className="space-y-1">
-            {cons.map((c) => (
-              <li key={c} className="text-xs text-stone-600 flex items-start gap-1.5">
-                <span className="text-red-400 mt-0.5 flex-shrink-0">−</span>
-                {c}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+      <p className="text-xs text-stone-500 mt-1">{detail}</p>
     </div>
   );
 }
