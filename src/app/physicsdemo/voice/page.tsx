@@ -7,23 +7,39 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 
 const AGENT_ID = process.env.NEXT_PUBLIC_ELEVENLABS_AGENT_ID || '';
 
+/* ── Types ───────────────────────────────────────────────────── */
+
+interface AudioGetters {
+  getFrequencyData?: () => Uint8Array | undefined;
+  getVolume?: () => number;
+}
+
 /* ── Canvas voice orb ────────────────────────────────────────── */
 
 function VoiceOrb({
-  speaking,
+  audioGetters,
   active,
+  muted = false,
   size = 220,
 }: {
-  speaking: boolean;
+  audioGetters?: AudioGetters;
   active: boolean;
+  muted?: boolean;
   size?: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const gettersRef = useRef<AudioGetters | undefined>(audioGetters);
   const stateRef = useRef({
     time: 0,
-    smoothSpeaking: 0,
+    smoothVolume: 0,
     smoothActive: 0,
+    smoothMuted: 0,
     pointRadii: new Float32Array(10),
+  });
+
+  // Keep getters fresh without re-running effect
+  useEffect(() => {
+    gettersRef.current = audioGetters;
   });
 
   useEffect(() => {
@@ -40,18 +56,28 @@ function VoiceOrb({
     let raf: number;
 
     function draw() {
-      // Smooth transitions — fast attack, slow release
-      state.smoothSpeaking +=
-        ((speaking ? 1 : 0) - state.smoothSpeaking) *
-        (speaking ? 0.14 : 0.06);
+      // Poll real audio data from ElevenLabs SDK
+      const getters = gettersRef.current;
+      const freqData = getters?.getFrequencyData?.();
+      const rawVolume = getters?.getVolume?.() ?? 0;
+
+      // Smooth volume — fast attack, slow release
+      const volTarget = active && !muted ? rawVolume : 0;
+      const volRate = volTarget > state.smoothVolume ? 0.25 : 0.08;
+      state.smoothVolume += (volTarget - state.smoothVolume) * volRate;
+
+      // Smooth active/muted transitions
       state.smoothActive +=
         ((active ? 1 : 0) - state.smoothActive) * (active ? 0.08 : 0.04);
+      state.smoothMuted +=
+        ((muted ? 1 : 0) - state.smoothMuted) * 0.1;
 
-      const sl = state.smoothSpeaking;
+      const vol = state.smoothVolume;
       const al = state.smoothActive;
+      const ml = state.smoothMuted;
 
-      // Time advances faster when speaking
-      state.time += 0.012 + sl * 0.028;
+      // Time speed scales with audio energy
+      state.time += 0.01 + vol * 0.03;
       const t = state.time;
 
       ctx.clearRect(0, 0, size, size);
@@ -66,23 +92,35 @@ function VoiceOrb({
       for (let i = 0; i < numPoints; i++) {
         const angle = angleStep * i;
 
-        // Organic wobble: stacked sines at irrational frequency ratios
+        // Base organic wobble (always present)
         const wobble =
           Math.sin(t * 1.1 + i * 2.1) * 0.06 +
           Math.sin(t * 0.7 + i * 3.4) * 0.05 +
           Math.sin(t * 1.9 + i * 1.3) * 0.03;
 
-        // Speech reactivity: rapid pseudo-random oscillation
-        const speechPulse =
-          sl *
-          (Math.sin(t * 4.7 + i * 2.9) * 0.13 +
-            Math.sin(t * 6.3 + i * 1.7) * 0.09 +
-            Math.sin(t * 3.1 + i * 4.1) * 0.06);
+        // Audio-reactive deformation from real frequency data
+        let audioDeform = 0;
+        if (freqData && freqData.length > 0 && !muted) {
+          // Map each blob point to a frequency band
+          const bandIndex = Math.floor(
+            (i / numPoints) * freqData.length * 0.4
+          );
+          const bandLevel = freqData[bandIndex] / 255;
+          audioDeform = bandLevel * 0.35;
+        } else if (vol > 0.01) {
+          // Fallback: simulated reactivity from volume alone
+          audioDeform =
+            vol *
+            (Math.sin(t * 4.7 + i * 2.9) * 0.13 +
+              Math.sin(t * 6.3 + i * 1.7) * 0.09 +
+              Math.sin(t * 3.1 + i * 4.1) * 0.06);
+        }
 
-        // Breathing: slow pulse when connected but not speaking
-        const breathing = al * (1 - sl) * Math.sin(t * 0.8) * 0.04;
+        // Breathing: slow pulse when connected but quiet
+        const breathing = al * (1 - vol) * Math.sin(t * 0.8) * 0.04;
 
-        const targetR = baseRadius * (1 + wobble + speechPulse + breathing);
+        const targetR =
+          baseRadius * (1 + wobble + audioDeform + breathing);
 
         // Per-point smoothing
         const currentR = state.pointRadii[i] || baseRadius;
@@ -95,31 +133,40 @@ function VoiceOrb({
         });
       }
 
-      // Draw blob shape
+      // Draw blob
       ctx.beginPath();
       catmullRomClosed(ctx, points, 0.4);
 
-      // Gradient fill — terracotta / gold
+      // Gradient fill — desaturate when muted
       const grad = ctx.createRadialGradient(
         cx - baseRadius * 0.25,
         cy - baseRadius * 0.25,
         baseRadius * 0.1,
         cx,
         cy,
-        baseRadius * (1.3 + sl * 0.2)
+        baseRadius * (1.3 + vol * 0.2)
       );
-      grad.addColorStop(0, '#F2CC8F');
-      grad.addColorStop(0.5, '#E07A5F');
-      grad.addColorStop(1, '#943c2a');
+      if (ml > 0.5) {
+        // Muted: gray tones
+        grad.addColorStop(0, '#d6d3d1');
+        grad.addColorStop(0.5, '#a8a29e');
+        grad.addColorStop(1, '#78716c');
+      } else {
+        grad.addColorStop(0, '#F2CC8F');
+        grad.addColorStop(0.5, '#E07A5F');
+        grad.addColorStop(1, '#943c2a');
+      }
       ctx.fillStyle = grad;
       ctx.fill();
 
-      // Glow
-      ctx.save();
-      ctx.shadowColor = `rgba(224, 122, 95, ${0.15 + sl * 0.5})`;
-      ctx.shadowBlur = 20 + sl * 50;
-      ctx.fill();
-      ctx.restore();
+      // Glow — scales with real audio volume
+      if (ml < 0.5) {
+        ctx.save();
+        ctx.shadowColor = `rgba(224, 122, 95, ${0.15 + vol * 0.5})`;
+        ctx.shadowBlur = 20 + vol * 50;
+        ctx.fill();
+        ctx.restore();
+      }
 
       // Specular highlight
       ctx.beginPath();
@@ -132,7 +179,7 @@ function VoiceOrb({
         cy - baseRadius * 0.1,
         baseRadius * 0.65
       );
-      specGrad.addColorStop(0, 'rgba(255, 255, 255, 0.25)');
+      specGrad.addColorStop(0, `rgba(255, 255, 255, ${0.25 - ml * 0.1})`);
       specGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.08)');
       specGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
       ctx.fillStyle = specGrad;
@@ -143,25 +190,45 @@ function VoiceOrb({
 
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, [speaking, active, size]);
+  }, [active, muted, size]);
 
   return (
     <div className="relative" style={{ width: size, height: size }}>
       <canvas ref={canvasRef} style={{ width: size, height: size }} />
-      {/* Star overlay */}
+      {/* Star / muted icon overlay */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <svg
-          width={size * 0.17}
-          height={size * 0.17}
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M12 2L14.09 8.26L20 9.27L15.55 13.97L16.91 20L12 16.9L7.09 20L8.45 13.97L4 9.27L9.91 8.26L12 2Z"
-            fill="white"
-            opacity={0.85}
-          />
-        </svg>
+        {muted ? (
+          <svg
+            width={size * 0.17}
+            height={size * 0.17}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity={0.7}
+          >
+            <line x1="1" y1="1" x2="23" y2="23" />
+            <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6" />
+            <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2c0 .76-.12 1.49-.34 2.18" />
+            <line x1="12" y1="19" x2="12" y2="23" />
+            <line x1="8" y1="23" x2="16" y2="23" />
+          </svg>
+        ) : (
+          <svg
+            width={size * 0.17}
+            height={size * 0.17}
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path
+              d="M12 2L14.09 8.26L20 9.27L15.55 13.97L16.91 20L12 16.9L7.09 20L8.45 13.97L4 9.27L9.91 8.26L12 2Z"
+              fill="white"
+              opacity={0.85}
+            />
+          </svg>
+        )}
       </div>
     </div>
   );
@@ -198,6 +265,7 @@ export default function PhysicsVoicePage() {
   const [hasStarted, setHasStarted] = useState(false);
   const [error, setError] = useState('');
   const [statusLog, setStatusLog] = useState<string[]>([]);
+  const [micMuted, setMicMuted] = useState(false);
   const startedRef = useRef(false);
   const [mounted, setMounted] = useState(false);
 
@@ -206,6 +274,7 @@ export default function PhysicsVoicePage() {
   }, []);
 
   const conversation = useConversation({
+    micMuted,
     onConnect: () => {
       setStatusLog((prev) => [...prev, 'Connected']);
     },
@@ -213,6 +282,7 @@ export default function PhysicsVoicePage() {
       setStatusLog((prev) => [...prev, 'Disconnected']);
       setHasStarted(false);
       startedRef.current = false;
+      setMicMuted(false);
     },
     onError: (err: string | Error) => {
       const msg =
@@ -220,6 +290,21 @@ export default function PhysicsVoicePage() {
       setError(msg);
       setStatusLog((prev) => [...prev, `Error: ${msg}`]);
     },
+  });
+
+  // Audio getters for the orb — picks input or output based on who's talking
+  const audioGetters = useRef<AudioGetters>({});
+  useEffect(() => {
+    audioGetters.current = {
+      getFrequencyData: () =>
+        conversation.isSpeaking
+          ? conversation.getOutputByteFrequencyData()
+          : conversation.getInputByteFrequencyData(),
+      getVolume: () =>
+        conversation.isSpeaking
+          ? conversation.getOutputVolume()
+          : conversation.getInputVolume(),
+    };
   });
 
   const handleStartVoice = useCallback(async () => {
@@ -296,7 +381,7 @@ export default function PhysicsVoicePage() {
         </Link>
         <div className="bg-white rounded-xl border-[3px] border-stone-900 shadow-[5px_5px_0_#1c1917] p-8 text-center">
           <div className="flex justify-center mb-4">
-            <VoiceOrb speaking={false} active={false} size={100} />
+            <VoiceOrb active={false} size={100} />
           </div>
           <h2 className="text-xl font-black text-stone-900 mb-2">
             Voice coming soon
@@ -358,8 +443,9 @@ export default function PhysicsVoicePage() {
           {/* Orb */}
           <div className="flex justify-center mb-6">
             <VoiceOrb
-              speaking={conversation.isSpeaking}
+              audioGetters={audioGetters.current}
               active={isConnected}
+              muted={micMuted}
               size={200}
             />
           </div>
@@ -369,17 +455,21 @@ export default function PhysicsVoicePage() {
             {isConnecting
               ? 'Connecting...'
               : isConnected
-                ? conversation.isSpeaking
-                  ? 'Tutor is speaking...'
-                  : 'Listening...'
+                ? micMuted
+                  ? 'Mic muted'
+                  : conversation.isSpeaking
+                    ? 'Tutor is speaking...'
+                    : 'Listening...'
                 : 'Voice Physics Tutor'}
           </h2>
 
           <p className="text-sm font-medium text-stone-500 mb-8 max-w-sm mx-auto leading-relaxed">
             {isConnected
-              ? conversation.isSpeaking
-                ? 'The tutor is explaining — listen up.'
-                : 'Your turn — ask about heat, temperature, or thermal energy.'
+              ? micMuted
+                ? 'Your mic is muted. Tap unmute when you want to speak.'
+                : conversation.isSpeaking
+                  ? 'The tutor is explaining — listen up.'
+                  : 'Your turn — ask about heat, temperature, or thermal energy.'
               : 'Have a voice conversation about heat and thermal energy. The tutor will guide you with questions.'}
           </p>
 
@@ -400,12 +490,27 @@ export default function PhysicsVoicePage() {
               {isConnecting ? 'Connecting...' : 'Start Conversation'}
             </button>
           ) : (
-            <button
-              onClick={handleEndVoice}
-              className="px-6 py-3 text-sm font-black rounded-lg border-[2.5px] border-stone-900 bg-white text-stone-900 shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all cursor-pointer"
-            >
-              End Conversation
-            </button>
+            <div className="flex items-center justify-center gap-3">
+              {/* Mute toggle */}
+              <button
+                onClick={() => setMicMuted((m) => !m)}
+                className={`px-5 py-3 text-sm font-black rounded-lg border-[2.5px] border-stone-900 shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all cursor-pointer ${
+                  micMuted
+                    ? 'bg-red-100 text-red-700'
+                    : 'bg-white text-stone-900'
+                }`}
+              >
+                {micMuted ? 'Unmute mic' : 'Mute mic'}
+              </button>
+
+              {/* End */}
+              <button
+                onClick={handleEndVoice}
+                className="px-5 py-3 text-sm font-black rounded-lg border-[2.5px] border-stone-900 bg-white text-stone-900 shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all cursor-pointer"
+              >
+                End
+              </button>
+            </div>
           )}
 
           {/* Connected indicator */}
@@ -439,6 +544,7 @@ export default function PhysicsVoicePage() {
                 ))}
                 <div>status: {conversation.status}</div>
                 <div>isSpeaking: {String(conversation.isSpeaking)}</div>
+                <div>micMuted: {String(micMuted)}</div>
               </div>
             </details>
           </div>
