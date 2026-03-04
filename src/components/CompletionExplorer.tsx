@@ -1,6 +1,10 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { saveAssessment } from "@/lib/progress";
+
+type Confidence = "think" | "know";
 
 interface CompletionExplorerProps {
   id: string;
@@ -25,6 +29,8 @@ export default function CompletionExplorer({ id }: CompletionExplorerProps) {
   const [claudeStatus, setClaudeStatus] = useState<ModelStatus>("idle");
   const [modelProgress, setModelProgress] = useState("");
   const [hasGenerated, setHasGenerated] = useState(false);
+  const [confidence, setConfidence] = useState<Confidence | null>(null);
+  const [generateCount, setGenerateCount] = useState(0);
 
   const generatorRef = useRef<unknown>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -156,6 +162,8 @@ export default function CompletionExplorer({ id }: CompletionExplorerProps) {
     const text = prefix.trim();
     if (!text) return;
     setHasGenerated(true);
+    setConfidence(null);
+    setGenerateCount((c) => c + 1);
     generateGpt2(text);
     generateClaude(text);
   }, [prefix, generateGpt2, generateClaude]);
@@ -375,31 +383,113 @@ export default function CompletionExplorer({ id }: CompletionExplorerProps) {
           </div>
         )}
 
-        {/* Pedagogical callout after first generation */}
+        {/* Confidence check after first generation */}
         {hasGenerated && gpt2Status === "done" && claudeStatus === "done" && (
-          <div className="rounded-lg bg-cyan-50/50 dark:bg-cyan-950/20 border border-cyan-100 dark:border-cyan-800/30 px-4 py-3 space-y-2">
-            <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
-              What you&apos;re seeing
-            </p>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">
-              <strong>GPT-2</strong> is a <em>completion</em> model — it
-              predicts what text typically comes next, like autocomplete. It
-              doesn&apos;t understand your intent. It just continues patterns
-              from its training data.
-            </p>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">
-              <strong>Claude</strong> is an <em>instruction-tuned</em> model —
-              it interprets your text as a request and tries to be helpful. This
-              behavior comes from RLHF (reinforcement learning from human
-              feedback), which teaches the model to follow instructions instead
-              of just predicting text.
-            </p>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">
-              Try adjusting the temperature slider and regenerating GPT-2. High
-              temperature = more random, creative, sometimes nonsensical. Low
-              temperature = more predictable, repetitive. This is the same
-              parameter that controls &quot;creativity&quot; in chat models.
-            </p>
+          <div className="space-y-3">
+            {/* Confidence buttons */}
+            <AnimatePresence>
+              {!confidence && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                >
+                  <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
+                    Do you understand why they behave differently?
+                  </p>
+                  <div className="flex gap-3">
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => {
+                        setConfidence("think");
+                        saveAssessment(`${id}-confidence`, "think");
+                      }}
+                      className="flex-1 py-3 px-6 rounded-xl border-2 border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300 font-medium text-sm transition-colors"
+                    >
+                      I think so...
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => {
+                        setConfidence("know");
+                        saveAssessment(`${id}-confidence`, "know");
+                      }}
+                      className="flex-1 py-3 px-6 rounded-xl border-2 border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 font-semibold text-sm shadow-sm transition-colors"
+                    >
+                      I get it.
+                    </motion.button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Follow-up based on confidence */}
+            <AnimatePresence>
+              {confidence === "think" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-lg bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/30 px-4 py-3 space-y-2"
+                >
+                  <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                    Here&apos;s what to notice
+                  </p>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                    <strong>GPT-2</strong> just continues the text — like
+                    autocomplete. It doesn&apos;t know you&apos;re asking a
+                    question. It just predicts what words typically follow.
+                  </p>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                    <strong>Claude</strong> interprets your text as a{" "}
+                    <em>request</em> and responds helpfully. That&apos;s learned
+                    behavior from RLHF (reinforcement learning from human
+                    feedback) — training that taught the raw model to be an
+                    assistant.
+                  </p>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                    Try a few more prompts. The difference becomes more obvious
+                    with each one. Also try moving the temperature slider — high
+                    temperature makes GPT-2 wilder, low makes it repetitive.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+              {confidence === "know" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-lg bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/30 px-4 py-3 space-y-2"
+                >
+                  <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                    Nice. One more thing.
+                  </p>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                    Try the temperature slider. High values (1.5+) make GPT-2
+                    more random and creative — sometimes nonsensical. Low values
+                    (0.3) make it predictable and repetitive. This is the{" "}
+                    <em>same parameter</em> that controls &quot;creativity&quot;
+                    in Claude and other chat models.
+                  </p>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                    When you&apos;re vibe coding and Claude gives you something
+                    too predictable or too wild, you&apos;re experiencing this
+                    same knob — just tuned behind the scenes.
+                  </p>
+                  {generateCount < 3 && (
+                    <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">
+                      Try {3 - generateCount} more prompt
+                      {3 - generateCount > 1 ? "s" : ""} to build your
+                      intuition.
+                    </p>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         )}
       </div>
