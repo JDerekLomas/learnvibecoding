@@ -19,18 +19,17 @@ export interface ClaudeCodeSection {
   title: string;
   description: string;
   color: string;
-  icon?: string;
   milestone: string;
 }
 
 export const sections: ClaudeCodeSection[] = [
-  { id: "getting-started", title: "Getting Started", description: "What vibe coding is and how to set up Claude Code", color: "violet", icon: "🚀", milestone: "You understand the landscape and have Claude Code running" },
-  { id: "context", title: "CLAUDE.md and Context", description: "How to feed your AI the right information", color: "amber", icon: "📜", milestone: "You can manage context like a pro" },
-  { id: "core-workflow", title: "Core Workflow", description: "The commands and patterns you'll use every day", color: "blue", icon: "⌨️", milestone: "You're productive with Claude Code daily" },
-  { id: "skills-tools", title: "Skills and Tools", description: "Extending Claude Code's capabilities", color: "emerald", icon: "🔧", milestone: "You can customize Claude Code to your workflow" },
-  { id: "advanced", title: "Advanced Patterns", description: "Multi-agent workflows, hooks, and automation", color: "cyan", icon: "🧩", milestone: "You're using advanced orchestration patterns" },
-  { id: "scaling", title: "Scaling and Production", description: "Cost optimization, session management, and team workflows", color: "rose", icon: "📊", milestone: "You can run Claude Code at scale" },
-  { id: "safety", title: "Safety and Best Practices", description: "Security, responsible usage, and community wisdom", color: "red", icon: "🛡️", milestone: "You build safely and contribute back" },
+  { id: "getting-started", title: "Getting Started", description: "What vibe coding is and how to set up Claude Code", color: "violet", milestone: "You understand the landscape and have Claude Code running" },
+  { id: "context", title: "CLAUDE.md and Context", description: "How to feed your AI the right information", color: "amber", milestone: "You can manage context like a pro" },
+  { id: "core-workflow", title: "Core Workflow", description: "The commands and patterns you'll use every day", color: "blue", milestone: "You're productive with Claude Code daily" },
+  { id: "skills-tools", title: "Skills and Tools", description: "Extending Claude Code's capabilities", color: "emerald", milestone: "You can customize Claude Code to your workflow" },
+  { id: "advanced", title: "Advanced Patterns", description: "Multi-agent workflows, hooks, and automation", color: "cyan", milestone: "You're using advanced orchestration patterns" },
+  { id: "scaling", title: "Scaling and Production", description: "Cost optimization, session management, and team workflows", color: "rose", milestone: "You can run Claude Code at scale" },
+  { id: "safety", title: "Safety and Best Practices", description: "Security, responsible usage, and community wisdom", color: "red", milestone: "You build safely and contribute back" },
 ];
 
 export const topics: ClaudeCodeTopic[] = [
