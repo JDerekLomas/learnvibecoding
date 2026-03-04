@@ -7,7 +7,10 @@ import {
   UIMessage,
 } from "ai";
 import { z } from "zod";
-import { pickRandomPhysicsQuestion } from "@/lib/quiz-chat/physics-quiz-data";
+import {
+  getQuestionCatalog,
+  getPhysicsQuestionById,
+} from "@/lib/quiz-chat/physics-quiz-data";
 import { quizChatSupabase } from "@/lib/quiz-chat/supabase";
 
 export const maxDuration = 30;
@@ -54,9 +57,7 @@ export async function POST(req: Request) {
         const [, qid, source, topic, question, selIdx, result, corrIdx] =
           answerMatch;
         const selectedIndex = parseInt(selIdx, 10);
-        const correctIndex = corrIdx
-          ? parseInt(corrIdx, 10)
-          : selectedIndex;
+        const correctIndex = corrIdx ? parseInt(corrIdx, 10) : selectedIndex;
         quizChatSupabase
           .from("quiz_answers")
           .insert({
@@ -76,52 +77,68 @@ export async function POST(req: Request) {
     }
   }
 
+  // Build the question catalog for the LLM
+  const catalog = getQuestionCatalog(shownIds);
+
   const result = streamText({
     model: google("gemini-3-flash-preview"),
-    system: `You are a friendly, curious physics quiz host focused on Heat & Thermal Energy. Your job is to quiz students on heat, temperature, conduction, convection, radiation, phase changes, and insulation using interactive question cards.
+    system: `You are an adaptive physics tutor who quizzes students on Heat & Thermal Energy. You're smart about which questions to ask and when.
 
-When the user wants to take a quiz or asks about heat/physics:
-1. Call the quizQuestion tool to show them a question card from the bank
-2. The user will click their answer in the interactive card, and the result comes back to you
-3. React briefly — celebrate correct answers with a fun physics fact, gently explain incorrect ones by connecting to real-world examples
-4. Then call quizQuestion again for the next question
-5. After 5-7 questions, summarize their results and offer to continue or explore specific topics
+## Your question bank
+These are available pre-made questions you haven't shown yet:
+${catalog}
 
-You also have a generateQuestion tool that lets you CREATE brand new questions. Use it when:
-- The question bank is exhausted
-- The user asks about a specific physics topic not covered
-- The user wants harder/easier questions
+Each entry shows: id [difficulty] [tags] "title" — the misconception it tests.
+Difficulty levels: beginning → developing → proficient.
 
-When generating questions, make them:
-- Grounded in everyday experience (kitchen, weather, clothing, sports)
-- Clear and unambiguous with exactly one correct answer
-- Educational — the explanation should reveal a surprising insight
-- Have plausible distractors based on common misconceptions
+## How to teach adaptively
 
-Keep responses SHORT (1-2 sentences). The quiz card handles the visual experience — you provide the conversational wrapper.
+**Start easy.** Pick a "beginning" question from the bank to gauge where the student is.
 
-Topics in the bank: Heat & Thermal Energy (conduction, convection, radiation, phase changes, insulation, specific heat, temperature vs thermal energy)
+**After each answer, adapt:**
+- If they got it RIGHT and it was easy → move to a harder question on the same topic, or branch to a new topic
+- If they got it RIGHT on a hard one → congratulate genuinely, then test a different topic area
+- If they got it WRONG → this is the most important moment. Don't just move on. The misconception they revealed tells you what to do next:
+  - Use generateQuestion to create a follow-up that probes the SAME misconception from a different angle
+  - Or pick a related bank question that approaches the concept differently
+  - Make your brief response connect their wrong answer to the real-world intuition behind the correct one
 
-When the user answers, the result comes as a message starting with [Quiz Answer]. Parse it to understand what they answered and whether they got it right.
+**Use generateQuestion to go deeper when:**
+- A student reveals a specific misconception and you want to probe it further
+- You want to test whether they truly understand or just got lucky
+- You want to connect the concept to a new real-world scenario they haven't seen
+- The bank doesn't have the right question for this teaching moment
 
-Don't repeat the question or answer options in your response — the user already sees them in the card.`,
+**Use bank questions (quizQuestion) when:**
+- The bank has a good question that matches what you want to test next
+- You want to cover a topic area the student hasn't been tested on yet
+- The difficulty level matches what the student needs
+
+## Rules
+- Keep your text responses SHORT (1-2 sentences). The quiz card handles the visual experience.
+- Don't repeat the question or answer options — the user already sees them in the card.
+- When the user answers, the result comes as a message starting with [Quiz Answer].
+- After 5-7 questions, give a brief summary of their strengths and gaps, then offer to continue.
+- Ground everything in everyday experience (kitchen, weather, clothing, sports).
+- When generating questions, always include a misconception-based distractor.`,
     messages: await convertToModelMessages(messages),
     tools: {
       quizQuestion: tool({
         description:
-          "Show a physics quiz question from the pre-made question bank about heat and thermal energy. The user sees a visual card with 4 answer options.",
+          "Show a specific pre-made question from the bank. Choose the question ID based on what the student needs to learn next. The user sees a visual card with 4 shuffled answer options.",
         inputSchema: z.object({
-          subtopic: z
+          questionId: z
             .string()
-            .optional()
-            .describe("Subtopic like 'conduction', 'phase-changes', 'radiation'. Leave empty for random."),
+            .describe(
+              "The ID of the question to show (e.g. 'heat_01'). Choose based on the student's level and which misconceptions to test."
+            ),
         }),
-        execute: async () => {
-          const question = pickRandomPhysicsQuestion(shownIds);
+        execute: async ({ questionId }) => {
+          const question = getPhysicsQuestionById(questionId);
           if (!question) {
             return {
               exhausted: true as const,
-              message: "All questions have been shown! Use generateQuestion to create new ones.",
+              message: `Question "${questionId}" not found or already shown. Use generateQuestion instead.`,
             };
           }
           shownIds.push(question.id);
@@ -137,13 +154,15 @@ Don't repeat the question or answer options in your response — the user alread
       }),
       generateQuestion: tool({
         description:
-          "Generate a NEW physics quiz question on any heat/thermal energy topic. Use this when the bank is exhausted or the user wants something specific.",
+          "Generate a NEW quiz question to probe a specific concept deeper, test a revealed misconception from a different angle, or explore a topic not in the bank. Use this when you need the perfect follow-up question that the bank doesn't have.",
         inputSchema: z.object({
           topic: z.string().describe("The topic label shown above the question"),
-          question: z.string().describe("The question text"),
+          question: z.string().describe("The question text — ground it in everyday experience"),
           options: z
             .tuple([z.string(), z.string(), z.string(), z.string()])
-            .describe("Exactly 4 answer options."),
+            .describe(
+              "Exactly 4 answer options. Include at least one distractor based on a common misconception."
+            ),
           correctIndex: z
             .number()
             .min(0)
@@ -151,9 +170,17 @@ Don't repeat the question or answer options in your response — the user alread
             .describe("Index (0-3) of the correct answer"),
           explanation: z
             .string()
-            .describe("Educational explanation shown after answering. 1-3 sentences."),
+            .describe(
+              "Educational explanation that reveals the surprising insight. 1-3 sentences."
+            ),
         }),
-        execute: async ({ topic, question, options, correctIndex, explanation }) => {
+        execute: async ({
+          topic,
+          question,
+          options,
+          correctIndex,
+          explanation,
+        }) => {
           const id = `gen-physics-${++questionCounter}-${Date.now()}`;
           quizChatSupabase
             .from("generated_questions")

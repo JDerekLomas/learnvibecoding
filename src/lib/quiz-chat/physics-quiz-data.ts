@@ -1,13 +1,26 @@
 import type { QuizItem } from "./types";
 import { heatQuestions } from "@/data/physics-questions";
 
-// Convert physics questions (correctAnswer + distractors) to quiz-chat format (options + correctIndex)
-function shuffleWithCorrect(
+// Build a catalog string the LLM can read to make informed question choices
+export function getQuestionCatalog(excludeIds: string[]): string {
+  const excluded = new Set(excludeIds);
+  const available = heatQuestions.filter((q) => !excluded.has(q.id));
+  if (available.length === 0) return "ALL QUESTIONS EXHAUSTED. Use generateQuestion to create new ones.";
+
+  return available
+    .map(
+      (q) =>
+        `- ${q.id} [${q.difficulty}] [${q.tags.join(", ")}] "${q.title}" — tests misconception: "${q.misconceptions?.[0] || "n/a"}"`
+    )
+    .join("\n");
+}
+
+// Shuffle answers for a specific question by ID
+function shuffleAnswers(
   correct: string,
   distractors: string[]
 ): { options: [string, string, string, string]; correctIndex: number } {
   const all = [correct, ...distractors.slice(0, 3)];
-  // Fisher-Yates shuffle
   for (let i = all.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [all[i], all[j]] = [all[j], all[i]];
@@ -18,22 +31,10 @@ function shuffleWithCorrect(
   };
 }
 
-export const physicsTopics = [
-  "Heat & Thermal Energy",
-] as const;
-
-export function pickRandomPhysicsQuestion(
-  excludeIds: string[] = [],
-  topic?: string
-): QuizItem | null {
-  const excluded = new Set(excludeIds);
-  const available = heatQuestions.filter((q) => !excluded.has(q.id));
-  if (available.length === 0) return null;
-  const raw = available[Math.floor(Math.random() * available.length)];
-  const { options, correctIndex } = shuffleWithCorrect(
-    raw.correctAnswer,
-    raw.distractors
-  );
+export function getPhysicsQuestionById(id: string): QuizItem | null {
+  const raw = heatQuestions.find((q) => q.id === id);
+  if (!raw) return null;
+  const { options, correctIndex } = shuffleAnswers(raw.correctAnswer, raw.distractors);
   return {
     id: raw.id,
     topic: "Heat & Thermal Energy",
