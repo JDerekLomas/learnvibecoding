@@ -8,17 +8,17 @@ import ClaudeCodeDetail from "./ClaudeCodeDetail";
 
 const STORAGE_KEY = "claude-code-mastery";
 
-const THEME_COLORS: Record<string, { gradient: string; glow: string; dot: string }> = {
-  violet: { gradient: "from-violet-500 to-indigo-600", glow: "shadow-violet-500/25", dot: "bg-violet-500" },
-  amber: { gradient: "from-amber-500 to-orange-500", glow: "shadow-amber-500/25", dot: "bg-amber-500" },
-  blue: { gradient: "from-blue-500 to-indigo-500", glow: "shadow-blue-500/25", dot: "bg-blue-500" },
-  emerald: { gradient: "from-emerald-500 to-teal-500", glow: "shadow-emerald-500/25", dot: "bg-emerald-500" },
-  cyan: { gradient: "from-cyan-500 to-sky-500", glow: "shadow-cyan-500/25", dot: "bg-cyan-500" },
-  rose: { gradient: "from-rose-500 to-pink-500", glow: "shadow-rose-500/25", dot: "bg-rose-500" },
-  red: { gradient: "from-red-500 to-rose-500", glow: "shadow-red-500/25", dot: "bg-red-500" },
+const THEME_COLORS: Record<string, { gradient: string; dot: string }> = {
+  violet: { gradient: "from-violet-500 to-indigo-600", dot: "bg-violet-500" },
+  amber: { gradient: "from-amber-500 to-orange-500", dot: "bg-amber-500" },
+  blue: { gradient: "from-blue-500 to-indigo-500", dot: "bg-blue-500" },
+  emerald: { gradient: "from-emerald-500 to-teal-500", dot: "bg-emerald-500" },
+  cyan: { gradient: "from-cyan-500 to-sky-500", dot: "bg-cyan-500" },
+  rose: { gradient: "from-rose-500 to-pink-500", dot: "bg-rose-500" },
+  red: { gradient: "from-red-500 to-rose-500", dot: "bg-red-500" },
 };
 
-const svgProps = { width: 22, height: 22, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+const svgProps = { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
 
 const SECTION_ICONS: Record<string, ReactNode> = {
   "getting-started": (
@@ -62,9 +62,9 @@ function Connector({ color }: { color: string }) {
   const c = THEME_COLORS[color] || THEME_COLORS.blue;
   return (
     <div className="flex flex-col items-center py-1">
-      <div className={`w-0.5 h-5 ${c.dot} opacity-40`} />
-      <div className={`w-3 h-3 rounded-full ${c.dot} opacity-60`} />
-      <div className={`w-0.5 h-5 ${c.dot} opacity-40`} />
+      <div className={`w-[2px] h-5 ${c.dot} opacity-50`} />
+      <div className={`w-3 h-3 rounded-sm border-[1.5px] border-stone-900 ${c.dot}`} />
+      <div className={`w-[2px] h-5 ${c.dot} opacity-50`} />
     </div>
   );
 }
@@ -77,15 +77,15 @@ function Milestone({ text }: { text: string }) {
       transition={{ delay: 0.2 }}
       className="flex items-center gap-3 mx-auto max-w-[500px] py-4"
     >
-      <div className="flex-1 h-px bg-stone-300" />
-      <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-stone-100 border border-stone-200">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-stone-400">
+      <div className="flex-1 h-[2px] bg-stone-900 opacity-20" />
+      <div className="flex items-center gap-2 px-4 py-2 rounded-lg border-[2.5px] border-stone-900 bg-white shadow-[2px_2px_0_#1c1917]">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-stone-900">
           <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
           <polyline points="22 4 12 14.01 9 11.01" />
         </svg>
-        <span className="text-xs font-semibold text-stone-500">{text}</span>
+        <span className="text-xs font-black text-stone-900">{text}</span>
       </div>
-      <div className="flex-1 h-px bg-stone-300" />
+      <div className="flex-1 h-[2px] bg-stone-900 opacity-20" />
     </motion.div>
   );
 }
@@ -113,7 +113,6 @@ export default function ClaudeCodeRoadmap() {
     });
   }
 
-  // Zigzag positions cycle
   const positions = ["center", "left", "center", "right"] as const;
 
   let globalIndex = 0;
@@ -124,23 +123,23 @@ export default function ClaudeCodeRoadmap() {
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative mb-8 bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6"
+        className="relative mb-8 rounded-lg border-[2.5px] border-stone-900 bg-white shadow-[3px_3px_0_#1c1917] p-5"
       >
         <div className="flex items-center gap-4 mb-3">
-          <div className="flex-1 h-4 bg-stone-200 rounded-full overflow-hidden shadow-inner">
+          <div className="flex-1 h-4 bg-stone-200 rounded-sm border-[1.5px] border-stone-900 overflow-hidden">
             <motion.div
-              className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600"
+              className="h-full bg-emerald-400"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
             />
           </div>
-          <div className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-50 border-2 border-emerald-300">
-            <span className="text-lg font-extrabold text-emerald-600">{masteredCount}</span>
-            <span className="text-sm font-bold text-emerald-400">/ {total}</span>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border-[2px] border-stone-900 bg-emerald-50">
+            <span className="text-lg font-black text-stone-900">{masteredCount}</span>
+            <span className="text-sm font-bold text-stone-500">/ {total}</span>
           </div>
         </div>
-        <p className="text-center text-sm font-semibold text-stone-500">
+        <p className="text-center text-sm font-bold text-stone-500">
           {masteredCount === 0
             ? "Click any topic to start learning"
             : masteredCount === total
@@ -171,16 +170,17 @@ export default function ClaudeCodeRoadmap() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               className={`
-                relative mx-auto w-full max-w-[500px] rounded-2xl bg-gradient-to-r ${colors.gradient}
-                px-8 py-5 text-center shadow-xl ${colors.glow} mb-1 border-2 border-white/20
+                relative mx-auto w-full max-w-[500px] rounded-lg
+                border-[2.5px] border-stone-900 bg-gradient-to-r ${colors.gradient}
+                shadow-[3px_3px_0_#1c1917] px-6 py-4 text-center mb-1
               `}
             >
               <div className="flex items-center justify-center gap-3">
                 <span className="text-white">{icon}</span>
-                <h2 className="text-lg font-extrabold text-white tracking-wide uppercase">
+                <h2 className="text-base font-black text-white tracking-wide uppercase">
                   {section.title}
                 </h2>
-                <span className="text-xs font-bold text-white/60 bg-white/20 px-2 py-0.5 rounded-full">
+                <span className="text-xs font-black text-white/80 bg-black/20 px-2 py-0.5 rounded border border-white/20">
                   {sectionMastered}/{sectionTopics.length}
                 </span>
               </div>
@@ -224,11 +224,11 @@ export default function ClaudeCodeRoadmap() {
           animate={{ opacity: 1 }}
           className="mx-auto max-w-[500px] text-center py-6"
         >
-          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-stone-900 text-white shadow-lg">
+          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border-[2.5px] border-stone-900 bg-stone-900 text-white shadow-[3px_3px_0_#78716c]">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
             </svg>
-            <span className="text-sm font-bold">You know the tool. Now go build something amazing.</span>
+            <span className="text-sm font-black">You know the tool. Now go build something amazing.</span>
           </div>
         </motion.div>
       </div>

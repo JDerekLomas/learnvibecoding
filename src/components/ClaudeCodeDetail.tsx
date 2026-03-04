@@ -73,7 +73,6 @@ export default function ClaudeCodeDetail({ topic, mastered, onClose, onToggleMas
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
-  // Lock body scroll when open
   useEffect(() => {
     if (topic) {
       document.body.style.overflow = "hidden";
@@ -90,8 +89,8 @@ export default function ClaudeCodeDetail({ topic, mastered, onClose, onToggleMas
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+            transition={{ duration: 0.15 }}
+            className="fixed inset-0 z-50 bg-black/50"
             onClick={onClose}
           />
 
@@ -101,11 +100,10 @@ export default function ClaudeCodeDetail({ topic, mastered, onClose, onToggleMas
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed inset-x-0 bottom-0 z-50 md:hidden max-h-[85vh] bg-white rounded-t-3xl shadow-2xl overflow-y-auto"
+            className="fixed inset-x-0 bottom-0 z-50 md:hidden max-h-[85vh] bg-white border-t-[2.5px] border-stone-900 overflow-y-auto"
           >
-            {/* Drag handle */}
-            <div className="sticky top-0 z-10 bg-white pt-3 pb-2 flex justify-center rounded-t-3xl">
-              <div className="w-10 h-1 rounded-full bg-stone-300" />
+            <div className="sticky top-0 z-10 bg-white pt-3 pb-2 flex justify-center border-b border-stone-200">
+              <div className="w-10 h-1 rounded-full bg-stone-400" />
             </div>
             <DrawerContent topic={topic} mastered={mastered} onToggleMastered={onToggleMastered} onClose={onClose} />
           </motion.div>
@@ -116,7 +114,7 @@ export default function ClaudeCodeDetail({ topic, mastered, onClose, onToggleMas
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 bottom-0 z-50 hidden md:block w-[420px] bg-white shadow-2xl overflow-y-auto border-l border-stone-200"
+            className="fixed right-0 top-0 bottom-0 z-50 hidden md:block w-[420px] bg-white overflow-y-auto border-l-[2.5px] border-stone-900"
           >
             <DrawerContent topic={topic} mastered={mastered} onToggleMastered={onToggleMastered} onClose={onClose} showCloseButton />
           </motion.div>
@@ -144,7 +142,7 @@ function DrawerContent({
       {showCloseButton && (
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center transition-colors"
+          className="absolute top-4 right-4 z-10 w-8 h-8 rounded-md border-[1.5px] border-stone-900 bg-white hover:bg-stone-100 flex items-center justify-center transition-colors"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
             <line x1="18" y1="6" x2="6" y2="18" />
@@ -153,19 +151,19 @@ function DrawerContent({
         </button>
       )}
 
-      <h2 className="text-xl font-extrabold text-stone-900 pr-10">{topic.title}</h2>
-      <p className="text-sm font-semibold text-stone-500 mt-1">{topic.tagline}</p>
+      <h2 className="text-xl font-black text-stone-900 pr-10">{topic.title}</h2>
+      <p className="text-sm font-bold text-stone-500 mt-1">{topic.tagline}</p>
       <p className="text-base text-stone-700 mt-4 leading-relaxed">{topic.description}</p>
 
       {/* Key commands */}
       {topic.commands && topic.commands.length > 0 && (
         <div className="mt-5">
-          <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wide mb-2">Key Commands</h3>
+          <h3 className="text-xs font-black text-stone-400 uppercase tracking-wider mb-2">Key Commands</h3>
           <div className="flex flex-wrap gap-2">
             {topic.commands.map((cmd) => (
               <code
                 key={cmd}
-                className="text-sm font-mono font-semibold bg-stone-100 text-stone-700 px-3 py-1.5 rounded-lg border border-stone-200"
+                className="text-sm font-mono font-bold bg-white text-stone-900 px-3 py-1.5 rounded-md border-[2px] border-stone-900 shadow-[2px_2px_0_#1c1917]"
               >
                 {cmd}
               </code>
@@ -177,7 +175,7 @@ function DrawerContent({
       {/* Resources */}
       {topic.resources.length > 0 && (
         <div className="mt-5">
-          <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wide mb-2">Resources</h3>
+          <h3 className="text-xs font-black text-stone-400 uppercase tracking-wider mb-2">Resources</h3>
           <div className="space-y-2">
             {topic.resources.map((resource, i) => {
               const { icon, label } = RESOURCE_ICONS[resource.type];
@@ -187,16 +185,11 @@ function DrawerContent({
                   href={resource.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-stone-200 hover:border-indigo-300 hover:bg-stone-50 transition-colors no-underline group"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg border-[2px] border-stone-900 bg-white shadow-[2px_2px_0_#1c1917] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all no-underline group"
                 >
-                  <span className="text-stone-400 group-hover:text-indigo-500 transition-colors flex-shrink-0">{icon}</span>
-                  <span className="text-sm font-semibold text-stone-700 group-hover:text-indigo-600 transition-colors flex-1">{resource.title}</span>
-                  <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wide">{label}</span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-stone-300 group-hover:text-indigo-400 transition-colors flex-shrink-0">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                    <polyline points="15 3 21 3 21 9" />
-                    <line x1="10" y1="14" x2="21" y2="3" />
-                  </svg>
+                  <span className="text-stone-600 flex-shrink-0">{icon}</span>
+                  <span className="text-sm font-bold text-stone-900 flex-1">{resource.title}</span>
+                  <span className="text-[10px] font-black text-stone-400 uppercase tracking-wide">{label}</span>
                 </a>
               );
             })}
@@ -208,14 +201,15 @@ function DrawerContent({
       <button
         onClick={onToggleMastered}
         className={`
-          mt-6 w-full py-3 rounded-xl font-bold text-sm transition-all duration-200
+          mt-6 w-full py-3 rounded-lg font-black text-sm transition-all duration-150
+          border-[2.5px] border-stone-900
           ${mastered
-            ? "bg-emerald-100 text-emerald-700 border-2 border-emerald-300 hover:bg-emerald-200"
-            : "bg-stone-100 text-stone-600 border-2 border-stone-200 hover:bg-stone-200"
+            ? "bg-emerald-400 text-stone-900 shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none"
+            : "bg-white text-stone-900 shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none"
           }
         `}
       >
-        {mastered ? "Learned — Click to Unmark" : "Mark as Learned"}
+        {mastered ? "Learned -- Click to Unmark" : "Mark as Learned"}
       </button>
     </div>
   );

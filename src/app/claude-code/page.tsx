@@ -8,22 +8,32 @@ export const metadata: Metadata = {
 
 export default function ClaudeCodePage() {
   return (
-    <main className="mx-auto max-w-2xl px-6 py-10">
-      <h1 className="text-3xl font-extrabold text-stone-900 text-center mb-2">
-        Claude Code Roadmap
-      </h1>
-      <p className="text-center text-stone-500 font-medium mb-8">
-        38 essential topics for mastering Claude Code — based on{" "}
-        <a
-          href="https://roadmap.sh/claude-code"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-indigo-500 hover:text-indigo-700 underline"
-        >
-          roadmap.sh/claude-code
-        </a>
-      </p>
-      <ClaudeCodeRoadmap />
-    </main>
+    <div className="min-h-screen bg-[#f0f0f0] relative overflow-hidden">
+      {/* Dot pattern background */}
+      <div
+        className="absolute inset-0 opacity-[0.15]"
+        style={{
+          backgroundImage: "radial-gradient(circle, #1c1917 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+        }}
+      />
+      <main className="mx-auto max-w-3xl px-6 py-16 relative z-10">
+        <h1 className="text-3xl font-black tracking-tight text-stone-900 mb-2">
+          Claude Code Roadmap
+        </h1>
+        <p className="text-lg font-medium text-stone-500 mb-8">
+          38 essential topics for mastering Claude Code — based on{" "}
+          <a
+            href="https://roadmap.sh/claude-code"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-indigo-600 hover:text-indigo-800 underline"
+          >
+            roadmap.sh/claude-code
+          </a>
+        </p>
+        <ClaudeCodeRoadmap />
+      </main>
+    </div>
   );
 }
