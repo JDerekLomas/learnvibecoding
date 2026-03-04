@@ -17,17 +17,21 @@ function CompletionOverlay({
   total: number;
   onDone: () => void;
 }) {
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
+
   useEffect(() => {
-    const timer = setTimeout(onDone, 1600);
+    const timer = setTimeout(() => onDoneRef.current(), 2000);
     return () => clearTimeout(timer);
-  }, [onDone]);
+  }, []);
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+      onClick={() => onDoneRef.current()}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm cursor-pointer"
     >
       <motion.div
         initial={{ scale: 0.5, opacity: 0 }}
