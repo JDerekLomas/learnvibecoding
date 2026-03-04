@@ -21,7 +21,7 @@ const TOPICS: TopicCard[] = [
     label: 'Mixed Practice',
     description: 'All vibe coding topics',
     tags: [],
-    count: 120,
+    count: 126,
     color: 'violet',
   },
   {
@@ -29,7 +29,7 @@ const TOPICS: TopicCard[] = [
     label: 'Prompt Engineering',
     description: 'Write prompts that get great code',
     tags: ['prompt-engineering'],
-    count: 18,
+    count: 22,
     color: 'amber',
   },
   {
@@ -37,7 +37,7 @@ const TOPICS: TopicCard[] = [
     label: 'Reading AI Code',
     description: 'Spot bugs, understand output',
     tags: ['reading-code'],
-    count: 13,
+    count: 14,
     color: 'blue',
   },
   {
@@ -45,7 +45,7 @@ const TOPICS: TopicCard[] = [
     label: 'Dev Tooling',
     description: 'Claude Code, hooks, MCP, git, terminals',
     tags: ['tooling'],
-    count: 21,
+    count: 22,
     color: 'emerald',
   },
   {

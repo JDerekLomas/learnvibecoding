@@ -2179,6 +2179,109 @@ export const vibecodingQuestions: QuizItem[] = [
       'When you deploy with `vercel --prod` locally, Vercel deploys whatever is on disk — even uncommitted changes. Your teammate only has what\'s in git. Always commit and push before (or immediately after) deploying so git and production stay in sync. Otherwise you get "works on Vercel but nobody can reproduce it."',
     misconceptions: ['Thinking a successful deploy means the code is in version control'],
   },
+  // ── Vibe Coding Foundations (core mindset) ──
+  {
+    id: 'vc_prompt_18',
+    domain: 'vibe-coding',
+    tags: ['prompt-engineering', 'mindset'],
+    difficulty: 'beginning',
+    title: 'The Command-Follower Trap',
+    question: 'You want Claude to build a settings page. Which prompt gets a better result?',
+    correctAnswer: '"Build a settings page for a productivity app. Think Notion or Linear — clean, organized, nothing unnecessary."',
+    distractors: [
+      '"Create a settings page with these exact sections: 1. Profile (name, email, avatar). 2. Notifications (3 toggles). 3. Theme (light/dark radio). Use a sidebar layout with 12px gaps."',
+      '"Make a settings page"',
+      '"Build a settings page using best practices and modern design patterns"',
+    ],
+    explanation:
+      'Over-specifying turns the AI into a typist — it follows your commands exactly but doesn\'t think. It won\'t add smart features you didn\'t list, won\'t consider edge cases you missed, and won\'t bring design judgment. Giving a clear destination with taste references lets the AI bring its full competence. You direct, the AI builds.',
+    misconceptions: ['Treating AI as a typist that needs line-by-line instructions instead of a collaborator that can think'],
+  },
+  {
+    id: 'vc_prompt_19',
+    domain: 'vibe-coding',
+    tags: ['prompt-engineering', 'research'],
+    difficulty: 'beginning',
+    title: 'Research-First Prompting',
+    question: 'You\'re building your first landing page. Which prompt approach leads to the best design?',
+    correctAnswer: '"Research how Stripe, Linear, and Notion handle their landing pages. Then build something that captures that level of quality for my [app description]."',
+    distractors: [
+      '"Build a landing page with a hero section, features grid, testimonials, and a CTA button"',
+      '"Make the best landing page possible"',
+      '"Copy Stripe\'s landing page but change the colors and text"',
+    ],
+    explanation:
+      'Asking the AI to research real examples first gives it concrete taste targets. The AI studies what makes those pages great and synthesizes the best patterns into something original. Listing sections gives you a generic layout. "Best possible" gives no direction. Copying a specific site produces a knock-off, not an original.',
+    misconceptions: ['Listing layout sections instead of pointing at quality targets'],
+  },
+  {
+    id: 'vc_prompt_20',
+    domain: 'vibe-coding',
+    tags: ['prompt-engineering', 'ambition'],
+    difficulty: 'beginning',
+    title: 'Don\'t Limit the AI',
+    question: 'You\'ve never coded before but want to build a recipe app. What should your first prompt be?',
+    correctAnswer: '"Build a recipe app where I can save recipes, search by ingredient, and share with friends. Think Pinterest meets Notion. Beautiful, fast, and fun to use."',
+    distractors: [
+      '"I\'m a beginner, so let\'s start small — just make a text field where I can type a recipe name"',
+      '"Can AI even build a real app? Just show me what\'s possible first"',
+      '"Build a recipe app but keep it simple because I\'m new to this"',
+    ],
+    explanation:
+      'AI doesn\'t need you to be modest. It handles the same complexity whether you\'re a beginner or an expert — building a great app isn\'t harder for it than building a minimal one. Starting with an ambitious, complete vision gives the AI room to build something impressive. You can always scale back. Starting too small means endless incremental prompting to get where you could have started.',
+    misconceptions: ['Limiting your ambition because you think beginners should start small with AI'],
+  },
+  {
+    id: 'vc_tool_21',
+    domain: 'vibe-coding',
+    tags: ['tooling', 'context'],
+    difficulty: 'developing',
+    title: 'Context Rot',
+    question: 'You\'ve been iterating with Claude for 30 minutes. It keeps building things that don\'t match your original vision — adding features you didn\'t ask for and forgetting earlier decisions. What\'s happening?',
+    correctAnswer: 'Context rot — after many back-and-forth messages, the AI loses track of the original intent. Re-state your core vision clearly or start a focused new session.',
+    distractors: [
+      'The AI is getting tired and needs a break',
+      'Your original idea was bad and the AI is improving on it',
+      'This is normal — AI always drifts over time and you can\'t prevent it',
+    ],
+    explanation:
+      'Context rot happens when lengthy conversations bury the original intent under layers of iteration. The AI weighs recent messages more heavily, so your early vision fades. The fix: periodically re-state what you\'re building and why, use /compact to clean up, or start a fresh session with a clear brief. The AI isn\'t tired or rebellious — it\'s lost in noise.',
+    misconceptions: ['Thinking the AI is deliberately ignoring your vision when it\'s actually lost in conversation noise'],
+  },
+  {
+    id: 'vc_prompt_21',
+    domain: 'vibe-coding',
+    tags: ['prompt-engineering', 'mindset'],
+    difficulty: 'developing',
+    title: 'Why Prescriptive Prompts Backfire',
+    question: 'A developer writes extremely detailed prompts specifying every import, variable name, and line of code — treating the AI like a typist. What\'s the problem?',
+    correctAnswer: 'The AI can\'t bring its own judgment, pattern recognition, or creativity — you\'re doing all the thinking and using AI as a keyboard',
+    distractors: [
+      'Nothing — detailed prompts always produce the best code',
+      'The AI will refuse to follow such specific instructions',
+      'The code will run slower because the AI didn\'t optimize it',
+    ],
+    explanation:
+      'When you dictate every line, you cap the output at your own knowledge. The AI knows patterns, best practices, and edge cases you might miss — but only if you give it room to think. Strategic ambiguity (describing the what and why, not the how) lets the AI\'s competence complement yours. Over-prescription creates an expensive autocomplete, not a collaborator.',
+    misconceptions: ['Thinking more detailed instructions always produce better AI output'],
+  },
+  {
+    id: 'vc_read_13',
+    domain: 'vibe-coding',
+    tags: ['reading-code', 'evaluation'],
+    difficulty: 'beginning',
+    title: 'Let the AI Surprise You',
+    question: 'Claude built your app but added a dark mode toggle and keyboard shortcuts you didn\'t ask for. What should you do?',
+    correctAnswer: 'Evaluate them on their merits — the AI brought its knowledge of good UX patterns. Keep what improves the app, remove what doesn\'t fit.',
+    distractors: [
+      'Remove everything you didn\'t explicitly ask for — it should only build what you requested',
+      'This is a bug — the AI shouldn\'t add unrequested features',
+      'Accept everything — the AI always knows better than you',
+    ],
+    explanation:
+      'Good AI-generated features are like suggestions from a skilled collaborator. The AI knows common UX patterns and may add them when they genuinely improve the product. Your job is to curate: does this fit the vision? Is it well-executed? You\'re the creative director, not a task manager issuing orders. But blind acceptance is just as bad as blind rejection.',
+    misconceptions: ['Treating unrequested AI additions as bugs instead of evaluating them as suggestions'],
+  },
 ];
 
 // ── Combined & utility functions ─────────────────────────────────────
