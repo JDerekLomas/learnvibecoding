@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getTeamContext } from '@/lib/team';
+import { getCVAuth } from '@/lib/codevibing-auth';
 
 const HIDDEN_PATHS = ['/quiz/play', '/quiz-chat'];
 
@@ -14,10 +15,13 @@ export function NavBar({ isCorporate }: { isCorporate: boolean }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [teamSlug, setTeamSlug] = useState<string | null>(null);
+  const [cvUsername, setCvUsername] = useState<string | null>(null);
 
   useEffect(() => {
     const ctx = getTeamContext();
     if (ctx) setTeamSlug(ctx.teamSlug);
+    const auth = getCVAuth();
+    if (auth) setCvUsername(auth.username);
   }, []);
 
   if (HIDDEN_PATHS.some((p) => pathname.startsWith(p))) {
@@ -46,6 +50,15 @@ export function NavBar({ isCorporate }: { isCorporate: boolean }) {
       >
         Community
       </a>
+      {cvUsername ? (
+        <Link href="/connect" className="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 transition-colors" onClick={() => setOpen(false)}>
+          @{cvUsername}
+        </Link>
+      ) : (
+        <Link href="/connect" className={linkClass} onClick={() => setOpen(false)}>
+          Connect
+        </Link>
+      )}
     </>
   ) : (
     <>
@@ -73,6 +86,15 @@ export function NavBar({ isCorporate }: { isCorporate: boolean }) {
       >
         Community
       </a>
+      {cvUsername ? (
+        <Link href="/connect" className="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 transition-colors" onClick={() => setOpen(false)}>
+          @{cvUsername}
+        </Link>
+      ) : (
+        <Link href="/connect" className={linkClass} onClick={() => setOpen(false)}>
+          Connect
+        </Link>
+      )}
     </>
   );
 

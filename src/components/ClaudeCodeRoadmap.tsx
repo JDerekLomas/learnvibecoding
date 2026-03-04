@@ -8,14 +8,24 @@ import ClaudeCodeDetail from "./ClaudeCodeDetail";
 
 const STORAGE_KEY = "claude-code-mastery";
 
-const THEME_COLORS: Record<string, { gradient: string; glow: string; border: string; dot: string; text: string; bg: string }> = {
-  violet: { gradient: "from-violet-500 to-indigo-600", glow: "shadow-violet-500/25", border: "border-violet-400", dot: "bg-violet-500", text: "text-violet-600", bg: "bg-violet-50" },
-  amber: { gradient: "from-amber-500 to-orange-500", glow: "shadow-amber-500/25", border: "border-amber-400", dot: "bg-amber-500", text: "text-amber-600", bg: "bg-amber-50" },
-  blue: { gradient: "from-blue-500 to-indigo-500", glow: "shadow-blue-500/25", border: "border-blue-400", dot: "bg-blue-500", text: "text-blue-600", bg: "bg-blue-50" },
-  emerald: { gradient: "from-emerald-500 to-teal-500", glow: "shadow-emerald-500/25", border: "border-emerald-400", dot: "bg-emerald-500", text: "text-emerald-600", bg: "bg-emerald-50" },
-  cyan: { gradient: "from-cyan-500 to-sky-500", glow: "shadow-cyan-500/25", border: "border-cyan-400", dot: "bg-cyan-500", text: "text-cyan-600", bg: "bg-cyan-50" },
-  rose: { gradient: "from-rose-500 to-pink-500", glow: "shadow-rose-500/25", border: "border-rose-400", dot: "bg-rose-500", text: "text-rose-600", bg: "bg-rose-50" },
-  red: { gradient: "from-red-500 to-rose-500", glow: "shadow-red-500/25", border: "border-red-400", dot: "bg-red-500", text: "text-red-600", bg: "bg-red-50" },
+const THEME_COLORS: Record<string, { gradient: string; glow: string; dot: string }> = {
+  violet: { gradient: "from-violet-500 to-indigo-600", glow: "shadow-violet-500/25", dot: "bg-violet-500" },
+  amber: { gradient: "from-amber-500 to-orange-500", glow: "shadow-amber-500/25", dot: "bg-amber-500" },
+  blue: { gradient: "from-blue-500 to-indigo-500", glow: "shadow-blue-500/25", dot: "bg-blue-500" },
+  emerald: { gradient: "from-emerald-500 to-teal-500", glow: "shadow-emerald-500/25", dot: "bg-emerald-500" },
+  cyan: { gradient: "from-cyan-500 to-sky-500", glow: "shadow-cyan-500/25", dot: "bg-cyan-500" },
+  rose: { gradient: "from-rose-500 to-pink-500", glow: "shadow-rose-500/25", dot: "bg-rose-500" },
+  red: { gradient: "from-red-500 to-rose-500", glow: "shadow-red-500/25", dot: "bg-red-500" },
+};
+
+const SECTION_ICONS: Record<string, string> = {
+  "getting-started": "🚀",
+  context: "📜",
+  "core-workflow": "⌨️",
+  "skills-tools": "🔧",
+  advanced: "🧩",
+  scaling: "📊",
+  safety: "🛡️",
 };
 
 function getMastery(): Set<string> {
@@ -87,13 +97,13 @@ export default function ClaudeCodeRoadmap() {
     });
   }
 
+  // Zigzag positions cycle
+  const positions = ["center", "left", "center", "right"] as const;
+
   let globalIndex = 0;
 
   return (
     <div className="pb-20 relative">
-      {/* Vertical spine */}
-      <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-stone-200 via-stone-300 to-stone-200 -translate-x-1/2 hidden sm:block" />
-
       {/* Progress bar */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -123,10 +133,11 @@ export default function ClaudeCodeRoadmap() {
         </p>
       </motion.div>
 
-      {/* Section groups with connectors */}
+      {/* Section groups with skill tree layout */}
       {sectionGroups.map(({ section, topics: sectionTopics }, sectionIndex) => {
         const colors = THEME_COLORS[section.color] || THEME_COLORS.blue;
         const sectionMastered = sectionTopics.filter((t) => mastered.has(t.id)).length;
+        const icon = SECTION_ICONS[section.id] || "📦";
 
         return (
           <div key={section.id} className="relative">
@@ -149,6 +160,7 @@ export default function ClaudeCodeRoadmap() {
               `}
             >
               <div className="flex items-center justify-center gap-3">
+                <span className="text-2xl">{icon}</span>
                 <h2 className="text-lg font-extrabold text-white tracking-wide uppercase">
                   {section.title}
                 </h2>
@@ -159,21 +171,26 @@ export default function ClaudeCodeRoadmap() {
               <p className="text-sm font-medium text-white/80 mt-1">{section.description}</p>
             </motion.div>
 
-            {/* Connector into cards */}
+            {/* Connector into nodes */}
             <Connector color={section.color} />
 
-            {/* Card grid */}
-            <div className="relative grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-[640px] mx-auto">
-              {sectionTopics.map((topic) => {
+            {/* Zigzag skill tree nodes */}
+            <div className="flex flex-col items-center gap-0 max-w-[500px] mx-auto">
+              {sectionTopics.map((topic, i) => {
                 const idx = globalIndex++;
+                const pos = positions[i % positions.length];
+
                 return (
-                  <ClaudeCodeCard
-                    key={topic.id}
-                    topic={topic}
-                    mastered={mastered.has(topic.id)}
-                    index={idx}
-                    onClick={() => setSelected(topic)}
-                  />
+                  <div key={topic.id} className="flex flex-col items-center w-full">
+                    {i > 0 && <Connector color={section.color} />}
+                    <ClaudeCodeCard
+                      topic={topic}
+                      mastered={mastered.has(topic.id)}
+                      index={idx}
+                      position={pos}
+                      onClick={() => setSelected(topic)}
+                    />
+                  </div>
                 );
               })}
             </div>
@@ -181,7 +198,7 @@ export default function ClaudeCodeRoadmap() {
         );
       })}
 
-      {/* Final milestone */}
+      {/* Final milestone + star badge */}
       <div className="relative">
         <Connector color="red" />
         <Milestone text={sectionGroups[sectionGroups.length - 1].section.milestone} />
@@ -200,7 +217,7 @@ export default function ClaudeCodeRoadmap() {
         </motion.div>
       </div>
 
-      {/* Detail modal */}
+      {/* Detail drawer */}
       <ClaudeCodeDetail
         topic={selected}
         mastered={selected ? mastered.has(selected.id) : false}

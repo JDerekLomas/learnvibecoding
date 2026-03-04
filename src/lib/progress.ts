@@ -100,8 +100,40 @@ export function saveProject(project: { url: string; description: string; module:
 
 const CHANGE_EVENT = "lvc-progress-change";
 
+let syncTimer: ReturnType<typeof setTimeout> | null = null;
+
 function notifyChange() {
   window.dispatchEvent(new Event(CHANGE_EVENT));
+  // Debounced sync to codevibing (5s after last change)
+  if (syncTimer) clearTimeout(syncTimer);
+  syncTimer = setTimeout(syncToCVIfConnected, 5000);
+}
+
+function syncToCVIfConnected() {
+  try {
+    const raw = localStorage.getItem("cv-auth");
+    if (!raw) return;
+    const { apiKey } = JSON.parse(raw);
+    if (!apiKey) return;
+    const d = getData();
+    // Build summary for profile
+    const summary = {
+      quizResults: d.quizResults.length,
+      quizAccuracy: d.quizResults.length > 0
+        ? d.quizResults.filter(r => r.correct).length / d.quizResults.length
+        : 0,
+      totalXP: d.totalXP,
+      modulesVisited: d.visited.length,
+      projectsShared: d.projects.length,
+      discoveries: d.discoveries.length,
+      lastActive: new Date().toISOString(),
+    };
+    fetch("/api/cv-auth/sync", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ apiKey, progress: summary }),
+    }).catch(() => {});
+  } catch { /* best effort */ }
 }
 
 export function onProgressChange(callback: () => void): () => void {
