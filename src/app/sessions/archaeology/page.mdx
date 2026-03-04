@@ -1,0 +1,33 @@
+import DisconnectExercise from "@/components/DisconnectExercise";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "Prompt Archaeology — Learn Vibe Coding",
+  description: "Your prompt history is a goldmine of self-knowledge.",
+};
+
+# Prompt Archaeology
+
+Here's something most people never do: go back and read their own conversations with AI.
+
+Your prompt history is a goldmine of self-knowledge. It reveals how you think, what you struggle with, what you skip, and where you get stuck. Reading your own prompts is like watching game tape — athletes do it, musicians do it, but somehow builders rarely do.
+
+## What to look for
+
+**Your opening moves.** Do you start with vision or with specifications? Do you set context or dive straight in? Your opening move sets the trajectory of the entire session.
+
+**Your correction patterns.** When Claude gets something wrong, how do you respond? Do you explain calmly? Get terse? Abandon and restart? Your correction style affects how quickly you recover from mistakes.
+
+**Your energy arc.** Look at the length and complexity of your prompts over time. Most people start with long, thoughtful prompts and get progressively shorter and more impatient. When in the session does your energy peak? When does it fade?
+
+**Your blind spots.** What do you *never* prompt for? Mobile responsiveness? Error handling? Accessibility? The things you don't ask about reveal the things you don't naturally think about.
+
+<DisconnectExercise
+  id="sessions-prompt-archaeology"
+  title="Prompt Archaeology Dig"
+  instructions="Open three past AI conversations (Claude, ChatGPT, whatever you've used). Read them straight through without AI help. For each conversation, write down: (1) Your opening prompt — what does it reveal about your thinking style? (2) The moment the session went best — what preceded it? (3) The moment the session went worst — what caused it? (4) One pattern you see across all three."
+  duration={20}
+  reflectionPrompt="What surprised you about reading your own prompts? Did you notice patterns you weren't aware of while building?"
+/>
+
+<ChapterNav />

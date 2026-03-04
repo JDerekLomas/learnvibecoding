@@ -1,0 +1,42 @@
+import ReflectionPrompt from "@/components/ReflectionPrompt";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "Your Prompting Signature — Learn Vibe Coding",
+  description: "Everyone develops a characteristic way of talking to AI.",
+};
+
+# Your Prompting Signature
+
+Everyone develops a prompting signature — a characteristic way of talking to AI that reflects how they think. Some people are terse. Some are verbose. Some are visual. Some are analytical. None of these are wrong, but understanding your signature helps you play to your strengths.
+
+## Common signatures
+
+**The Over-Specifier.** You describe everything in advance. Pixel values, color codes, exact behavior for every edge case. Your prompts are long and precise.
+
+*Strength:* You get exactly what you asked for.
+*Weakness:* You constrain Claude from applying its own judgment. You spend more energy on specification than on vision.
+
+**The Under-Specifier.** "Make it good." "Fix it." You trust Claude to figure out the details and only intervene when something's obviously wrong.
+
+*Strength:* Fast iteration, room for Claude's competence.
+*Weakness:* Sometimes you get something completely different from what you wanted, because you never said what you wanted.
+
+**The Conversationalist.** You talk it through. "I'm thinking about...", "What if we tried...", "The problem is that..." Your prompts read like thinking out loud.
+
+*Strength:* Claude gets deep context about your reasoning and can push back or suggest alternatives.
+*Weakness:* Can use a lot of context window on discussion instead of action.
+
+**The Commander.** Short, direct instructions. "Add dark mode." "Fix the nav." "Deploy." You know what you want and you say it.
+
+*Strength:* Efficient, clear intent.
+*Weakness:* Misses opportunities for Claude to offer better approaches you hadn't considered.
+
+Most people are a blend, shifting between signatures depending on their energy and confidence. The point isn't to pick one. It's to notice which one you default to, and to deliberately shift when the situation calls for it.
+
+<ReflectionPrompt
+  id="sessions-signature"
+  prompt="Which prompting signature do you default to? Think about your most recent building session. Were you over-specifying, under-specifying, conversing, or commanding? How did that work out?"
+/>
+
+<ChapterNav />

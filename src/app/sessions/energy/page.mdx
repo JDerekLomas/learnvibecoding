@@ -1,0 +1,93 @@
+import Callout from "@/components/Callout";
+import BuildSession from "@/components/BuildSession";
+import SelfAssessment from "@/components/SelfAssessment";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "Energy & Multi-Project Flow — Learn Vibe Coding",
+  description: "Manage your energy and juggle multiple projects.",
+};
+
+# Energy & Multi-Project Flow
+
+Vibe coding is mentally demanding in a way that doesn't feel like work. You're not writing code, but you're making hundreds of small judgment calls: Is this what I wanted? Should I iterate or accept? Is this good enough? What's next?
+
+That judgment fatigue is real. And it follows patterns.
+
+## The energy curve
+
+Most people have a predictable arc:
+
+1. **Ramp-up (first 10 min):** Setting context, establishing vision, getting Claude oriented.
+2. **Flow (10-40 min):** Productive collaboration. Decisions come easy. Iteration is fast.
+3. **Plateau (40-60 min):** Still productive, but decisions slow down. You start accepting things you'd normally push back on.
+4. **Decline (60+ min):** Diminishing returns. You're going in circles or accepting mediocre output because you're tired of iterating.
+
+The sweet spot is the flow phase. The mistake is pushing through the decline phase thinking you'll power through. You won't. The quality drops and you'll redo it tomorrow anyway.
+
+## Working with your energy
+
+**Build during flow.** Don't waste your peak energy on setup or planning. Have your project ready, your context loaded, your vision clear. When you sit down, go straight to building.
+
+**Refine during plateau.** When your energy dips, switch from building to polishing. Error states, mobile layout, copy editing. These tasks require less creative energy but still move the project forward.
+
+**Stop during decline.** When you notice yourself accepting things you don't love, stop. Commit what you have. Save a handoff. Walk away. The project will be there tomorrow, and tomorrow-you will have fresh judgment.
+
+**Use breaks strategically.** A 10-minute break can reset you from decline to flow. Stand up, move, look at something that isn't a screen. When you come back, re-read the last few exchanges before continuing.
+
+<Callout type="warning" title="The 'one more thing' trap">
+The most common mistake is "let me just fix one more thing" at the end of a session. This is when bugs get introduced, designs get worse, and working code gets broken. If you've been at it for an hour, commit and stop. The one more thing can wait.
+</Callout>
+
+---
+
+## Multi-project flow
+
+Real vibe coders don't work on one project at a time. They have 3-5 going. This is natural and productive — but it requires discipline to prevent context bleed.
+
+### Context bleed
+
+Context bleed is when mental models from one project leak into another. You're building a minimalist portfolio and suddenly you're adding features because you were just working on a feature-rich dashboard. Or you use patterns from Project A in Project B where they don't make sense.
+
+### Preventing bleed
+
+**One session per project.** Don't switch projects within a session. When you switch projects, `/clear` and start fresh. The time it takes to reload context is much less than the time you'll waste untangling bleed.
+
+**Different folders, different CLAUDE.md files.** Each project should have its own CLAUDE.md with project-specific instructions. This isn't just organization — it's telling Claude (and yourself) "we're in a different context now."
+
+**Use handoffs as boundaries.** When you finish a session on Project A, write a handoff. When you start Project B, don't carry Project A's momentum. Read Project B's handoff and re-enter *that* world.
+
+**Name your sessions.** Even just mentally: "this is a Source Library session" or "this is a portfolio session." Naming creates cognitive boundaries.
+
+<BuildSession
+  id="sessions-practice"
+  module="sessions"
+  prompt="Run a full session using the techniques from this module. Choose a project (new or existing). Before starting: set an intention, note your energy level, and plan your session length. During: use /compact proactively, take a break if energy dips. After: save a handoff, commit, and debrief below."
+  suggestedDuration={45}
+  intentionQuestions={[
+    "What will you build or work on?",
+    "How long will you work before stopping — regardless of where you are?"
+  ]}
+  debriefQuestions={[
+    "Did you use /compact? Did you notice your energy shift? What would you do differently?",
+    "Did you stop when you planned to, or did you push past it?"
+  ]}
+/>
+
+---
+
+## Tracking your growth
+
+Session management is a skill. Like any skill, it improves with practice and honest self-assessment. Where are you right now?
+
+<SelfAssessment
+  id="sessions-management"
+  question="How intentional are your building sessions?"
+  type="slider"
+  lowLabel="I just open Claude and go until I stop"
+  highLabel="I plan sessions, manage energy, compact proactively, and save handoffs"
+/>
+
+Your answers here are just for you. Come back after a few more weeks of building and see how your relationship with sessions has changed.
+
+<ChapterNav />

@@ -1,0 +1,66 @@
+import Callout from "@/components/Callout";
+import ChapterNav from "@/components/ChapterNav";
+
+export const metadata = {
+  title: "Session Hygiene — Learn Vibe Coding",
+  description: "Fresh starts, compacting, and handoffs.",
+};
+
+# Session Hygiene
+
+You've been building things. You've had good sessions and bad ones. Moments of flow and moments of frustration. But have you noticed the *patterns*?
+
+This module is about becoming a student of your own process. Not just building things — but understanding *how* you build them, and using that understanding to build better.
+
+---
+
+Every Claude Code session is a conversation with a finite memory. The context window fills up. Old details get fuzzy. Eventually, the session degrades. Good session hygiene prevents this.
+
+## When to start fresh
+
+Start a new session when:
+- You're switching to a completely different project
+- The session has become confused (Claude keeps referencing something wrong)
+- You've been going in circles for more than 10 minutes
+- Context is above ~75% and `/compact` won't save it
+
+Don't start fresh when:
+- You're in the middle of something that's working
+- Claude has rich context about your project and you're iterating productively
+- You just hit a snag — try a repair pattern first
+
+## Compacting context
+
+`/compact` tells Claude to summarize the conversation so far and free up space. Use it proactively — at ~75% context, not 95%.
+
+Think of it like saving your game. You don't wait until you're about to die. You save when things are going well and you want to preserve that state.
+
+```
+/compact
+```
+
+After compacting, quickly verify Claude still has the key context:
+
+```
+What are we working on and what's left to do?
+```
+
+If the summary is wrong or incomplete, correct it. Those first few exchanges after a compact set the foundation for the rest of the session.
+
+## Saving handoffs
+
+For long-running projects, save a handoff before ending your session:
+
+```
+Save a handoff to .claude/handoffs/ with today's date.
+Include: what we built, what's working, what's left,
+and any decisions we made.
+```
+
+This is your future self's briefing document. When you come back tomorrow, you (or Claude) can read it and pick up exactly where you left off instead of reconstructing context from scratch.
+
+<Callout type="tip" title="The commit-before-close rule">
+Always commit and push before ending a session. Uncommitted work is invisible work. If you forget, your next session starts with confusion about what changed and why.
+</Callout>
+
+<ChapterNav />
