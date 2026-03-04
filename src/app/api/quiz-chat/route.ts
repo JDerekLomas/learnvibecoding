@@ -143,7 +143,8 @@ Don't repeat the question or answer options in your response \u2014 the user alr
           topic: z.string().describe("The topic label shown above the question"),
           question: z.string().describe("The question text"),
           options: z
-            .tuple([z.string(), z.string(), z.string(), z.string()])
+            .array(z.string())
+            .length(4)
             .describe(
               "Exactly 4 answer options. Make distractors plausible but clearly wrong."
             ),

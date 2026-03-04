@@ -147,7 +147,8 @@ Don't repeat the question or answer options in your response — the user alread
               "The question text — ground it in everyday experience"
             ),
           options: z
-            .tuple([z.string(), z.string(), z.string(), z.string()])
+            .array(z.string())
+            .length(4)
             .describe(
               "Exactly 4 answer options. Include at least one distractor based on a common misconception."
             ),
