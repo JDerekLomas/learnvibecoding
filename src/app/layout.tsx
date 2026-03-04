@@ -22,9 +22,17 @@ export async function generateMetadata(): Promise<Metadata> {
   const headersList = await headers();
   const audience = headersList.get("x-audience") || "consumer";
 
+  const base: Metadata = {
+    metadataBase: new URL("https://learnvibecoding.vercel.app"),
+  };
+
   if (audience === "corporate") {
     return {
-      title: "AI Growth — Team AI Upskilling",
+      ...base,
+      title: {
+        default: "AI Growth — Team AI Upskilling",
+        template: "%s | AI Growth",
+      },
       description:
         "A guided learning program that takes your team from zero to shipping real projects with AI. Assessments, structured modules, and a manager dashboard.",
       openGraph: {
@@ -44,7 +52,11 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   return {
-    title: "Learn Vibe Coding",
+    ...base,
+    title: {
+      default: "Learn Vibe Coding",
+      template: "%s | Learn Vibe Coding",
+    },
     description:
       "A structured curriculum for building with AI — from first conversation to shipped product.",
     openGraph: {
