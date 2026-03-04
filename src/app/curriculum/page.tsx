@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getData, hasExerciseData, onProgressChange, type LearnerData } from "@/lib/progress";
 import { getModulesBySection, SEQUENTIAL_PATH } from "@/data/course-modules";
 import TrajectoryView from "@/components/TrajectoryView";
+import Footer from "@/components/Footer";
 
 export default function CurriculumPage() {
   const [data, setData] = useState<LearnerData | null>(null);
@@ -159,6 +160,7 @@ export default function CurriculumPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ClaudeCodeRoadmap from "@/components/ClaudeCodeRoadmap";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Claude Code Roadmap — Learn Vibe Coding",
@@ -34,6 +35,7 @@ export default function ClaudeCodePage() {
         </p>
         <ClaudeCodeRoadmap />
       </main>
+      <Footer />
     </div>
   );
 }
