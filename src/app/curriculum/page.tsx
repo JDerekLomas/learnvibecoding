@@ -123,6 +123,46 @@ export default function CurriculumPage() {
             </div>
           </div>
         ))}
+
+        {/* Reference */}
+        <div className="mb-12">
+          <h2 className="text-xs font-black uppercase tracking-wider text-stone-400 mb-1">
+            Reference
+          </h2>
+          <p className="text-sm font-medium text-stone-400 mb-4">
+            Deep-dive references to keep handy as you build.
+          </p>
+          <div className="space-y-2">
+            <Link
+              href="/claude-code"
+              className="group flex items-center gap-3 rounded-lg border-[2.5px] border-stone-900 bg-white px-4 py-3 shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all"
+            >
+              <span className="text-[10px] font-bold text-white px-1.5 py-0.5 rounded bg-indigo-500 shrink-0">
+                REF
+              </span>
+              <span className="font-bold text-stone-900 flex-1">
+                Claude Code Roadmap
+              </span>
+              <span className="text-xs font-bold text-stone-400">
+                38 topics
+              </span>
+            </Link>
+            <Link
+              href="/concepts"
+              className="group flex items-center gap-3 rounded-lg border-[2.5px] border-stone-900 bg-white px-4 py-3 shadow-[3px_3px_0_#1c1917] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all"
+            >
+              <span className="text-[10px] font-bold text-white px-1.5 py-0.5 rounded bg-violet-500 shrink-0">
+                REF
+              </span>
+              <span className="font-bold text-stone-900 flex-1">
+                Key Concepts
+              </span>
+              <span className="text-xs font-bold text-stone-400">
+                Glossary
+              </span>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
