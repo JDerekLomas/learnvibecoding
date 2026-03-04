@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getData, onProgressChange } from "@/lib/progress";
-import { chapters } from "@/data/workflow-chapters";
+import { MODULES } from "@/data/course-modules";
+
+const mod = MODULES.find((m) => m.slug === "/workflow")!;
+const chapters = mod.chapters!;
 
 export default function WorkflowHub() {
   const [visited, setVisited] = useState<string[]>([]);
@@ -14,7 +17,7 @@ export default function WorkflowHub() {
   }, []);
 
   const completedCount = chapters.filter((ch) =>
-    visited.includes(`workflow-${ch.slug}`)
+    visited.includes(`/workflow/${ch.slug}`)
   ).length;
 
   return (
@@ -29,14 +32,14 @@ export default function WorkflowHub() {
         </p>
         {completedCount > 0 && (
           <p className="text-xs text-blue-600 dark:text-blue-400 mt-2 font-medium">
-            {completedCount} of {chapters.length} sections complete
+            {completedCount} of {chapters.length} chapters complete
           </p>
         )}
       </div>
 
       <div className="space-y-2.5">
         {chapters.map((ch, i) => {
-          const done = visited.includes(`workflow-${ch.slug}`);
+          const done = visited.includes(`/workflow/${ch.slug}`);
           return (
             <Link
               key={ch.slug}
@@ -49,9 +52,6 @@ export default function WorkflowHub() {
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
                   {ch.title}
-                </p>
-                <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5 truncate">
-                  {ch.subtitle}
                 </p>
               </div>
               {done ? (

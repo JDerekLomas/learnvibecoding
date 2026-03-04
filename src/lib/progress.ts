@@ -238,3 +238,37 @@ export function hasExerciseData(path: string): boolean {
   const hasDiscovery = d.discoveries.some((disc) => disc.id.startsWith(prefix));
   return hasReflection || hasProject || hasAssessment || hasCritique || hasBuildSession || hasDisconnect || hasDiscovery;
 }
+
+/**
+ * Check if a module with chapters has been visited (rollup).
+ * Checks both the old module-root path (backward compat) and chapter paths.
+ */
+export function isModuleVisited(moduleSlug: string): { visited: boolean; done: boolean } {
+  // Lazy import to avoid circular dependency
+  const { MODULES } = require("@/data/course-modules");
+  const mod = MODULES.find((m: { slug: string }) => m.slug === moduleSlug);
+  if (!mod?.chapters) {
+    const d = getData();
+    return {
+      visited: d.visited.includes(moduleSlug),
+      done: hasExerciseData(moduleSlug),
+    };
+  }
+
+  const d = getData();
+  const chapterPaths = mod.chapters.map((ch: { slug: string }) => `${moduleSlug}/${ch.slug}`);
+
+  // Visited: old root path OR any chapter path visited
+  const anyVisited =
+    d.visited.includes(moduleSlug) ||
+    chapterPaths.some((p: string) => d.visited.includes(p));
+
+  // Done: all chapters visited (or old root + exercise data)
+  const allChaptersVisited = chapterPaths.every((p: string) => d.visited.includes(p));
+  const oldDone = d.visited.includes(moduleSlug) && hasExerciseData(moduleSlug);
+
+  return {
+    visited: anyVisited,
+    done: allChaptersVisited || oldDone,
+  };
+}
