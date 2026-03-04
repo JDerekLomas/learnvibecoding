@@ -15,10 +15,10 @@ export default function WorkflowChapterPage() {
   if (!chapter) {
     return (
       <div className="text-center py-12">
-        <p className="text-zinc-500 font-medium">Section not found.</p>
+        <p className="text-stone-500 font-bold">Section not found.</p>
         <Link
           href="/workflow"
-          className="text-blue-600 dark:text-blue-400 underline mt-2 inline-block"
+          className="text-blue-700 underline mt-2 inline-block font-bold"
         >
           Back to Workflow
         </Link>
@@ -31,7 +31,7 @@ export default function WorkflowChapterPage() {
       {/* Back nav */}
       <Link
         href="/workflow"
-        className="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors no-underline mb-5 w-fit"
+        className="inline-flex items-center gap-1.5 text-sm font-bold text-stone-400 hover:text-stone-900 transition-colors no-underline mb-5 w-fit"
       >
         <svg
           width="14"
@@ -49,20 +49,20 @@ export default function WorkflowChapterPage() {
       </Link>
 
       {/* Chapter header */}
-      <div className="rounded-xl border border-blue-200 dark:border-blue-800/50 bg-gradient-to-b from-blue-50/30 to-transparent dark:from-blue-950/10 dark:to-transparent px-6 py-5 mb-6">
-        <p className="text-xs font-medium uppercase tracking-wider text-blue-500 dark:text-blue-400 mb-1">
+      <div className="mb-6">
+        <p className="text-xs font-black uppercase tracking-wider text-stone-400 mb-1">
           Chapter {index + 1} of {chapters.length}
         </p>
-        <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
+        <h1 className="text-xl font-black tracking-tight text-stone-900">
           {chapter.title}
         </h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+        <p className="text-sm font-medium text-stone-500 mt-1">
           {chapter.subtitle}
         </p>
       </div>
 
       {/* Chapter content */}
-      <div className="prose prose-zinc dark:prose-invert prose-sm max-w-none [&>p]:mb-4 [&>p]:leading-relaxed [&>h3]:text-base [&>h3]:font-semibold [&>h3]:mt-8 [&>h3]:mb-3 [&>h4]:text-sm [&>h4]:font-semibold [&>h4]:mt-6 [&>h4]:mb-2">
+      <div className="prose prose-stone prose-sm max-w-none [&>p]:mb-4 [&>p]:leading-relaxed [&>h3]:text-base [&>h3]:font-black [&>h3]:mt-8 [&>h3]:mb-3 [&>h4]:text-sm [&>h4]:font-bold [&>h4]:mt-6 [&>h4]:mb-2">
         {chapter.content}
       </div>
 

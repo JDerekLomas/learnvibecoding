@@ -26,7 +26,7 @@ export const chapters: WorkflowChapter[] = [
           feel but shouldn&apos;t over-formalize.
         </p>
 
-        <pre className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 text-sm font-mono text-zinc-700 dark:text-zinc-300 my-4">
+        <pre className="bg-stone-100 rounded-lg p-4 text-sm font-mono text-stone-700 my-4 border-[2px] border-stone-200">
           Vision → Build → Deploy → Refine → Delegate → Resume
         </pre>
 
@@ -35,7 +35,7 @@ export const chapters: WorkflowChapter[] = [
           Start loose. You&apos;re not writing a spec — you&apos;re painting a
           picture.
         </p>
-        <blockquote className="border-l-4 border-zinc-300 dark:border-zinc-600 pl-4 italic text-zinc-600 dark:text-zinc-400 my-4">
+        <blockquote className="border-l-4 border-stone-300 pl-4 italic text-stone-600 my-4">
           &ldquo;I want to build a website where people can share AI-generated
           React components. Like a gallery. Clean, minimal, easy to
           browse.&rdquo;
@@ -61,7 +61,7 @@ export const chapters: WorkflowChapter[] = [
           it continue. If something&apos;s wrong, speak up — but give it a
           chance.
         </p>
-        <pre className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 text-sm font-mono text-zinc-700 dark:text-zinc-300 my-4">
+        <pre className="bg-stone-100 rounded-lg p-4 text-sm font-mono text-stone-700 my-4 border-[2px] border-stone-200">
           {`# Good: course correction
 "The header is too tall. Shrink it."
 
@@ -71,7 +71,7 @@ export const chapters: WorkflowChapter[] = [
 
         <h3>3. Deploy: put it on the internet</h3>
         <p>Deploy early, even when it&apos;s incomplete.</p>
-        <pre className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 text-sm font-mono text-zinc-700 dark:text-zinc-300 my-4">
+        <pre className="bg-stone-100 rounded-lg p-4 text-sm font-mono text-stone-700 my-4 border-[2px] border-stone-200">
           Deploy this to Vercel
         </pre>
         <p>
@@ -103,7 +103,7 @@ export const chapters: WorkflowChapter[] = [
 
         <h3>4. Refine: iterate with vibes</h3>
         <p>This is where the magic happens. Small, fast adjustments:</p>
-        <pre className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 text-sm font-mono text-zinc-700 dark:text-zinc-300 my-4">
+        <pre className="bg-stone-100 rounded-lg p-4 text-sm font-mono text-stone-700 my-4 border-[2px] border-stone-200">
           {`"Darker"
 "More breathing room"
 "The text is hard to read"
@@ -131,7 +131,7 @@ export const chapters: WorkflowChapter[] = [
           At some point, you have enough shared context that you can give Claude
           larger tasks:
         </p>
-        <pre className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 text-sm font-mono text-zinc-700 dark:text-zinc-300 my-4">
+        <pre className="bg-stone-100 rounded-lg p-4 text-sm font-mono text-stone-700 my-4 border-[2px] border-stone-200">
           {`"Work through the remaining todos"
 "Handle the responsive design for all pages"
 "Add error handling everywhere it's missing"`}
@@ -146,11 +146,11 @@ export const chapters: WorkflowChapter[] = [
         <p>
           Sessions end. Context gets compressed or cleared. When you come back:
         </p>
-        <pre className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 text-sm font-mono text-zinc-700 dark:text-zinc-300 my-4">
+        <pre className="bg-stone-100 rounded-lg p-4 text-sm font-mono text-stone-700 my-4 border-[2px] border-stone-200">
           &ldquo;Where were we...&rdquo;
         </pre>
         <p>Or look at your handoff notes, if you saved them:</p>
-        <pre className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 text-sm font-mono text-zinc-700 dark:text-zinc-300 my-4">
+        <pre className="bg-stone-100 rounded-lg p-4 text-sm font-mono text-stone-700 my-4 border-[2px] border-stone-200">
           &ldquo;Continue from @.claude/handoffs/2026-03-01-project.md&rdquo;
         </pre>
         <p>
@@ -285,7 +285,7 @@ export const chapters: WorkflowChapter[] = [
           stack, use it. The workflow is the same.
         </p>
 
-        <hr className="my-8 border-zinc-200 dark:border-zinc-700" />
+        <hr className="my-8 border-stone-200" />
 
         <h3>Guided walkthrough: building project #2</h3>
         <p>
@@ -313,12 +313,12 @@ export const chapters: WorkflowChapter[] = [
 
         <h4>Step 2: Vision prompt</h4>
         <p>Open Claude Code in a new folder and describe what you want:</p>
-        <pre className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 text-sm font-mono text-zinc-700 dark:text-zinc-300 my-4">
+        <pre className="bg-stone-100 rounded-lg p-4 text-sm font-mono text-stone-700 my-4 border-[2px] border-stone-200">
           mkdir my-second-project &amp;&amp; cd my-second-project &amp;&amp;
           claude
         </pre>
         <p>Then:</p>
-        <pre className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 text-sm font-mono text-zinc-700 dark:text-zinc-300 my-4">
+        <pre className="bg-stone-100 rounded-lg p-4 text-sm font-mono text-stone-700 my-4 border-[2px] border-stone-200">
           {`I want to build [your thing]. [Why it matters to you].
 Help me think about what this should look like.`}
         </pre>
@@ -328,11 +328,11 @@ Help me think about what this should look like.`}
 
         <h4>Step 3: Build and deploy</h4>
         <p>When the vision feels right:</p>
-        <pre className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 text-sm font-mono text-zinc-700 dark:text-zinc-300 my-4">
+        <pre className="bg-stone-100 rounded-lg p-4 text-sm font-mono text-stone-700 my-4 border-[2px] border-stone-200">
           Let&apos;s build it.
         </pre>
         <p>Then after the first version exists:</p>
-        <pre className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 text-sm font-mono text-zinc-700 dark:text-zinc-300 my-4">
+        <pre className="bg-stone-100 rounded-lg p-4 text-sm font-mono text-stone-700 my-4 border-[2px] border-stone-200">
           Deploy it.
         </pre>
 
@@ -341,7 +341,7 @@ Help me think about what this should look like.`}
           Open the deployed URL on your phone. On your laptop. Show someone.
           Then iterate:
         </p>
-        <pre className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 text-sm font-mono text-zinc-700 dark:text-zinc-300 my-4">
+        <pre className="bg-stone-100 rounded-lg p-4 text-sm font-mono text-stone-700 my-4 border-[2px] border-stone-200">
           [What you notice that&apos;s wrong or could be better]
         </pre>
         <p>
