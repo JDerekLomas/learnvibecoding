@@ -19,6 +19,7 @@ export interface ClaudeCodeSection {
   title: string;
   description: string;
   color: string;
+  icon?: string;
   milestone: string;
 }
 
