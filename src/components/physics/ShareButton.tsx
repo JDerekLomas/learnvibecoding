@@ -15,7 +15,7 @@ export default function ShareButton() {
   const [copied, setCopied] = useState(false);
   const [code, setCode] = useState<string | null>(null);
   const [hasProgress, setHasProgress] = useState(false);
-  const syncTimeout = useRef<ReturnType<typeof setTimeout>>();
+  const syncTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     setCode(getShareCode());

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import ShareButton from '@/components/physics/ShareButton';
 
 const modalities = [
   {
@@ -156,12 +157,22 @@ export default function PhysicsDemoHub() {
         </ul>
       </motion.div>
 
+      {/* Share button */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.7 }}
+        className="mt-6 flex justify-center"
+      >
+        <ShareButton />
+      </motion.div>
+
       {/* Footer note */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="mt-8 bg-white/80 rounded-xl px-4 py-3 text-center"
+        className="mt-6 bg-white/80 rounded-xl px-4 py-3 text-center"
       >
         <p className="text-xs text-stone-400">
           An experiment in multi-modal learning by{' '}
