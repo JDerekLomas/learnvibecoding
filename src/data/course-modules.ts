@@ -7,7 +7,7 @@ export interface CourseModule {
   slug: string;
   tag: string;
   title: string;
-  section: "entry" | "core" | "advanced";
+  section: "entry" | "core" | "advanced" | "enlightenment";
   color: string;
   chapters?: Chapter[];
 }
@@ -85,6 +85,15 @@ export const MODULES: CourseModule[] = [
       { slug: "agents", title: "Autonomous Agents" },
     ],
   },
+  // Enlightenment
+  {
+    slug: "/enlightenment", tag: "M8", title: "Enlightenment", section: "enlightenment", color: "bg-amber-500",
+    chapters: [
+      { slug: "mirror", title: "The Mirror" },
+      { slug: "practice", title: "The Practice" },
+      { slug: "gift", title: "The Gift" },
+    ],
+  },
 ];
 
 /** Sequential learning path: core + advanced (entry points are standalone on-ramps) */
@@ -130,6 +139,11 @@ export function getModulesBySection(): {
       title: "Advanced",
       description: "Go deeper once you've built a few things.",
       modules: MODULES.filter((m) => m.section === "advanced"),
+    },
+    {
+      title: "Enlightenment",
+      description: "You were the vibe all along.",
+      modules: MODULES.filter((m) => m.section === "enlightenment"),
     },
   ];
 }

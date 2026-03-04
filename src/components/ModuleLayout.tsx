@@ -123,6 +123,7 @@ export default function ModuleLayout({
   const entryPoints = MODULES.filter((m) => m.section === "entry");
   const core = MODULES.filter((m) => m.section === "core");
   const advanced = MODULES.filter((m) => m.section === "advanced");
+  const enlightenment = MODULES.filter((m) => m.section === "enlightenment");
 
   useEffect(() => {
     markVisited(pathname);
@@ -204,6 +205,13 @@ export default function ModuleLayout({
             <NavSection
               title="Advanced"
               links={advanced}
+              currentPath={pathname}
+              dotStates={dotStates}
+              chapterDotStates={chapterDotStates}
+            />
+            <NavSection
+              title="Enlightenment"
+              links={enlightenment}
               currentPath={pathname}
               dotStates={dotStates}
               chapterDotStates={chapterDotStates}
