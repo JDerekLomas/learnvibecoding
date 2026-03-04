@@ -59,6 +59,11 @@ export interface QuizTheme {
   knowBorder: string;
   knowText: string;
 
+  // Content card (wraps question + answers so text never floats on bg)
+  contentCardBg: string;
+  contentCardBorder: string;
+  contentCardShadow: string;
+
   // Summary page
   summaryBg: string;
   scoreBg: string;
@@ -138,6 +143,10 @@ export const DARK_THEME: QuizTheme = {
   knowBorder: 'border-indigo-500',
   knowText: 'text-white',
 
+  contentCardBg: 'bg-[#1a0a3e]/80',
+  contentCardBorder: 'border-[#3d2b7a]',
+  contentCardShadow: '',
+
   summaryBg: 'bg-[#1a0a3e]',
   scoreBg: 'bg-[#2a1a5e]',
   scoreBorder: 'border-indigo-400/40',
@@ -200,6 +209,10 @@ export const LIGHT_THEME: QuizTheme = {
   knowBorder: 'border-indigo-500',
   knowText: 'text-white',
 
+  contentCardBg: 'bg-white',
+  contentCardBorder: 'border-stone-200',
+  contentCardShadow: 'shadow-lg shadow-stone-200/60',
+
   summaryBg: 'bg-[#f0f0f0]',
   scoreBg: 'bg-white',
   scoreBorder: 'border-indigo-200',
@@ -229,9 +242,9 @@ export const NEOBRUTALIST_THEME: QuizTheme = {
 
   pageBg: 'bg-[#f5f0eb]',
 
-  doodleBg: '',
-  doodleOpacity: 0,
-  doodleTile: false,
+  doodleBg: '/textures/notebook.png',
+  doodleOpacity: 0.15,
+  doodleTile: true,
 
   badgeBg: 'bg-white',
   badgeText: 'text-stone-500',
@@ -268,6 +281,10 @@ export const NEOBRUTALIST_THEME: QuizTheme = {
   knowBg: 'bg-[#E07A5F]',
   knowBorder: 'border-stone-900',
   knowText: 'text-white',
+
+  contentCardBg: 'bg-white',
+  contentCardBorder: 'border-stone-900',
+  contentCardShadow: 'shadow-[4px_4px_0_#1c1917]',
 
   summaryBg: 'bg-[#f5f0eb]',
   scoreBg: 'bg-white',

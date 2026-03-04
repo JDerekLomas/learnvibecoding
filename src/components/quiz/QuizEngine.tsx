@@ -212,6 +212,7 @@ export default function QuizEngine({
       {/* Question area */}
       <div className="flex-1 flex flex-col px-6 pb-8 relative z-10">
         <div className="max-w-lg mx-auto w-full flex-1 flex flex-col">
+          <div className={`rounded-2xl border-2 ${theme.contentCardBorder} ${theme.contentCardBg} ${theme.contentCardShadow} p-6 flex-1 flex flex-col`}>
           <AnimatePresence mode="wait" custom={1}>
             <motion.div
               key={currentIndex}
@@ -277,6 +278,7 @@ export default function QuizEngine({
 
             </motion.div>
           </AnimatePresence>
+          </div>
         </div>
       </div>
     </div>

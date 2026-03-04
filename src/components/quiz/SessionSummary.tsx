@@ -112,6 +112,7 @@ export default function SessionSummary({
       <DoodleBg src={theme.doodleBg} opacity={theme.doodleOpacity} tile={theme.doodleTile} />
 
       <div className="w-full max-w-md relative z-10">
+        <div className={`rounded-2xl border-2 ${theme.contentCardBorder} ${theme.contentCardBg} ${theme.contentCardShadow} p-6`}>
         {/* Score circle */}
         <motion.div
           initial={{ scale: 0 }}
@@ -422,6 +423,7 @@ export default function SessionSummary({
             </motion.div>
           </>
         )}
+        </div>
       </div>
     </motion.div>
   );
