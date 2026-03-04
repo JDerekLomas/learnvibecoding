@@ -313,12 +313,19 @@ function ConsumerLanding() {
           </p>
         </div>
 
-        {/* Find Your Level CTA */}
-        <Link href="/quiz" className="block mb-8">
-          <div className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-extrabold text-base text-center shadow-xl shadow-emerald-500/25 hover:from-emerald-600 hover:to-teal-600 transition-all duration-150 border-2 border-white/20">
-            Take the Quiz to Find Your Level
-          </div>
-        </Link>
+        {/* CTAs */}
+        <div className="grid grid-cols-2 gap-3 mb-8">
+          <Link href="/quiz">
+            <div className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-extrabold text-base text-center shadow-xl shadow-emerald-500/25 hover:from-emerald-600 hover:to-teal-600 transition-all duration-150 border-2 border-white/20">
+              Find Your Level
+            </div>
+          </Link>
+          <Link href="/voice">
+            <div className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-extrabold text-base text-center shadow-xl shadow-amber-500/25 hover:from-amber-600 hover:to-orange-600 transition-all duration-150 border-2 border-white/20">
+              Discover What to Build
+            </div>
+          </Link>
+        </div>
 
         {/* Interactive Skill Map */}
         <div className="mb-8">
