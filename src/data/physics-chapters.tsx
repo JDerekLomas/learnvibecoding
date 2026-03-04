@@ -2,6 +2,9 @@ import Callout from "@/components/Callout";
 import SelfAssessment from "@/components/SelfAssessment";
 import ReflectionPrompt from "@/components/ReflectionPrompt";
 import CritiqueExercise from "@/components/CritiqueExercise";
+import MoleculeSim from "@/components/physics/MoleculeSim";
+import ConductionSim from "@/components/physics/ConductionSim";
+import HeatingCurve from "@/components/physics/HeatingCurve";
 
 export interface Chapter {
   slug: string;
@@ -54,6 +57,7 @@ export const chapters: Chapter[] = [
           boiling water (100°C). Each molecule in the cup is moving faster, but
           the bathtub has <em>billions</em> more molecules. Total energy wins.
         </p>
+        <MoleculeSim />
         <Callout type="exercise" title="Try this at home">
           Fill one bowl with warm tap water and another with the same amount of
           cold tap water. Now drop an ice cube in each. Which melts faster? Time
@@ -97,6 +101,7 @@ export const chapters: Chapter[] = [
           aluminum). Others are terrible conductors (wood, plastic, air). We call
           the terrible ones <strong>insulators</strong>.
         </p>
+        <ConductionSim />
         <Callout type="tip" title="That's why pot handles are plastic">
           Metal conducts heat so well that a metal handle would burn you. Plastic
           and wood are insulators — they slow the chain reaction of molecular
@@ -257,6 +262,7 @@ export const chapters: Chapter[] = [
           per gram — directly onto your skin <em>before</em> the resulting hot
           water even starts to cool. Double whammy.
         </p>
+        <HeatingCurve />
         <Callout type="tip" title="This is why sweating works">
           When sweat evaporates, it absorbs latent heat from your skin. Each
           gram of sweat that evaporates removes 2,260 joules of energy from your
