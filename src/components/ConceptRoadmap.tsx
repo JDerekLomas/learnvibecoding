@@ -9,13 +9,20 @@ import ConceptDetail from "./ConceptDetail";
 
 const STORAGE_KEY = "concept-mastery";
 
-const THEME_COLORS: Record<string, { gradient: string; glow: string }> = {
-  violet: { gradient: "from-violet-500 to-indigo-600", glow: "shadow-violet-500/25" },
-  amber: { gradient: "from-amber-500 to-orange-500", glow: "shadow-amber-500/25" },
-  blue: { gradient: "from-blue-500 to-indigo-500", glow: "shadow-blue-500/25" },
-  emerald: { gradient: "from-emerald-500 to-teal-500", glow: "shadow-emerald-500/25" },
-  red: { gradient: "from-red-500 to-rose-500", glow: "shadow-red-500/25" },
+const THEME_COLORS: Record<string, { gradient: string; glow: string; border: string; dot: string; text: string; bg: string }> = {
+  violet: { gradient: "from-violet-500 to-indigo-600", glow: "shadow-violet-500/25", border: "border-violet-400", dot: "bg-violet-500", text: "text-violet-600", bg: "bg-violet-50" },
+  amber: { gradient: "from-amber-500 to-orange-500", glow: "shadow-amber-500/25", border: "border-amber-400", dot: "bg-amber-500", text: "text-amber-600", bg: "bg-amber-50" },
+  blue: { gradient: "from-blue-500 to-indigo-500", glow: "shadow-blue-500/25", border: "border-blue-400", dot: "bg-blue-500", text: "text-blue-600", bg: "bg-blue-50" },
+  emerald: { gradient: "from-emerald-500 to-teal-500", glow: "shadow-emerald-500/25", border: "border-emerald-400", dot: "bg-emerald-500", text: "text-emerald-600", bg: "bg-emerald-50" },
+  red: { gradient: "from-red-500 to-rose-500", glow: "shadow-red-500/25", border: "border-red-400", dot: "bg-red-500", text: "text-red-600", bg: "bg-red-50" },
 };
+
+const MILESTONES = [
+  "You understand how to think about AI as a collaborator",
+  "You can manage your AI workspace effectively",
+  "You have a solid development process with AI",
+  "You know how to get the best work from AI",
+];
 
 function getMastery(): Set<string> {
   if (typeof window === "undefined") return new Set();
@@ -29,6 +36,38 @@ function getMastery(): Set<string> {
 
 function saveMastery(mastered: Set<string>) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify([...mastered]));
+}
+
+function Connector({ color }: { color: string }) {
+  const c = THEME_COLORS[color] || THEME_COLORS.blue;
+  return (
+    <div className="flex flex-col items-center py-1">
+      <div className={`w-0.5 h-5 ${c.dot} opacity-40`} />
+      <div className={`w-3 h-3 rounded-full ${c.dot} opacity-60`} />
+      <div className={`w-0.5 h-5 ${c.dot} opacity-40`} />
+    </div>
+  );
+}
+
+function Milestone({ text, index }: { text: string; index: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.2 }}
+      className="flex items-center gap-3 mx-auto max-w-[500px] py-4"
+    >
+      <div className="flex-1 h-px bg-stone-300" />
+      <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-stone-100 border border-stone-200">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-stone-400">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+        <span className="text-xs font-semibold text-stone-500">{text}</span>
+      </div>
+      <div className="flex-1 h-px bg-stone-300" />
+    </motion.div>
+  );
 }
 
 export default function ConceptRoadmap() {
@@ -57,12 +96,15 @@ export default function ConceptRoadmap() {
   let globalIndex = 0;
 
   return (
-    <div className="pb-20">
+    <div className="pb-20 relative">
+      {/* Vertical spine — the journey line */}
+      <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-stone-200 via-stone-300 to-stone-200 -translate-x-1/2 hidden sm:block" />
+
       {/* Progress bar */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-10 bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6"
+        className="relative mb-8 bg-white rounded-2xl border-2 border-stone-200 shadow-lg shadow-stone-200/60 p-6"
       >
         <div className="flex items-center gap-4 mb-3">
           <div className="flex-1 h-4 bg-stone-200 rounded-full overflow-hidden shadow-inner">
@@ -82,34 +124,52 @@ export default function ConceptRoadmap() {
           {masteredCount === 0
             ? "Click any concept to start learning"
             : masteredCount === total
-              ? "You've mastered all concepts!"
+              ? "You've mastered all 25 concepts!"
               : `${masteredCount} concept${masteredCount === 1 ? "" : "s"} mastered`}
         </p>
       </motion.div>
 
-      {/* Theme sections */}
-      {themeGroups.map(({ theme, concepts: themeConcepts }) => {
+      {/* Theme sections with connectors */}
+      {themeGroups.map(({ theme, concepts: themeConcepts }, sectionIndex) => {
         const colors = THEME_COLORS[theme.color] || THEME_COLORS.blue;
+        const sectionMastered = themeConcepts.filter((c) => mastered.has(c.id)).length;
 
         return (
-          <div key={theme.id} className="mb-10">
+          <div key={theme.id} className="relative">
+            {/* Connector from previous section */}
+            {sectionIndex > 0 && (
+              <>
+                <Connector color={theme.color} />
+                <Milestone text={MILESTONES[sectionIndex - 1]} index={sectionIndex} />
+                <Connector color={theme.color} />
+              </>
+            )}
+
             {/* Section header */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               className={`
-                mx-auto w-full max-w-[500px] rounded-2xl bg-gradient-to-r ${colors.gradient}
-                px-8 py-5 text-center shadow-xl ${colors.glow} mb-6 border-2 border-white/20
+                relative mx-auto w-full max-w-[500px] rounded-2xl bg-gradient-to-r ${colors.gradient}
+                px-8 py-5 text-center shadow-xl ${colors.glow} mb-1 border-2 border-white/20
               `}
             >
-              <h2 className="text-lg font-extrabold text-white tracking-wide uppercase">
-                {theme.title}
-              </h2>
+              <div className="flex items-center justify-center gap-3">
+                <h2 className="text-lg font-extrabold text-white tracking-wide uppercase">
+                  {theme.title}
+                </h2>
+                <span className="text-xs font-bold text-white/60 bg-white/20 px-2 py-0.5 rounded-full">
+                  {sectionMastered}/{themeConcepts.length}
+                </span>
+              </div>
               <p className="text-sm font-medium text-white/80 mt-1">{theme.description}</p>
             </motion.div>
 
+            {/* Connector into cards */}
+            <Connector color={theme.color} />
+
             {/* Card grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-[640px] mx-auto">
+            <div className="relative grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-[640px] mx-auto">
               {themeConcepts.map((concept) => {
                 const idx = globalIndex++;
                 return (
@@ -126,6 +186,23 @@ export default function ConceptRoadmap() {
           </div>
         );
       })}
+
+      {/* Final milestone */}
+      <div className="relative">
+        <Connector color="red" />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mx-auto max-w-[500px] text-center py-6"
+        >
+          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-stone-900 text-white shadow-lg">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+            <span className="text-sm font-bold">You know the pitfalls. Now go build something.</span>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Detail modal */}
       <ConceptDetail
