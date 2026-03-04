@@ -19,13 +19,13 @@ export default function AppleIcon() {
       >
         <span
           style={{
-            fontSize: 90,
+            fontSize: 64,
             fontWeight: 900,
             color: "white",
             fontFamily: "system-ui",
           }}
         >
-          vc
+          vibe
         </span>
       </div>
     ),
